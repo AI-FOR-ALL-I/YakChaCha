@@ -2,13 +2,12 @@ HELP.md
 .DS_Store
 .gradle
 build/
-gradle/
+#gradle/
 
-gradlew
-gradlew.bat
+#gradlew
+#gradlew.bat
 
-*.yml
-*.properties
+.env
 
 ### STS ###
 .apt_generated
