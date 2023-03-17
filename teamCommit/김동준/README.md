@@ -1,3 +1,96 @@
+# 0317
+## 발표
+## **컨벤션 확립**
+
+## Branch
+
+<aside>
+⏰ git checkout -b **BE/feautre/**S08P22A80~~3-**번호**-**프로젝트**-**구조**-**생성**~~
+
+</aside>
+
+<aside>
+♻️ **BE/feature/S08P22A803-스토리번호-`본인이 작성한 스토리 이름`
+AI/feature/S08P22A803-스토리번호-`본인이 작성한 스토리 이름`
+FE//feature/S08P22A803-스토리번호-`본인이 작성한 스토리 이름`**
+
+</aside>
+
+본인이 작성한 스토리 이름은 필수로 넣지 않아도 됌 **BUT S08P22A803-스토리번호는 무조건 살려야**
+
+<aside>
+🤝 **BE/feature/S08P22A803-스토리번호
+AI/feature/S08P22A803-스토리번호
+FE/feature/S08P22A803-스토리번호**
+
+</aside>
+
+
+- `지라 이슈 - 브랜치 만들기 버튼`
+    
+
+## commit messaging 규칙
+
+ `****[S08P22A803-108] Update: YCC 프로젝트 생성****`
+
+git commit -m ‘[ `지라이슈넘버` ] `커밋유형:` `커밋메시지` ’
+
+**→ 대괄호 지켜주기**
+
+| 커밋 유형 | 의미 |
+| --- | --- |
+| Feat | 새로운 기능, 파일 추가 |
+| Fix | 버그 수정 |
+| Docs | 문서 수정 |
+| Style | 코드 formatting, 세미콜론 누락, 코드 자체의 변경이 없는 경우 |
+| Refactor | 코드 리팩토링 |
+| Test | 테스트 코드, 리팩토링 테스트 코드 추가 |
+| Chore | 패키지 매니저 수정, 그 외 기타 수정 ex) .gitignore |
+| Design | CSS 등 사용자 UI 디자인 변경 |
+| Comment | 필요한 주석 추가 및 변경 |
+| Rename | 파일 또는 폴더 명을 수정하거나 옮기는 작업만인 경우 |
+| Remove | 파일을 삭제하는 작업만 수행한 경우 |
+| !BREAKING CHANGE | 커다란 API 변경의 경우 |
+| !HOTFIX | 급하게 치명적인 버그를 고쳐야 하는 경우 |
+
+---
+
+# BackEnd
+
+[캠퍼스 핵데이 Java 코딩 컨벤션](https://naver.github.io/hackday-conventions-java/)
+
+[코드 리뷰 in 뱅크샐러드 개발 문화 | 뱅크샐러드](https://blog.banksalad.com/tech/banksalad-code-review-culture/)
+
+---
+
+# FrontEnd
+```
+Feat : 새로운 기능 시작. 파일 추가
+Fix : 오류수정
+Docs : 문서추가 및 수정 (readme같은거 수정)
+Design : 
+Chore : 패키지설치 및 삭제같은작업에서 (yaml파일)
+```
+
+| 커밋 유형 | 의미 |
+| --- | --- |
+| Feat | 새로운 기능, 파일 추가 |
+| Design | CSS 등 사용자 UI 디자인 변경 |
+| Fix | 버그 수정 및 급하게 치명적인 버그를 고쳐야 하는 경우 |
+| Docs | 문서 수정 |
+| Refactor | 코드 리팩토링
+코드 formatting
+세미콜론 누락
+코드 자체의 변경이 없는 경우 |
+| Chore | 패키지 매니저 수정
+주석편집
+파일 및 폴더 명 수정
+파일 위치 변경
+파일 삭제
+그 외 기타 수정 ex) .gitignore.  |
+| Test | 테스트 코드, 리팩토링 테스트 코드 추가 |
+
+---
 # 0316
 - 서비스명 교체
 - 피그마 마무리
