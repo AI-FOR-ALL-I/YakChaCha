@@ -12,13 +12,13 @@ public class ErrorResponseService {
         return ErrorResponse.builder()
                 .success(false)
                 .code(errorCode.getCode())
-                .error(errorCode.getStatus().name())
+                .error(errorCode.name())
                 .message(errorCode.getMessage())
                 .build();
     }
 
     public ResponseEntity<Object> handleExceptionInternal(final ErrorCode errorCode) {
-        log.warn("{}: {} 에러 발생", errorCode.getStatus(), errorCode.name());
+        log.warn("{}: {} {} {}", errorCode.getStatus(), errorCode.getCode(), errorCode.name(), errorCode.getMessage());
         return ResponseEntity.status(errorCode.getStatus())
                 .body(makeErrorResponse(errorCode));
     }
