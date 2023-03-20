@@ -7,8 +7,6 @@ build/
 #gradlew
 #gradlew.bat
 
-.env
-
 ### STS ###
 .apt_generated
 .classpath
