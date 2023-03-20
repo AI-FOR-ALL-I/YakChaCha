@@ -4,8 +4,9 @@ import com.ai4ai.ycc.domain.account.dto.request.SignUpRequestDto;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.account.service.AccountService;
-import com.ai4ai.ycc.error.ErrorCode;
-import com.ai4ai.ycc.error.ErrorException;
+import com.ai4ai.ycc.error.code.AccountErrorCode;
+import com.ai4ai.ycc.error.code.ErrorCode;
+import com.ai4ai.ycc.error.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,10 +35,10 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         String password = passwordEncoder.encode(requestDto.getPassword());
 
         if (accountRepository.existsById(id)) {
-            throw new ErrorException(ErrorCode.ID_DUPLICATION);
+            throw new ErrorException(AccountErrorCode.ID_DUPLICATION);
         }
         if (accountRepository.existsByPhone(phone)) {
-            throw new ErrorException(ErrorCode.PHONE_DUPLICATION);
+            throw new ErrorException(AccountErrorCode.PHONE_DUPLICATION);
         }
 
         Account account = Account.builder()
@@ -48,4 +49,19 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
 
         accountRepository.save(account);
     }
+
+    @Override
+    public void checkId(String id) {
+        if (accountRepository.existsById(id)) {
+            throw new ErrorException(AccountErrorCode.ID_DUPLICATION);
+        }
+    }
+
+    @Override
+    public void checkPhone(String phone) {
+        if (accountRepository.existsByPhone(phone)) {
+            throw new ErrorException(AccountErrorCode.PHONE_DUPLICATION);
+        }
+    }
+
 }

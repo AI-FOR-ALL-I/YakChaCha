@@ -1,5 +1,8 @@
-package com.ai4ai.ycc.error;
+package com.ai4ai.ycc.error.handler;
 
+import com.ai4ai.ycc.error.exception.ErrorException;
+import com.ai4ai.ycc.error.code.ErrorCode;
+import com.ai4ai.ycc.error.response.ErrorResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,5 +1,6 @@
-package com.ai4ai.ycc.error;
+package com.ai4ai.ycc.error.exception;
 
+import com.ai4ai.ycc.error.code.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

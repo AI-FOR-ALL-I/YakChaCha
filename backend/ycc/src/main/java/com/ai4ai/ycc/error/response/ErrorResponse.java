@@ -1,4 +1,4 @@
-package com.ai4ai.ycc.error;
+package com.ai4ai.ycc.error.response;
 
 import lombok.Builder;
 import lombok.Getter;

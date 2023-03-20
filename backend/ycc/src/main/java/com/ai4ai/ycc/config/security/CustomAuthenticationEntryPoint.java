@@ -1,7 +1,7 @@
 package com.ai4ai.ycc.config.security;
 
-import com.ai4ai.ycc.error.ErrorCode;
-import com.ai4ai.ycc.error.ErrorResponse;
+import com.ai4ai.ycc.error.code.ErrorCode;
+import com.ai4ai.ycc.error.response.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -53,9 +53,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     //한글 출력을 위해 getWriter() 사용
     private void setResponse(HttpServletResponse response, ErrorCode errorCode)
             throws IOException {
-        log.warn("[ErrorResponse] {}: {} 에러 발생", errorCode.getStatus(), errorCode.name());
+        log.warn("[ErrorResponse] {}: {} 에러 발생", errorCode.getHttpStatus(), errorCode.name());
         response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(errorCode.getStatus().value());
+        response.setStatus(errorCode.getHttpStatus().value());
 
         response.getWriter().write(objectMapper.writeValueAsString(
                 ErrorResponse.builder()
