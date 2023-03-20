@@ -43,6 +43,10 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                     alignment: Alignment.center,
                     width: double.infinity,
                     decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
                         color: isClicked
                             ? Color.fromARGB(255, 187, 228, 203)
                             : Color.fromARGB(255, 225, 225, 225)),
@@ -64,6 +68,10 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                     alignment: Alignment.center,
                     width: double.infinity,
                     decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
                         color: !isClicked
                             ? Color.fromARGB(255, 187, 228, 203)
                             : Color.fromARGB(255, 225, 225, 225)),
@@ -95,7 +103,9 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
         Flexible(
           flex: 24,
           child: ListView(
+
             children: [
+              MyPill(),
               MyPill(),
             ],
           ),
@@ -105,36 +115,34 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     );
   }
 
-
-
   Row emptyPill() {
     return Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.medication,
-                      size: 58,
-                    ),
-                    Text(
-                      "복용한 내역이 없습니다.",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
             ),
-          ],
-        );
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.medication,
+                  size: 58,
+                ),
+                Text(
+                  "복용한 내역이 없습니다.",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
