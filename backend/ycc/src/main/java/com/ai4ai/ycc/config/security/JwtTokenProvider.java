@@ -37,7 +37,9 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class JwtTokenProvider {
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    @Value("${jwt.header}")
+    private String AUTHORIZATION_HEADER = "header";
+
     private final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60; // 1시간 토큰 유효
     private final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7; // 1주 토큰 유효
     private final UserDetailsService userDetailsService; // Spring Security 에서 제공하는 서비스 레이어
