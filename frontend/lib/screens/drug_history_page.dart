@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/mypills/my_pill.dart';
 
 class DrugHistoryPage extends StatefulWidget {
   const DrugHistoryPage({Key? key}) : super(key: key);
@@ -93,36 +94,47 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
         // 컴포넌트 들 -> 탭의 선택에 따라 달라져야 함
         Flexible(
           flex: 24,
-          child: Row(
+          child: ListView(
             children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.medication,
-                        size: 58,
-                      ),
-                      Text(
-                        "복용한 내역이 없습니다.",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              MyPill(),
             ],
           ),
+          // child: emptyPill(),
         ),
       ],
     );
+  }
+
+
+
+  Row emptyPill() {
+    return Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.medication,
+                      size: 58,
+                    ),
+                    Text(
+                      "복용한 내역이 없습니다.",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
   }
 }
