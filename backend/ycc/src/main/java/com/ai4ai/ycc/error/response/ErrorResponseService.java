@@ -1,5 +1,6 @@
-package com.ai4ai.ycc.error;
+package com.ai4ai.ycc.error.response;
 
+import com.ai4ai.ycc.error.code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class ErrorResponseService {
     }
 
     public ResponseEntity<Object> handleExceptionInternal(final ErrorCode errorCode) {
-        log.warn("{}: {} {} {}", errorCode.getStatus(), errorCode.getCode(), errorCode.name(), errorCode.getMessage());
-        return ResponseEntity.status(errorCode.getStatus())
+        log.warn("{}: {} {} {}", errorCode.getHttpStatus(), errorCode.getCode(), errorCode.name(), errorCode.getMessage());
+        return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(makeErrorResponse(errorCode));
     }
 
