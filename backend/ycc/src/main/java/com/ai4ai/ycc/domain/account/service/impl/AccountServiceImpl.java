@@ -50,4 +50,18 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         accountRepository.save(account);
     }
 
+    @Override
+    public void checkId(String id) {
+        if (accountRepository.existsById(id)) {
+            throw new ErrorException(AccountErrorCode.ID_DUPLICATION);
+        }
+    }
+
+    @Override
+    public void checkPhone(String phone) {
+        if (accountRepository.existsByPhone(phone)) {
+            throw new ErrorException(AccountErrorCode.PHONE_DUPLICATION);
+        }
+    }
+
 }

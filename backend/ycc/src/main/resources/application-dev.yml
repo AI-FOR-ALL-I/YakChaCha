@@ -5,6 +5,12 @@ spring:
     username: root
     password: ssafy803
 
+  redis:
+    host: j8a803.p.ssafy.io
+    port: 6379
+    password: ssafy803
+    timeout: 3000
+
   jpa:
     hibernate:
       ddl-auto: update
