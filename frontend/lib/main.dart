@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/home.dart';
+import 'package:frontend/bottom_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +11,9 @@ class MyApp extends StatelessWidget {
   // This widget is th root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'bottomNavigationBar Test',
-      home: Home(),
+      home: BottomNavigation(),
     );
   }
 }
