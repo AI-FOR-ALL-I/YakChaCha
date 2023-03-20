@@ -1,19 +1,16 @@
-FROM openjdk:11-jdk AS builder
+FROM gradle:jdk11 as builder
 
 ENV APP_HOME=/apps
 
 WORKDIR $APP_HOME
 
-COPY build.gradle settings.gradle gradlew $APP_HOME/
-COPY gradle $APP_HOME/gradle
+COPY build.gradle settings.gradle $APP_HOME/
 
-RUN chmod +x gradlew
-RUN ./gradlew build || return 0
+COPY src $APP_HOME/src
 
 ENV SPRING_PROFILES_ACTIVE=dev
 
-COPY src $APP_HOME/src
-RUN ./gradlew clean build
+RUN gradle clean build
 
 FROM openjdk:11-jdk
 
