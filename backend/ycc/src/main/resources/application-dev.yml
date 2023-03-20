@@ -18,3 +18,8 @@ logging:
   level:
     org.hibernate:
       type.type.descriptor.sql: trace
+
+jwt:
+  header: Authorization
+  secret: eWFrY2hhY2hhLXNzYWZ5ODAz
+  token-validity-in-seconds: 86400
