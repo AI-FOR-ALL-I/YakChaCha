@@ -16,17 +16,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme(
             brightness: Brightness.light,
-            primary: Color(0xFFBBE4CB),      // Main
-            onPrimary: Color(0xFFFBFFFB),    // little-white
-            secondary: Color(0xFF666666),    // Gray
-            onSecondary: Color(0xFFE1E1E1),  // Light-Gray
-            error: Color(0xFFFF6961),        // Error-Red
-            onError: Color(0xFFF7CA66),      // Warning-yellow
-            background: Color(0xFF4AC990),   // Success-green
+            primary: Color(0xFFBBE4CB), // Main
+            onPrimary: Color(0xFFFBFFFB), // little-white
+            secondary: Color(0xFF666666), // Gray
+            onSecondary: Color(0xFFE1E1E1), // Light-Gray
+            error: Color(0xFFFF6961), // Error-Red
+            onError: Color(0xFFF7CA66), // Warning-yellow
+            background: Color(0xFF4AC990), // Success-green
             onBackground: Color(0xFF6694F7), // Info - blue
-            surface: Color(0xFFBABABA),      // Placeholder
-            onSurface: Color(0xFF848293)),   // Point-Purple
-      ),
+            surface: Color(0xFFBABABA), // Placeholder
+            onSurface: Color(0xFF848293)), // Point-Purple
+      ), // color:theme.of(context).colorScheme.~~~
       title: 'bottomNavigationBar Test',
       home: const BottomNavigation(),
     );
