@@ -1,13 +1,11 @@
 package com.ai4ai.ycc.domain.account.service;
 
-import com.ai4ai.ycc.domain.account.dto.request.SignUpRequestDto;
+import com.ai4ai.ycc.domain.account.dto.request.SignInRequestDto;
+import com.ai4ai.ycc.domain.account.dto.response.SignInResponseDto;
 
 public interface AccountService {
 
-    void signUp(SignUpRequestDto requestDto);
+    SignInResponseDto signIn(SignInRequestDto requestDto);
 
-    void checkId(String id);
-    void checkPhone(String phone);
-
-
+    void signOut(String id);
 }

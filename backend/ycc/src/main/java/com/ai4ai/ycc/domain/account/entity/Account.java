@@ -1,46 +1,69 @@
 package com.ai4ai.ycc.domain.account.entity;
 
-import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import java.util.Collection;
 import lombok.*;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 아무런 값도 갖지않는 의미 없는 객체의 생성을 막음.
 @ToString(exclude = {"password"})
+@EntityListeners(AuditingEntityListener.class)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Account extends BaseEntity implements UserDetails {
+public class Account implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long accountSeq;
 
+    @Column(nullable = false)
+    private String type;
+
     @Column(nullable = false, unique = true)
     private String id;
 
-    @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
     @Column(nullable = false, unique = true)
-    private String phone;
+    private String email;
 
-    public void updatePhoneNumber(String phone) {
-        this.phone = phone;
-    }
+    private String refreshToken;
+
+    @Column(nullable = false)
+    private String delYn;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime regDttm;
+
+    @LastModifiedDate
+    private LocalDateTime modDttm;
 
     @Builder
-    public Account(String id, String password, String phone) {
+    public Account(String type, String id, String email) {
+        this.type = type;
         this.id = id;
-        this.password = password;
-        this.phone = phone;
+        this.email = email;
+    }
+
+    @PrePersist
+    public void setDefaultValues() {
+        this.delYn = this.delYn == null ? "N" : this.delYn;
+    }
+
+    public void putRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    public void removeRefreshToken() {
+        this.refreshToken = null;
     }
 
     @Override
@@ -51,6 +74,10 @@ public class Account extends BaseEntity implements UserDetails {
     @Override
     public String getUsername() {
         return this.id;
+    }
+    @Override
+    public String getPassword() {
+        return null;
     }
 
     @Override
@@ -72,4 +99,5 @@ public class Account extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
 }
