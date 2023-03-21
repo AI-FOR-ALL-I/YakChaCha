@@ -1,10 +1,12 @@
 package com.ai4ai.ycc.domain.account.service.impl;
 
+import com.ai4ai.ycc.config.security.JwtTokenProvider;
 import com.ai4ai.ycc.domain.account.dto.request.SignUpRequestDto;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.account.service.AccountService;
 import com.ai4ai.ycc.error.code.AccountErrorCode;
+import com.ai4ai.ycc.error.code.CommonErrorCode;
 import com.ai4ai.ycc.error.code.ErrorCode;
 import com.ai4ai.ycc.error.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AccountServiceImpl implements AccountService, UserDetailsService {
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void signUp(SignUpRequestDto requestDto) {
@@ -62,6 +60,20 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
         if (accountRepository.existsByPhone(phone)) {
             throw new ErrorException(AccountErrorCode.PHONE_DUPLICATION);
         }
+    }
+
+    @Override
+    public String signIn(String id, String password) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (!passwordEncoder.matches(password, account.getPassword())) {
+            throw new ErrorException(CommonErrorCode.BAD_REQUEST);
+        }
+
+        String token = jwtTokenProvider.createAccessToken(account.getId());
+
+        return token;
     }
 
 }

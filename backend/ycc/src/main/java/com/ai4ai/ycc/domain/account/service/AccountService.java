@@ -10,4 +10,5 @@ public interface AccountService {
     void checkPhone(String phone);
 
 
+    String signIn(String id, String password);
 }

@@ -6,9 +6,13 @@ import com.ai4ai.ycc.domain.account.dto.request.SignUpRequestDto;
 import com.ai4ai.ycc.domain.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.patterns.IToken;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/account")
@@ -38,6 +42,13 @@ public class AccountController {
         accountService.checkPhone(phone);
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
+    }
+
+    @PostMapping("/sign-in/{id}/{password}")
+    public ResponseEntity<Result> signIn(@PathVariable String id, @PathVariable String password) {
+        String token = accountService.signIn(id, password);
+        return ResponseEntity.ok()
+                .body(responseService.getSingleResult(token));
     }
 
 
