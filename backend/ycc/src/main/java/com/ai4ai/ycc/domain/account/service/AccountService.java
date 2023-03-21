@@ -6,4 +6,8 @@ public interface AccountService {
 
     void signUp(SignUpRequestDto requestDto);
 
+    void checkId(String id);
+    void checkPhone(String phone);
+
+
 }
