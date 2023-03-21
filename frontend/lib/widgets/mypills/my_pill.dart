@@ -10,6 +10,7 @@ class MyPill extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
+
           MaterialPageRoute(
             builder: (context) => PillDetails(
               

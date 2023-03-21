@@ -90,42 +90,68 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
         ),
         // 바디 부분
         Flexible(
-          flex: 25,
-          child: 
-              Column(
-            children: [
-              // 총 몇 건인지
-              Flexible(
-                flex: 1,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text("총 4건"),
-                  ),
-                ),
-              ),
-              // 컴포넌트 들 -> 탭의 선택에 따라 달라져야 함
-              Flexible(
-                flex: 24,
-                child: ListView(
-                  children: [
-                    MyPill(),
-                    MyPill(),
-                    MyPill(),
-                    MyPill(),
-                    MyPill(),
-                    MyPill(),
-                    MyPill(),
-                    MyPill(),
-                  ],
-                ),
-                // child: emptyPill(),
-              ),
-            ],
-          ),
-        ),
+            flex: 25,
+            child: isClicked
+                ? Column(
+                    children: [
+                      // 총 몇 건인지
+                      Flexible(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 20),
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text("총 4건"),
+                          ),
+                        ),
+                      ),
+                      // 컴포넌트 들 -> 탭의 선택에 따라 달라져야 함
+                      Flexible(
+                        flex: 24,
+                        child: ListView(
+                          children: [
+                            MyPill(),
+                            MyPill(),
+                            MyPill(),
+                            MyPill(),
+                            MyPill(),
+                            MyPill(),
+                            MyPill(),
+                            MyPill(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      Container(
+                        child: Column(
+                          children: [
+                            Text("복용 끝"),
+                            MyPill(),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Column(
+                          children: [
+                            Text("복용 끝"),
+                            MyPill(),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Column(
+                          children: [
+                            Text("복용 끝"),
+                            MyPill(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
       ],
     );
   }
