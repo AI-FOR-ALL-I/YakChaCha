@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/bottom_navigation.dart';
-import 'package:frontend/widgets/text_search/text_search_pill_to_register.dart';
 
 void main() {
+  //KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
   runApp(const MyApp());
 }
 
