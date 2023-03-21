@@ -6,48 +6,48 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          AspectRatio(
-            // 여기가 회색박스
-            aspectRatio: 323 / 47,
-            child: Container(
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.red),
-                  color: Color(0xFFE1E1E1)),
-              child: Row(children: [
-                Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Icon(
-                      Icons.error_outline_outlined,
-                      color: Color(0xFF848293),
-                    )),
-                Text('복용기간과 태그를 설정해주세요',
-                    style: TextStyle(color: Color(0xFF848293)))
-              ]),
-            ),
+    return Column(
+      children: [
+        AspectRatio(
+          // 여기가 회색박스
+          aspectRatio: 323 / 47,
+          child: Container(
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.red),
+                color: Color(0xFFE1E1E1)),
+            child: Row(children: [
+              Container(
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Icon(
+                    Icons.error_outline_outlined,
+                    color: Color(0xFF848293),
+                  )),
+              Text('복용기간과 태그를 설정해주세요',
+                  style: TextStyle(color: Color(0xFF848293)))
+            ]),
           ),
-          AspectRatio(
-              aspectRatio: 296 / 101,
-              child: Container(
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.red),
-                      color: Color(0xFFBBE4CB)),
-                  child: Icon(Icons.add, color: Colors.white))),
-          ListView.builder(
+        ),
+        AspectRatio(
+            aspectRatio: 296 / 101,
+            child: Container(
+                margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.red),
+                    color: Color(0xFFBBE4CB)),
+                child: Icon(Icons.add, color: Colors.white))),
+        Expanded(
+          child: ListView.builder(
             itemCount: 15,
             shrinkWrap: true,
             itemBuilder: (context, i) {
               return TextSearchPillToRgister();
             },
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }
