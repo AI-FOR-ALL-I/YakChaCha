@@ -36,13 +36,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Scaffold(
         appBar: AppBar(
             leading: Center(
-              child: Text('YakChaCha',
-                  style: (TextStyle(
-                    color: Theme.of(context).colorScheme.background,
-                    overflow: TextOverflow.visible,
-                  )),
-                  softWrap: false,
-                  maxLines: 1),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text('YakChaCha',
+                    style: (TextStyle(
+                      color: Theme.of(context).colorScheme.background,
+                      overflow: TextOverflow.visible,
+                    )),
+                    softWrap: false,
+                    maxLines: 1),
+              ),
             ),
             actions: [
               IconButton(

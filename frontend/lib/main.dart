@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             onBackground: Color(0xFF6694F7), // Info - blue
             surface: Color(0xFFBABABA), // Placeholder
             onSurface: Color(0xFF848293)), // Point-Purple
-      ), // color:theme.of(context).colorScheme.~~~
+      ), // color:Theme.of(context).colorScheme.primary
       title: 'bottomNavigationBar Test',
       home: const BottomNavigation(),
     );
