@@ -2,8 +2,6 @@ package com.ai4ai.ycc.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,17 +11,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @MappedSuperclass
-@DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-    @Column(nullable = false, length = 1)
-    @ColumnDefault("'N'")
     private String delYn;
 
     @CreatedBy
@@ -37,5 +33,10 @@ public class BaseEntity {
     private Long modAccountSeq;
     @LastModifiedDate
     private LocalDateTime modDttm;
+
+    @PrePersist
+    public void setDefaultValues() {
+        this.delYn = this.delYn == null ? "N" : this.delYn;
+    }
 
 }

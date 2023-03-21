@@ -51,6 +51,7 @@ public class JwtTokenProvider {
     // SecretKey 에 대해 인코딩 수행
     @PostConstruct
     protected void init() {
+        log.info("{}, {}", AUTHORIZATION_HEADER, secretKey);
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -112,6 +113,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         log.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
         String token = request.getHeader(AUTHORIZATION_HEADER);
+        log.info("token: {}", token);
         if(StringUtils.hasText(token) && token.startsWith("Bearer ")){
             return token.substring(7);
         }

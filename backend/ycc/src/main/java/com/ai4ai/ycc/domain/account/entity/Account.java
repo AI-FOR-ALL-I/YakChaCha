@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,7 +18,6 @@ import java.util.Collection;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 아무런 값도 갖지않는 의미 없는 객체의 생성을 막음.
 @ToString(exclude = {"password"})
-@DynamicInsert
 @EntityListeners(AuditingEntityListener.class)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Account implements UserDetails {
@@ -29,18 +26,18 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long accountSeq;
 
+    @Column(nullable = false)
+    private String type;
+
     @Column(nullable = false, unique = true)
     private String id;
 
-    @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
     @Column(nullable = false, unique = true)
-    private String phone;
+    private String email;
 
-    @Column(nullable = false, length = 1)
-    @ColumnDefault("'N'")
+    private String refreshToken;
+
+    @Column(nullable = false)
     private String delYn;
 
     @CreatedDate
@@ -50,15 +47,23 @@ public class Account implements UserDetails {
     @LastModifiedDate
     private LocalDateTime modDttm;
 
-    public void updatePhoneNumber(String phone) {
-        this.phone = phone;
+    @Builder
+    public Account(String type, String id, String email) {
+        this.type = type;
+        this.id = id;
+        this.email = email;
     }
 
-    @Builder
-    public Account(String id, String password, String phone) {
-        this.id = id;
-        this.password = password;
-        this.phone = phone;
+    @PrePersist
+    public void setDefaultValues() {
+        this.delYn = this.delYn == null ? "N" : this.delYn;
+    }
+
+    public void putRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    public void removeRefreshToken() {
+        this.refreshToken = null;
     }
 
     @Override
@@ -69,6 +74,10 @@ public class Account implements UserDetails {
     @Override
     public String getUsername() {
         return this.id;
+    }
+    @Override
+    public String getPassword() {
+        return null;
     }
 
     @Override
@@ -90,4 +99,5 @@ public class Account implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
 }
