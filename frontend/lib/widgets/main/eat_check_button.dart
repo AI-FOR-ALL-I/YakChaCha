@@ -15,11 +15,11 @@ class EatCheckButton extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.all(0.0),
+              padding: const EdgeInsets.all(8.0),
               child: Image.asset(
-                'assets/images/pills.png',
-                width: 80,
-                height: 80,
+                'assets/images/mainbuttonpills.png',
+                width: 50,
+                height: 50,
                 fit: BoxFit.fill,
               ),
             ),
