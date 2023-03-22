@@ -6,13 +6,9 @@ import com.ai4ai.ycc.domain.account.dto.response.SignInResponseDto;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.account.service.AccountService;
-import com.ai4ai.ycc.error.code.AccountErrorCode;
-import com.ai4ai.ycc.error.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

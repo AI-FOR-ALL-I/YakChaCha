@@ -40,9 +40,4 @@ public class Profile extends BaseEntity {
         this.birthDate = birthDate;
     }
 
-    @Override
-    public void setDefaultValues() {
-        super.setDefaultValues();
-    }
-
 }
