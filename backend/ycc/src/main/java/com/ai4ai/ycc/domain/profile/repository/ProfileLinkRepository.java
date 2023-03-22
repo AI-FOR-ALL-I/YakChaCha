@@ -6,8 +6,8 @@ import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.Entity;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProfileLinkRepository extends JpaRepository<ProfileLink, Long> {
 
@@ -15,6 +15,12 @@ public interface ProfileLinkRepository extends JpaRepository<ProfileLink, Long> 
     boolean existsByAccountAndProfile(Account account, Profile profile);
 
     @EntityGraph(attributePaths = {"account", "profile"})
-    List<ProfileLink> findAllByAccount(Account account);
+    Optional<ProfileLink> findByAccountAndProfileLinkSeqAndDelYn(Account account, long profileLinkSeq, String delYn);
+
+    @EntityGraph(attributePaths = {"account", "profile"})
+    List<ProfileLink> findAllByAccountAndDelYn(Account account, String delYn);
+
+    @EntityGraph(attributePaths = {"account", "profile"})
+    List<ProfileLink> findAllByProfileAndDelYn(Profile profile, String delYn);
 
 }

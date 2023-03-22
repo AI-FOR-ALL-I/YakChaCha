@@ -39,4 +39,8 @@ public class BaseEntity {
         this.delYn = this.delYn == null ? "N" : this.delYn;
     }
 
+    public void remove() {
+        this.delYn = "Y";
+    }
+
 }

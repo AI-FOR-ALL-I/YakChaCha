@@ -5,6 +5,7 @@ import com.ai4ai.ycc.common.response.ResponseService;
 import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
+import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
@@ -35,6 +36,32 @@ public class ProfileController {
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
     }
+
+    @PutMapping
+    public ResponseEntity<Result> modifyProfile(@LoginUser Account account, @RequestBody ModifyProfileRequestDto requestDto) {
+        log.info("[modifyProfile] 프로필 수정 API 호출");
+        profileLinkService.modifyProfile(account, requestDto);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
+    @GetMapping("/{profileLinkSeq}")
+    public ResponseEntity<Result> getProfile(@LoginUser Account account, @PathVariable long profileLinkSeq) {
+        log.info("[getProfile] 프로필 조회 API 호출 > {}", account);
+        ProfileResponseDto result = profileLinkService.getProfile(account, profileLinkSeq);
+        log.info("[getProfile] result: {}", result);
+        return ResponseEntity.ok()
+                .body(responseService.getSingleResult(result));
+    }
+
+    @PutMapping("/{profileLinkSeq}")
+    public ResponseEntity<Result> removeProfile(@LoginUser Account account, @PathVariable long profileLinkSeq) {
+        log.info("[removeProfile] 본인 프로필 삭제 API 호출");
+        profileLinkService.removeProfile(account, profileLinkSeq);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
 
     @GetMapping("/list")
     public ResponseEntity<Result> getProfileList(@LoginUser Account account) {

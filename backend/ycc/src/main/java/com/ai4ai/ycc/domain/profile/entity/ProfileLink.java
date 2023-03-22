@@ -42,4 +42,10 @@ public class ProfileLink extends BaseEntity {
         this.nickname = nickname;
         this.imgCode = imgCode;
     }
+
+    public void modify(int imgCode, String nickname) {
+        this.imgCode = imgCode;
+        this.nickname = nickname;
+    }
+
 }
