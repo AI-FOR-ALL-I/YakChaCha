@@ -7,9 +7,7 @@ class EatCheckButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        color: Colors.white,
-      ),
+          borderRadius: BorderRadius.circular(6), color: Color(0xFFFFF8EA)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
