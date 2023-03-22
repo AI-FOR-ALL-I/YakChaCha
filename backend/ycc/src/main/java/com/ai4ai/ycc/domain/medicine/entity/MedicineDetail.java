@@ -19,9 +19,8 @@ import lombok.NoArgsConstructor;
 public class MedicineDetail {
 
 	@Id
-	@Column(name="itemSeq", unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long itemSeq;
+	private Long medicineDetailSeq;
 	@Column(columnDefinition = "TEXT")
 	private String materialName;
 	@Column(columnDefinition = "TEXT")

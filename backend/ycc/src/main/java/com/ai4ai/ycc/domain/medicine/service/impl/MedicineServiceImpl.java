@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDetailDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.entity.Medicine;
-import com.ai4ai.ycc.domain.medicine.entity.MedicineDetail;
 import com.ai4ai.ycc.domain.medicine.repository.MedicineDetailRepository;
 import com.ai4ai.ycc.domain.medicine.repository.MedicineRepository;
 import com.ai4ai.ycc.domain.medicine.service.MedicineService;
@@ -28,10 +27,10 @@ public class MedicineServiceImpl implements MedicineService {
         List<Medicine> medicineList = medicineRepository.findByItemNameLike("%"+input+"%");
         for(Medicine medicine: medicineList){
             medicineDtoList.add(MedicineDto.builder()
-                    .id(medicine.getId())
+                    .itemSeq(medicine.getItemSeq())
                     .img(medicine.getImg())
                     .itemName(medicine.getItemName())
-                    .itemSeq(medicine.getItemSeq())
+                    .medicineSeq(medicine.getMedicineSeq())
                 .build());
         }
         return medicineDtoList;
@@ -39,28 +38,30 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public MedicineDetailDto showDetail(long itemSeq) {
-        MedicineDetailDto medicineDetailDto=null;
-        MedicineDetail medicineDetail = medicineDetailRepository.findByItemSeq(itemSeq);
-        Medicine medicine = medicineRepository.getByItemSeq(itemSeq);
-        medicineDetailDto.builder()
+        System.out.println(itemSeq+"의 itemSeq를 가진 약 검색");
+        Medicine medicine = medicineRepository.findByItemSeq(itemSeq);
+
+        MedicineDetailDto medicineDetailDto=MedicineDetailDto.builder()
             .chart(medicine.getChart())
             .etcOtcCode(medicine.getEtcOtcCode())
             .entpName(medicine.getEntpName())
             .changeDate(medicine.getChangeDate())
-            .eeDocData(medicineDetail.getEeDocData())
+            .medicineSeq(medicine.getMedicineSeq())
             .ingrName(medicine.getIngrName())
             .itemPermitDate(medicine.getItemPermitDate())
             .classNo(medicine.getClassNo())
-            .nbDocData(medicineDetail.getNbDocData())
             .mainItemIngr(medicine.getMainItemIngr())
             .packUnit(medicine.getPackUnit())
             .storageMethod(medicine.getStorageMethod())
             .typeCode(medicine.getTypeCode())
-            .udDocData(medicineDetail.getUdDocData())
             .validTerm(medicine.getValidTerm())
             .itemSeq(itemSeq)
             .itemName(medicine.getItemName())
             .img(medicine.getImg())
+            .udDocData(medicine.getDetail().getUdDocData())
+            .nbDocData(medicine.getDetail().getNbDocData())
+            .eeDocData(medicine.getDetail().getEeDocData())
+            .materialName(medicine.getDetail().getMaterialName())
             .build();
 
         return medicineDetailDto;

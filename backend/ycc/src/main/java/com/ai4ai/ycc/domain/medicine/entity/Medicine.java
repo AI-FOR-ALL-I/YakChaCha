@@ -2,9 +2,12 @@ package com.ai4ai.ycc.domain.medicine.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -20,10 +23,13 @@ public class Medicine {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long medicineSeq;
 
-	@Column(name="item_seq", unique = true)
+	@Column
 	private Long itemSeq;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="medicine_detail_seq")
+	private MedicineDetail detail;
 	@Column(length = 391)
 	private String itemName;
 	@Column(length = 22)

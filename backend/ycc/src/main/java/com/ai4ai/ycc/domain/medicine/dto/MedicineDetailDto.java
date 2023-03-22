@@ -1,11 +1,15 @@
 package com.ai4ai.ycc.domain.medicine.dto;
 
+import com.ai4ai.ycc.domain.medicine.entity.MedicineDetail;
+
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class MedicineDetailDto {
 
-    private Long id;
+    private Long medicineSeq;
     private Long itemSeq;
     private String itemName;
     private String entpName;
@@ -20,9 +24,9 @@ public class MedicineDetailDto {
     private String changeDate;
     private String mainItemIngr;
     private String ingrName;
+    private String img;
     private String nbDocData;
     private String udDocData;
     private String eeDocData;
-    private String img;
-
+    private String materialName;
 }
