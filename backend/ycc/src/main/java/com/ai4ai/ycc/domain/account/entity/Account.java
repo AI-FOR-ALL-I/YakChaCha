@@ -18,7 +18,6 @@ import java.util.Collection;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 아무런 값도 갖지않는 의미 없는 객체의 생성을 막음.
 @ToString(exclude = "refreshToken")
-@EntityListeners(AuditingEntityListener.class)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Account extends BaseAccountEntity implements UserDetails {
 
