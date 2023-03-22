@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/text_search/text_search_pill.dart';
 import 'package:frontend/widgets/text_search/text_search_bar.dart';
+import 'package:frontend/widgets/common/simple_app_bar.dart';
 
 class TextSearchPage extends StatelessWidget {
   const TextSearchPage({super.key});
@@ -8,14 +9,7 @@ class TextSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios_outlined)),
-          title: Center(child: Text('검색 - 텍스트')),
-        ),
+        appBar: SimpleAppBar(title: '검색 - 텍스트'),
         body: Column(
           children: [
             TextSearchBar(),
