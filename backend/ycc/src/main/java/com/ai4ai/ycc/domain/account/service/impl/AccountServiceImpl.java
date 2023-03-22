@@ -7,12 +7,14 @@ import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.account.service.AccountService;
 import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class AccountServiceImpl implements AccountService {
 
@@ -28,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
         String id = requestDto.getId();
         String email = requestDto.getEmail();
 
-        if (!accountRepository.existsById(id)) {
+        if (!accountRepository.existsByIdAndDelYn(id, "N")) {
             log.info("[SignIn] 새로운 계정 등록 시작");
             Account newAccount = Account.builder()
                     .type(type)
@@ -39,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
             log.info("[SignIn] 새로운 계정 등록 완료");
         }
 
-        Account account = accountRepository.getById(id);
+        Account account = accountRepository.getByIdAndDelYn(id, "N");
 
         boolean isProfile = profileLinkRepository.existsByAccount(account);
 
@@ -68,5 +70,14 @@ public class AccountServiceImpl implements AccountService {
         log.info("[SignOut] refresh token 제거 완료");
 
         log.info("[SignOut] 로그아웃 완료");
+    }
+
+    @Override
+    public void withdrawl(Account account) {
+        log.info("[Withdrawl] 회원탈퇴 시작");
+        account.removeRefreshToken();
+        account.remove();
+        accountRepository.save(account);
+        log.info("[Withdrawl] 회원탈퇴 완료");
     }
 }

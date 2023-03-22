@@ -35,6 +35,13 @@ public class AccountController {
                 .body(responseService.getSuccessResult());
     }
 
+    @PutMapping("withdrawl")
+    public ResponseEntity<Result> withdrawl(@LoginUser Account account) {
+        accountService.withdrawl(account);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
     @GetMapping("/test")
     public ResponseEntity<Result> test(@LoginUser String id) {
         log.info("id: {}", id);

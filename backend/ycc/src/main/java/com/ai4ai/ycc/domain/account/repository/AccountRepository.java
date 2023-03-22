@@ -6,13 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-    boolean existsById(String id);
+    boolean existsByIdAndDelYn(String id, String delYn);
 
     boolean existsByTypeAndId(String type, String id);
 
-    Account getById(String id);
+    Account getByIdAndDelYn(String id, String delYn);
 
-    Optional<Account> findById(String id);
-    Optional<Account> findByEmail(String email);
+    Optional<Account> findByIdAndDelYn(String id, String delYn);
 
 }

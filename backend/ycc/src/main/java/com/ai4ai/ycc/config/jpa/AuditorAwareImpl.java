@@ -17,7 +17,7 @@ public class AuditorAwareImpl implements AuditorAware<Long> {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             log.debug("Not found AuthenticationToken");
-            return null;
+            return Optional.empty();
         }
 
         Account account = (Account) authentication.getPrincipal();

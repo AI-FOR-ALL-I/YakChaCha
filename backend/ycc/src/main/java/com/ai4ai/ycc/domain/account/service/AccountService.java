@@ -10,4 +10,5 @@ public interface AccountService {
 
     void signOut(Account account);
 
+    void withdrawl(Account account);
 }

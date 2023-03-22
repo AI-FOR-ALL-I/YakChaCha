@@ -1,5 +1,6 @@
 package com.ai4ai.ycc.domain.profile.service.impl;
 
+import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
@@ -147,12 +148,10 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
         List<ProfileLink> profileLinkList = profileLinkRepository.findAllByProfileAndDelYn(profile, "N");
 
-        profileLinkList.stream().forEach(pl -> {
-            pl.remove();
-        });
+        profileLinkList.forEach(BaseEntity::remove);
 
         profile.remove();
 
-        log.info("[removeProfile] Profile 삭제 완료 > {}");
+        log.info("[removeProfile] Profile 삭제 완료");
     }
 }
