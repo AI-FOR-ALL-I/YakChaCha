@@ -13,6 +13,8 @@ import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
 import com.ai4ai.ycc.error.code.ProfileLinkErrorCode;
 import com.ai4ai.ycc.error.exception.ErrorException;
 import com.ai4ai.ycc.util.DateUtil;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -153,5 +155,21 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         profile.remove();
 
         log.info("[removeProfile] Profile 삭제 완료");
+    }
+
+    @Transactional
+    @Override
+    public void removeAllProfile(Account account) {
+        //List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountOrOwnerAndDelYn(account, account, "N");
+        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccount(account);
+        Set<Profile> profileSet = new HashSet<>();
+        profileLinkList.forEach(profileLink -> {
+            if (profileLink.getAccount().getAccountSeq() == profileLink.getOwner().getAccountSeq()) {
+                Profile profile = profileLink.getProfile();
+                profileSet.add(profile);
+            }
+            profileLink.remove();
+        });
+        profileSet.forEach(BaseEntity::remove);
     }
 }

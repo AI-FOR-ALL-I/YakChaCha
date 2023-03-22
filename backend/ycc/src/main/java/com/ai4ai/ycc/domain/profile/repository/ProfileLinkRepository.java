@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ProfileLinkRepository extends JpaRepository<ProfileLink, Long> {
 
@@ -21,6 +23,13 @@ public interface ProfileLinkRepository extends JpaRepository<ProfileLink, Long> 
     List<ProfileLink> findAllByAccountAndDelYn(Account account, String delYn);
 
     @EntityGraph(attributePaths = {"account", "profile"})
-    List<ProfileLink> findAllByProfileAndDelYn(Profile profile, String delYn);
+    List<ProfileLink> findAllByAccountOrOwnerAndDelYn(Account account, Account owner, String delYn);
 
+    @EntityGraph(attributePaths = {"account", "profile"})
+    @Query("select pl from ProfileLink pl where (pl.account = :account or pl.owner = :account) and pl.delYn = 'N'")
+    List<ProfileLink> findAllByAccount(@Param("account") Account account);
+
+    @EntityGraph(attributePaths = {"account", "profile"})
+    List<ProfileLink> findAllByProfileAndDelYn(Profile profile, String delYn);
+    
 }

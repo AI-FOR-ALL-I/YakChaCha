@@ -17,4 +17,6 @@ public interface ProfileLinkService {
     void modifyProfile(Account account, ModifyProfileRequestDto requestDto);
 
     void removeProfile(Account account, long profileLinkSeq);
+
+    void removeAllProfile(Account account);
 }
