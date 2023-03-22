@@ -73,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void withdrawl(Account account) {
+    public void withdraw(Account account) {
         log.info("[Withdrawl] 회원탈퇴 시작");
         account.removeRefreshToken();
         account.remove();

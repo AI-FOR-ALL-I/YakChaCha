@@ -37,10 +37,10 @@ public class AccountController {
                 .body(responseService.getSuccessResult());
     }
 
-    @PutMapping("withdrawl")
-    public ResponseEntity<Result> withdrawl(@LoginUser Account account) {
+    @PutMapping("/withdraw")
+    public ResponseEntity<Result> withdraw(@LoginUser Account account) {
         profileLinkService.removeAllProfile(account);
-        accountService.withdrawl(account);
+        accountService.withdraw(account);
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
     }
