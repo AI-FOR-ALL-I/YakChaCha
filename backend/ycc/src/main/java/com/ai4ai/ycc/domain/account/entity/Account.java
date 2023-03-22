@@ -1,6 +1,6 @@
 package com.ai4ai.ycc.domain.account.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ai4ai.ycc.common.entity.BaseAccountEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -17,10 +17,10 @@ import java.util.Collection;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 아무런 값도 갖지않는 의미 없는 객체의 생성을 막음.
-@ToString(exclude = {"password"})
+@ToString(exclude = "refreshToken")
 @EntityListeners(AuditingEntityListener.class)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Account implements UserDetails {
+public class Account extends BaseAccountEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,16 +37,6 @@ public class Account implements UserDetails {
 
     private String refreshToken;
 
-    @Column(nullable = false)
-    private String delYn;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime regDttm;
-
-    @LastModifiedDate
-    private LocalDateTime modDttm;
-
     @Builder
     public Account(String type, String id, String email) {
         this.type = type;
@@ -54,14 +44,10 @@ public class Account implements UserDetails {
         this.email = email;
     }
 
-    @PrePersist
-    public void setDefaultValues() {
-        this.delYn = this.delYn == null ? "N" : this.delYn;
-    }
-
     public void putRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
     public void removeRefreshToken() {
         this.refreshToken = null;
     }

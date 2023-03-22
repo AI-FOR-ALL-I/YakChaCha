@@ -59,15 +59,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void signOut(String id) {
+    public void signOut(Account account) {
         log.info("[SignOut] 로그아웃 시작");
-
-        Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
 
         log.info("[SignOut] refresh token 제거 시작");
         account.removeRefreshToken();
         accountRepository.save(account);
         log.info("[SignOut] refresh token 제거 완료");
+
+        log.info("[SignOut] 로그아웃 완료");
     }
 }
