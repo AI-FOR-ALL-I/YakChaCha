@@ -5,6 +5,7 @@ import com.ai4ai.ycc.common.response.ResponseService;
 import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.dto.request.SignInRequestDto;
 import com.ai4ai.ycc.domain.account.dto.response.SignInResponseDto;
+import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,8 @@ public class AccountController {
     }
 
     @PutMapping("/sign-out")
-    public ResponseEntity<Result> signOut(@LoginUser String id) {
-        accountService.signOut(id);
+    public ResponseEntity<Result> signOut(@LoginUser Account account) {
+        accountService.signOut(account);
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
     }

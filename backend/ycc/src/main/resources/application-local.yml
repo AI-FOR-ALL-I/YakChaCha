@@ -6,7 +6,6 @@ spring:
     password: 1234
 
   redis:
-#    host: localhost
     host: localhost
     port: 6379
     password: 1234
@@ -20,6 +19,7 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
+    open-in-view: false
 
 logging:
   level:

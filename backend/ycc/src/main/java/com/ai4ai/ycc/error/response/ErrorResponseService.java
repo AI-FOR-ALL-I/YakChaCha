@@ -19,7 +19,7 @@ public class ErrorResponseService {
     }
 
     public ResponseEntity<Object> handleExceptionInternal(final ErrorCode errorCode) {
-        log.warn("{}: {} {} {}", errorCode.getHttpStatus(), errorCode.getCode(), errorCode.name(), errorCode.getMessage());
+        log.error("[ErrorResponse] {}: {} {} {}", errorCode.getHttpStatus(), errorCode.getCode(), errorCode.name(), errorCode.getMessage());
         return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(makeErrorResponse(errorCode));
     }

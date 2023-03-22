@@ -20,15 +20,7 @@ public class AuditorAwareImpl implements AuditorAware<Long> {
             return null;
         }
 
-        log.warn(authentication.toString());
-        log.warn(authentication.getPrincipal().toString());
         Account account = (Account) authentication.getPrincipal();
-        log.warn(account.toString());
-//        log.info(authentication.getDetails().toString());
-//        log.info(authentication.getPrincipal().toString());
-//        Account account = (Account) authentication.getDetails().;
-//        log.debug("Found AuthenticationToken: {}", account);
-//        return Optional.of(account.getAccountSeq());
         return Optional.of(account.getAccountSeq());
     }
 

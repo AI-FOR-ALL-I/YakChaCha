@@ -1,6 +1,8 @@
 package com.ai4ai.ycc.config.security;
 
+import com.ai4ai.ycc.error.code.AccountErrorCode;
 import com.ai4ai.ycc.error.code.ErrorCode;
+import com.ai4ai.ycc.error.code.TokenErrorCode;
 import com.ai4ai.ycc.error.response.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -27,39 +29,37 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         String exception = String.valueOf(request.getAttribute("exception"));
 
-        //if (exception == null) {
-        //    setResponse(response, TokenErrorCode.UNKNOWN_ERROR);
-        //}
-        //else if (exception.equals(UserErrorCode.USER_NOT_FOUND.name())) {
-        //    setResponse(response, UserErrorCode.USER_NOT_FOUND);
-        //}
-        //else if (exception.equals(TokenErrorCode.TOKEN_NOT_FOUND.name())) {
-        //    setResponse(response, TokenErrorCode.TOKEN_NOT_FOUND);
-        //}
-        //else if (exception.equals(TokenErrorCode.WRONG_TYPE_TOKEN.name())) {
-        //    setResponse(response, TokenErrorCode.WRONG_TYPE_TOKEN);
-        //}
-        //else if (exception.equals(TokenErrorCode.EXPIRED_TOKEN.name())) {
-        //    setResponse(response, TokenErrorCode.EXPIRED_TOKEN);
-        //}
-        //else if (exception.equals(TokenErrorCode.UNSUPPORTED_TOKEN.name())) {
-        //    setResponse(response, TokenErrorCode.UNSUPPORTED_TOKEN);
-        //}
-        //else {
-        //    setResponse(response, TokenErrorCode.ACCESS_DENIED);
-        //}
+        if (exception.equals(AccountErrorCode.ACCOUNT_NOT_FOUND.name())) {
+            setResponse(response, AccountErrorCode.ACCOUNT_NOT_FOUND);
+        }
+        else if (exception.equals(TokenErrorCode.TOKEN_NOT_FOUND.name())) {
+            setResponse(response, TokenErrorCode.TOKEN_NOT_FOUND);
+        }
+        else if (exception.equals(TokenErrorCode.WRONG_TYPE_TOKEN.name())) {
+            setResponse(response, TokenErrorCode.WRONG_TYPE_TOKEN);
+        }
+        else if (exception.equals(TokenErrorCode.EXPIRED_TOKEN.name())) {
+            setResponse(response, TokenErrorCode.EXPIRED_TOKEN);
+        }
+        else if (exception.equals(TokenErrorCode.UNSUPPORTED_TOKEN.name())) {
+            setResponse(response, TokenErrorCode.UNSUPPORTED_TOKEN);
+        }
+        else {
+            setResponse(response, TokenErrorCode.UNKNOWN_ERROR);
+        }
     }
 
     //한글 출력을 위해 getWriter() 사용
     private void setResponse(HttpServletResponse response, ErrorCode errorCode)
             throws IOException {
-        log.warn("[ErrorResponse] {}: {} 에러 발생", errorCode.getHttpStatus(), errorCode.name());
+        log.error("[ErrorResponse] {}: {} {} {}", errorCode.getHttpStatus(), errorCode.getCode(), errorCode.name(), errorCode.getMessage());
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(errorCode.getHttpStatus().value());
 
         response.getWriter().write(objectMapper.writeValueAsString(
                 ErrorResponse.builder()
                         .success(false)
+                        .code(errorCode.getCode())
                         .error(errorCode.name())
                         .message(errorCode.getMessage())
                         .build()

@@ -6,13 +6,10 @@ import com.ai4ai.ycc.domain.account.dto.response.SignInResponseDto;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.account.service.AccountService;
-import com.ai4ai.ycc.error.code.AccountErrorCode;
-import com.ai4ai.ycc.error.exception.ErrorException;
+import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +17,7 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+    private final ProfileLinkRepository profileLinkRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -43,6 +41,8 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = accountRepository.getById(id);
 
+        boolean isProfile = profileLinkRepository.existsByAccount(account);
+
         log.info("[SignIn] 토큰 생성 시작");
         String accessToken = jwtTokenProvider.createAccessToken(id);
         String refreshToken = jwtTokenProvider.createRefreshToken(id);
@@ -52,22 +52,21 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
 
         return SignInResponseDto.builder()
-                .isProfile(false)
+                .isProfile(isProfile)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
     @Override
-    public void signOut(String id) {
+    public void signOut(Account account) {
         log.info("[SignOut] 로그아웃 시작");
-
-        Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
 
         log.info("[SignOut] refresh token 제거 시작");
         account.removeRefreshToken();
         accountRepository.save(account);
         log.info("[SignOut] refresh token 제거 완료");
+
+        log.info("[SignOut] 로그아웃 완료");
     }
 }
