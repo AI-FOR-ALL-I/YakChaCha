@@ -10,6 +10,8 @@ public class CreateProfileRequestDto {
     private String name;
     private String gender;
     private boolean pregnancy;
-    private LocalDate birthDate;
+    private String birthDate;
+    private String nickname;
+    private int imgCode;
 
 }
