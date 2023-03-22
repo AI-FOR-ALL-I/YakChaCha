@@ -9,6 +9,8 @@
 
 package com.ai4ai.ycc.config.security;
 
+import com.ai4ai.ycc.error.exception.TokenNotFoundException;
+import com.ai4ai.ycc.error.exception.WrongTypeTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -51,6 +53,7 @@ public class JwtTokenProvider {
     // SecretKey 에 대해 인코딩 수행
     @PostConstruct
     protected void init() {
+        log.info("{}, {}", AUTHORIZATION_HEADER, secretKey);
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -112,10 +115,17 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         log.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
         String token = request.getHeader(AUTHORIZATION_HEADER);
-        if(StringUtils.hasText(token) && token.startsWith("Bearer ")){
-            return token.substring(7);
+
+        log.info("token: {}", token);
+        if(token == null | !StringUtils.hasText(token)) {
+            log.info("[resolveToken] 토큰이 존재하지않습니다.");
+            throw new TokenNotFoundException();
+        } else if (!token.startsWith("Bearer ")) {
+            log.info("[resolveToken] 잘못된 타입의 토큰입니다..");
+            throw new WrongTypeTokenException();
         }
-        return null;
+
+        return token.substring(7);
     }
 
     // JWT 토큰의 유효성 + 만료일 체크
@@ -127,13 +137,16 @@ public class JwtTokenProvider {
             return !claims.getBody().getExpiration().before(new Date());
         } catch (SignatureException | MalformedJwtException e) {
             log.info("[validateToken] 잘못된 서명입니다.");
+            throw new SignatureException(e.getMessage());
         } catch (ExpiredJwtException e) {
             log.info("[validateToken] 만료된 토큰입니다.");
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), e.getMessage());
         } catch (UnsupportedJwtException e) {
             log.info("[validateToken] 지원하지 않는 토큰입니다.");
+            throw new UnsupportedJwtException(e.getMessage());
         } catch (IllegalStateException e) {
             log.info("[validateToken] 토큰이 잘못되었습니다.");
+            throw new IllegalStateException(e.getMessage());
         }
-        return false;
     }
 }

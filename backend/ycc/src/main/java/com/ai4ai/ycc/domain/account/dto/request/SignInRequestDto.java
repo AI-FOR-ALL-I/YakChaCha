@@ -3,10 +3,10 @@ package com.ai4ai.ycc.domain.account.dto.request;
 import lombok.Getter;
 
 @Getter
-public class SignUpRequestDto {
+public class SignInRequestDto {
 
+    private String type;
     private String id;
-    private String password;
-    private String phone;
+    private String email;
 
 }

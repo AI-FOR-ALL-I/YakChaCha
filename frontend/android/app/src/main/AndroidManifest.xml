@@ -25,6 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+            <!-- 카카오 로그인 커스텀 URL 스킴 설정 -->
+    <activity 
+        android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
+        android:exported="true">
+        <intent-filter android:label="flutter_web_auth">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <!-- "kakao${YOUR_NATIVE_APP_KEY}://oauth" 형식의 앱 실행 스킴 설정 -->
+            <!-- 카카오 로그인 Redirect URI -->
+            <data android:scheme="kakaoc940f1badb47a0c2cb210d71a84009fb" android:host="oauth"/>
+        </intent-filter>
+    </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

@@ -5,37 +5,56 @@ class TextSearchPillComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isWarning = true; // 여기가 아이콘 표시여부
+    bool isWarning = true;
     return AspectRatio(
-        aspectRatio: 1.2 / 1,
+      aspectRatio: 1.2 / 1,
+      child: Container(
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.red),
+        ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
-          child: Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.red)),
-              child: Column(
-                children: [
-                  Flexible(
-                      child: Stack(children: [
-                        Image.asset('assets/images/pills.png'),
-                        if (isWarning)
-                          Positioned(
-                              child:
-                                  Icon(Icons.warning_amber, color: Colors.red),
-                              top: 10,
-                              right: 10)
-                      ]),
-                      flex: 2),
-                  Flexible(
-                      child: Expanded(
-                        child: Container(
-                            constraints: BoxConstraints(
-                                minHeight: 0, maxHeight: double.infinity),
-                            child: Center(child: Text('약이름')),
-                            color: Colors.green),
+          child: Column(
+            children: [
+              Flexible(
+                flex: 2,
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      'assets/images/pills.png',
+                      fit: BoxFit.cover,
+                    ),
+                    if (isWarning)
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Icon(
+                          Icons.warning_amber,
+                          color: Colors.red,
+                        ),
                       ),
-                      flex: 1)
-                ],
-              )),
-        ));
+                  ],
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Container(
+                  constraints: BoxConstraints(
+                    minHeight: 0,
+                    maxHeight: double.infinity,
+                  ),
+                  child: Center(
+                    child: Text('약이름'),
+                  ),
+                  color: Colors.green,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

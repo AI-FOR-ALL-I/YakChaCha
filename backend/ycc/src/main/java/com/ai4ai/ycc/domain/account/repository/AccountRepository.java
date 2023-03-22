@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
     boolean existsById(String id);
-    boolean existsByPhone(String id);
+
+    boolean existsByTypeAndId(String type, String id);
+
+    Account getById(String id);
 
     Optional<Account> findById(String id);
-    Optional<Account> findByPhone(String phone);
-    Optional<Account> findByIdAndPhone(String id, String phone);
+    Optional<Account> findByEmail(String email);
 
 }
