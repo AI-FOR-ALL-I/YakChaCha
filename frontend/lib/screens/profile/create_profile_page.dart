@@ -40,9 +40,9 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                 const SizedBox(
                   height: 30,
                 ),
-                const Row(
+                Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Text('이미지 선택화면 들어갈자리'),
                     ]),
                 const SizedBox(
@@ -68,9 +68,9 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                     '성별',
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                  children: const [
                     Button(
                         text: '남성',
                         bgColor: Color(0xFFBBE4CB),
@@ -87,9 +87,9 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                     '임신 중이신가요?',
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                  children: const [
                     Button(
                         text: '네',
                         bgColor: Color(0xFFBBE4CB),
