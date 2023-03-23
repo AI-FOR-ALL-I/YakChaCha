@@ -17,7 +17,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        return accountRepository.findById(id).orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+        return accountRepository.findByIdAndDelYn(id, "N").orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
     }
 
 }
