@@ -17,14 +17,18 @@ class TagWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
       child: Container(
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.width * 0.07,
         decoration: BoxDecoration(
             color: colorPalette[colorIndex],
             borderRadius: BorderRadius.circular(10)),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-          child: Text(
-            tagName,
-            style: TextStyle(color: Colors.white),
+          child: Center(
+            child: Text(
+              tagName,
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ),
       ),

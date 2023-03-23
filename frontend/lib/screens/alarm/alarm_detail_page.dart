@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/widgets/mypills/my_pill.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/tag_widget.dart';
+import 'package:frontend/screens/alarm/alarm_create_page.dart';
 
 class AlarmDetailPage extends StatelessWidget {
   const AlarmDetailPage({super.key});
@@ -58,8 +59,16 @@ class AlarmDetailPage extends StatelessWidget {
                         alignment: AlignmentDirectional.topEnd,
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Icon(
-                            Icons.settings_outlined,
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AlarmCreatePage(isCreate: false)));
+                            },
+                            icon: Icon(Icons.settings_outlined),
                           ),
                         ))
                   ],
@@ -81,12 +90,14 @@ class AlarmDetailPage extends StatelessWidget {
                   padding: const EdgeInsets.all(20.0),
                   child: Text('총 ${3}정 | ${2} 종류'),
                 ),
-                ListView.builder(
-                    itemCount: 10,
-                    shrinkWrap: true,
-                    itemBuilder: ((context, index) {
-                      return MyPill(); // TODO: MyPill이 안나오는 문제는 동준이한테 물어보기
-                    }))
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: 10,
+                      // shrinkWrap: true,
+                      itemBuilder: ((context, index) {
+                        return MyPill(); // TODO: MyPill이 안나오는 문제는 동준이한테 물어보기
+                      })),
+                )
               ],
             ),
           ))
