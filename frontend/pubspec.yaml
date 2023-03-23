@@ -38,6 +38,7 @@ dependencies:
     kakao_flutter_sdk: ^1.4.1 # 전체 추가
     # 통신을 위해 필요한 http package
     http: ^0.13.5
+    firebase_core: ^2.8.0
 
 dev_dependencies:
     flutter_test:
