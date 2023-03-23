@@ -9,7 +9,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 from gen_pill import Gen_Digit
 # from hrnet import get_hrnet
-from utils import model_load, model_save, accuracy, get_optimizer, transform_normalize, AverageMeter, adjust_learning_rate
+from utils import model_load, model_save, accuracy, get_optimizer, transform_normalize, AverageMeter, adjust_learning_rate, read_dict_from_json
 import time
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
@@ -44,6 +44,13 @@ class Dataset_Pill(Dataset):
 def get_pill_model(args):
 
     if args.cnn_name == 'resnet152' :
+        
+        dict_temp = read_dict_from_json(args.json_pill_label_path_sharp_score)
+        list_pills_label_path_sharp_score = dict_temp['pill_label_path_sharp_score']
+
+        list_count = len(list_pills_label_path_sharp_score)
+        args.num_classes = list_count
+        
         model = models.resnet152(num_classes=args.num_classes)
     # elif args.cnn_name == 'hrnet_w64' :
     #     model = get_hrnet()
@@ -193,7 +200,6 @@ def run_model(args, model, dataloader_train, dataloader_valid, sampler_train, sa
     for epoch in range(epoch_begin, args.epochs):   # ( 0:100)
         # adjust_learning_rate(args, optimizer, epoch)
         # train for one epoch
-        print('############', args.model_path, epoch, optimizer, args.rank)
         perf_indicator = train(args, dataloader_train, sampler_train, model, criterion, optimizer, epoch, log_writer, verbose)
         if epoch > 10:
             perf_indicator = valid(args, dataloader_valid,sampler_valid, model, criterion, epoch, log_writer,verbose)
@@ -228,15 +234,14 @@ def pill_classifier(args):
 
     if model == None :
         log_writer = SummaryWriter(args.dir_log)
-        print('$$$$$$$$$$$$$$$$$$$', args.cuda, torch.cuda.device_count())
 
         if args.cuda == False or torch.cuda.device_count() == 0  :
             args.gpu = None
-            print('############################')
         else:
+            '''
+            이부분이 아마 gpu 정하는 부분인듯함
+            '''
             args.gpu = 0
-            print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        print(args.gpu)
         args.rank = args.gpu
 
         cudnn.benchmark = True
@@ -251,6 +256,7 @@ def pill_classifier(args):
             criterion = criterion.cuda()
         optimizer = get_optimizer(args,model)
         epoch_begin, dict_checkpoint, success = model_load(args, model, optimizer)
+        
 
     run_model(args, model, dataloader_train, dataloader_valid, None, None,  criterion,optimizer, epoch_begin, log_writer )
 
@@ -258,7 +264,9 @@ def pill_classifier(args):
 if __name__ == '__main__':
     # job = 'hrnet_w64'
     job = 'resnet152'
-    args = get_cli_args(job=job, run_phase='test', aug_level=0, dataclass='0')
+    file_num = input('Enter file number : ', )
+    file_name = f'file_{file_num}'
+    args = get_cli_args(job=job, run_phase='test', aug_level=0, dataclass='0', file_number=file_num)
 
     print(f'model_path_in is {args.model_path_in}')
 
