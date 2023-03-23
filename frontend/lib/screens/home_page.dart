@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/main/eat_check_button.dart';
+import 'package:frontend/widgets/main/my_drug_item.dart';
 import 'package:frontend/widgets/main/time_header.dart';
 
 class HomePage extends StatelessWidget {
@@ -27,7 +28,7 @@ class HomePage extends StatelessWidget {
                 const Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(0.0),
+                      padding: EdgeInsets.all(15.0),
                       child: Text(
                         "약 먹어야하는 시간",
                         style: TextStyle(
@@ -57,7 +58,8 @@ class HomePage extends StatelessWidget {
                 ),
 
                 const Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: 15.0, vertical: 15.0),
                   child: Text(
                     "내 약 목록",
                     style: TextStyle(
@@ -72,25 +74,9 @@ class HomePage extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: 3,
                       itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: 200.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFFFF8EA),
-                              ),
-                              child: Column(
-                                children: [
-                                  Image.asset('assets/images/night.png',
-                                      width: 100,
-                                      height: 70,
-                                      fit: BoxFit.fitWidth),
-                                  const Text('타이레놀'),
-                                ],
-                              ),
-                            ),
-                          ),
+                        return const MyDrugItem(
+                          imagePath: 'assets/images/night.png',
+                          title: '약 이름 params',
                         );
                       }),
                 ),
