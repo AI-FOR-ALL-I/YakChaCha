@@ -1,6 +1,7 @@
 package com.ai4ai.ycc.domain.profile.service;
 
 import com.ai4ai.ycc.domain.account.entity.Account;
+import com.ai4ai.ycc.domain.profile.dto.request.CallProfileLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
@@ -19,4 +20,6 @@ public interface ProfileLinkService {
     void removeProfile(Account account, long profileLinkSeq);
 
     void removeAllProfile(Account account);
+
+    long callProfileLink(Account sender, CallProfileLinkRequestDto requestDto);
 }

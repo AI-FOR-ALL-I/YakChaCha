@@ -1,7 +1,10 @@
 package com.ai4ai.ycc.domain.profile.service.impl;
 
+import com.ai4ai.ycc.common.annotation.LoginUser;
 import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.ai4ai.ycc.domain.account.entity.Account;
+import com.ai4ai.ycc.domain.account.repository.AccountRepository;
+import com.ai4ai.ycc.domain.profile.dto.request.CallProfileLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
@@ -10,19 +13,20 @@ import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
 import com.ai4ai.ycc.domain.profile.repository.ProfileRepository;
 import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
+import com.ai4ai.ycc.error.code.AccountErrorCode;
 import com.ai4ai.ycc.error.code.ProfileLinkErrorCode;
 import com.ai4ai.ycc.error.exception.ErrorException;
 import com.ai4ai.ycc.util.DateUtil;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ import java.util.List;
 @Slf4j
 public class ProfileLinkServiceImpl implements ProfileLinkService {
 
+    private final AccountRepository accountRepository;
     private final ProfileRepository profileRepository;
     private final ProfileLinkRepository profileLinkRepository;
     private final DateUtil dateUtil;
@@ -171,5 +176,17 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
             profileLink.remove();
         });
         profileSet.forEach(BaseEntity::remove);
+    }
+
+    @Override
+    public long callProfileLink(Account sender, CallProfileLinkRequestDto requestDto) {
+        String email = requestDto.getEmail();
+
+        Account receiver = accountRepository.findByEmailAndDelYn(email, "N")
+                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+
+        // 푸시 알림 보내기
+
+        return receiver.getAccountSeq();
     }
 }
