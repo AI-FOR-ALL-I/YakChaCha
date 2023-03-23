@@ -78,12 +78,24 @@ list_aug_geo_rotate = []
 list_aug_non_geo = []
 
 class Gen_Digit():
+    
+    '''
+    pill_classifier에서 Dataset_Pill의 객체 생성할때 사용(args, dir_dataset 등 들어옴)
+    여기서 dir_dataset 은 main_cls에서 들어오는 args.json_pill_class_list
+    dir_dataset = pill_class_list_file##.json
+    Gen_Digit 객체 생성할때 init 실행
+    build_list_gen_based_on_level 실행
+    gen_pill_ready 실행 후 args에 저장
+    '''
     def __init__(self,args, dir_dataset,run_phase):
         print(f'dataset dir is {dir_dataset}')
 
         self.build_list_gen_based_on_level(args)
         self.args = self.gen_pill_ready(args, dir_dataset, run_phase)
-
+    
+    '''
+    이부분은 일단 패스..
+    '''
     def build_list_gen_based_on_level(self, args):
         global list_aug_geo, list_aug_geo_scale, list_aug_geo_rotate, list_aug_non_geo
 
@@ -109,17 +121,46 @@ class Gen_Digit():
             list_aug_geo_rotate = [iaa.Identity()]
             list_aug_non_geo = [iaa.Identity()]
 
+    
+    
+    
+    '''
+    gen_pill_ready 실행
+    '''
     def gen_pill_ready(self, args, dir_dataset, run_phase):
         global list_aug_geo, list_aug_geo_scale, list_aug_geo_rotate, list_aug_non_geo
         print(f'gen_type is {args.gen_type}, loading data ...')
 
+        
+        '''
+        path_dir_json 은 위에서 받은 pill_class_list_file##.json
+        '''
         path_dir_json = Path(dir_dataset)
+#         print(path_dir_json, path_dir_json.is_file())
+#         print(path_dir_json.suffix, path_dir_json.suffix == '.json')
+#         print(args.gen_type, args.gen_type == 'read_only_image')
+#         print()
+        
         if path_dir_json.is_dir() :
             print(f'Gen :reading directory was not implemented')
             self.len_total = 0
 
         elif path_dir_json.is_file() and path_dir_json.suffix == '.json' and args.gen_type == 'read_only_image':
-
+            
+            '''
+            pill_class_list json 파일 dict로 변환하여 저장
+            일단 train인 경우
+            self.list_label_path 리스트에 += [
+                "/home/jupyter-j8a803/proj/proj_pill/pill_data/pill_data_croped/file_76/K-035789/K-035789_0_1_1_0_90_060_200.png",
+                "/home/jupyter-j8a803/proj/proj_pill/pill_data/pill_data_croped/file_76/K-035791/K-035791_0_0_0_1_90_120_200.png",
+                "/home/jupyter-j8a803/proj/proj_pill/pill_data/pill_data_croped/file_76/K-035789/K-035789_0_2_1_2_75_180_200.png",
+                "/home/jupyter-j8a803/proj/proj_pill/pill_data/pill_data_croped/file_76/K-035802/K-035802_0_1_0_1_75_000_200.png",
+                "/home/jupyter-j8a803/proj/proj_pill/pill_data/pill_data_croped/file_76/K-035970/K-035970_0_2_1_2_90_340_200.png",
+                ...
+                ]
+            없으면 빈리스트 붙이기
+            
+            '''
             dict_temp = utils.read_dict_from_json(str(path_dir_json))
             self.list_label_path = []
             if args.gen_dataclass_sel in [ 'dataclass0', 'dataclass01'] :
@@ -143,10 +184,22 @@ class Gen_Digit():
                 else:
                     self.list_label_path += dict_temp.get('pngfile_class1_test',[])
                     print(f'label_path was loaded from   <<< pngfile_class1_test >>>')
-
+            
+            
+            '''
+            dict_pillid_label = {"K-037589" : 0, "K-머시기" : 1, ...}
+            self.list_label_path에는 우선
+            get_pillid_from_pillfile(/home/jupyter-j8a803/proj/proj_pill/pill_data/pill_data_croped/file_76/K-035789/K-035789_0_1_1_0_90_060_200.png)
+            에서 K-035789를 리턴 받고 dict_pillid_label에서 해당 label인 1039를 받는다
+            self.list_label_path = [(1039, 위에 pngfile경로), (), (), ...]
+            '''
             dict_pillid_label = make_label_sharpness.get_dict_pillid_label(args)
             self.list_label_path = [(dict_pillid_label[get_pillid_from_pillfile(pngfile)], pngfile) for pngfile in self.list_label_path]
-
+            
+            
+            '''
+            이부분은 일단 패스 augmentation 관련 부분
+            '''
             self.list_aug_geo = list_aug_geo
             self.list_aug_geo_scale = list_aug_geo_scale
             self.list_aug_geo_rotate = list_aug_geo_rotate
@@ -156,6 +209,11 @@ class Gen_Digit():
             self.len_list_aug_geo_scale = len(self.list_aug_geo_scale)
             self.len_list_aug_geo_rotate = len(self.list_aug_geo_rotate)
             self.len_list_aug_non_geo = len(self.list_aug_non_geo)
+            
+            '''
+            위에서 저장한 리스트 길이. 즉 pill_class_list json 파일에서 train에 해당하는 사진파일 갯수
+            아래에서 len total은 aug level에 따라 사진 갯수가 곱해지니까 많이 늘어나는것.
+            '''
             self.len_list_label_path = len(self.list_label_path)
 
             self.len_total = self.len_list_aug_geo * self.len_list_aug_geo_scale * self.len_list_aug_geo_rotate * self.len_list_aug_non_geo * self.len_list_label_path
@@ -163,7 +221,6 @@ class Gen_Digit():
             self.div_aug_geo_scale = self.len_list_aug_geo_rotate * self.len_list_aug_non_geo * self.len_list_label_path
             self.div_aug_geo_rotate = self.len_list_aug_non_geo * self.len_list_label_path
             self.div_aug_non_geo = self.len_list_label_path
-
         print(f"data loading done.  dataset'length is {self.len_total}")
         return args
 
