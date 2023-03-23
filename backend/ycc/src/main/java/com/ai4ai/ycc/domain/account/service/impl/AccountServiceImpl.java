@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = accountRepository.getByIdAndDelYn(id, "N");
 
-        boolean isProfile = profileLinkRepository.existsByAccount(account);
+        boolean isProfile = profileLinkRepository.existsByAccountAndDelYn(account, "N");
 
         log.info("[SignIn] 토큰 생성 시작");
         String accessToken = jwtTokenProvider.createAccessToken(id);

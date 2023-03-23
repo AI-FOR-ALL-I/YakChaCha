@@ -8,8 +8,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     boolean existsByIdAndDelYn(String id, String delYn);
 
-    boolean existsByTypeAndId(String type, String id);
-
     Account getByIdAndDelYn(String id, String delYn);
 
     Optional<Account> findByIdAndDelYn(String id, String delYn);

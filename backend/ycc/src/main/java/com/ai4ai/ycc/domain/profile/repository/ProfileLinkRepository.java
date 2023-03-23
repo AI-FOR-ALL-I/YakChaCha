@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProfileLinkRepository extends JpaRepository<ProfileLink, Long> {
 
-    boolean existsByAccount(Account account);
+    boolean existsByAccountAndDelYn(Account account, String delYn);
     boolean existsByAccountAndProfile(Account account, Profile profile);
 
     @EntityGraph(attributePaths = {"account", "profile"})
