@@ -55,6 +55,7 @@ class HomePage extends StatelessWidget {
                   padding: EdgeInsets.all(10.0),
                   child: EatCheckButton(),
                 ),
+
                 const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
@@ -73,127 +74,21 @@ class HomePage extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return SizedBox(
                           width: 200.0,
-                          height: 200.0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFFFF8EA),
-                            ),
-                            child: Column(
-                              children: [
-                                Image.asset('assets/images/night.png',
-                                    width: 100,
-                                    height: 70,
-                                    fit: BoxFit.fitWidth),
-                                const Text('타이레놀'),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    "내 약 목록",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: 200.0,
-                          height: 200.0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFFFF8EA),
-                            ),
-                            child: Column(
-                              children: [
-                                Image.asset('assets/images/night.png',
-                                    width: 100,
-                                    height: 70,
-                                    fit: BoxFit.fitWidth),
-                                const Text('타이레놀'),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    "내 약 목록",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: 200.0,
-                          height: 200.0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFFFF8EA),
-                            ),
-                            child: Column(
-                              children: [
-                                Image.asset('assets/images/night.png',
-                                    width: 100,
-                                    height: 70,
-                                    fit: BoxFit.fitWidth),
-                                const Text('타이레놀'),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    "내 약 목록",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: 200.0,
-                          height: 200.0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFFFF8EA),
-                            ),
-                            child: Column(
-                              children: [
-                                Image.asset('assets/images/night.png',
-                                    width: 100,
-                                    height: 70,
-                                    fit: BoxFit.fitWidth),
-                                const Text('타이레놀'),
-                              ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFFFF8EA),
+                              ),
+                              child: Column(
+                                children: [
+                                  Image.asset('assets/images/night.png',
+                                      width: 100,
+                                      height: 70,
+                                      fit: BoxFit.fitWidth),
+                                  const Text('타이레놀'),
+                                ],
+                              ),
                             ),
                           ),
                         );
