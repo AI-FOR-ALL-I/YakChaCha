@@ -69,10 +69,10 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 100,
+                  height: 150,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 3,
+                      itemCount: 5,
                       itemBuilder: (BuildContext context, int index) {
                         return const MyDrugItem(
                           imagePath: 'assets/images/night.png',
@@ -80,6 +80,29 @@ class HomePage extends StatelessWidget {
                         );
                       }),
                 ),
+                const Padding(
+                  padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: 15.0, vertical: 15.0),
+                  child: Text(
+                    "상식 어쩌구",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0),
+                  ),
+                ),
+                SizedBox(
+                  height: 250,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (BuildContext context, int index) {
+                        return const MyDrugItem(
+                          imagePath: 'assets/images/night.png',
+                          title: '약 이름 params',
+                        );
+                      }),
+                )
               ],
             ),
           ))

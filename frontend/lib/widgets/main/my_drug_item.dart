@@ -4,10 +4,11 @@ class MyDrugItem extends StatelessWidget {
   final String imagePath;
   final String title;
   const MyDrugItem({
-    super.key,
+    // CHANGED: Key type is updated to Key?.
+    Key? key,
     required this.imagePath,
     required this.title,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class MyDrugItem extends StatelessWidget {
         ),
         child: Flex(
           direction: Axis.vertical,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: ClipRRect(
@@ -28,11 +29,34 @@ class MyDrugItem extends StatelessWidget {
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
                 ),
-                child: Image.asset(imagePath, fit: BoxFit.fitWidth),
+                // CHANGED: The fit property of the Image.asset is set to BoxFit.fitWidth.
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 10.0),
-            Text(title),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.pink,
+                          border: Border.all(
+                            color: Colors.pink,
+                          ),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: const Text('태그명 1')),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(title),
+            ),
             // 태그 들어가야한다...
           ],
         ),
