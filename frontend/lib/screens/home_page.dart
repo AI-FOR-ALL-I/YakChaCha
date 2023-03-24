@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/main/eat_check_button.dart';
+import 'package:frontend/widgets/main/health_tip_item.dart';
 import 'package:frontend/widgets/main/my_drug_item.dart';
 import 'package:frontend/widgets/main/time_header.dart';
 
@@ -91,17 +92,18 @@ class HomePage extends StatelessWidget {
                         fontSize: 16.0),
                   ),
                 ),
-                SizedBox(
-                  height: 250,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (BuildContext context, int index) {
-                        return const MyDrugItem(
-                          imagePath: 'assets/images/night.png',
-                          title: '약 이름 params',
-                        );
-                      }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 8.0),
+                  child: SizedBox(
+                    height: 250,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (BuildContext context, int index) {
+                          return const HealthTipItem();
+                        }),
+                  ),
                 )
               ],
             ),
