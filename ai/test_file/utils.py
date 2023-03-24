@@ -109,6 +109,15 @@ def model_load(args, model, optimizer, rank=0) :
 
     dict_checkpoint = torch.load(args.model_path_in, map_location='cpu')
 
+
+
+
+#     for key in dict_checkpoint.keys():
+#         print('key :', key, 'value :', dict_checkpoint[key])
+
+
+
+
     epoch_begin = dict_checkpoint.get('epoch', -1 ) + 1
     if rank == 0 :
         try:

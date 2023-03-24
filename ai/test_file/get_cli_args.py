@@ -15,7 +15,7 @@ is_debug = debugger_is_active()
 
 uuid_node = uuid.getnode()
 
-def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0'):
+def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0', file_number='00'):
     #######################################################################################################
     print(f'job={job} run_phase:{run_phase} aug_level:{aug_level}, dataclass:{dataclass} ')
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter, )
@@ -31,23 +31,24 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
             BATCH_SIZE = 12
 
     else:
-        dir_solution_home = r'/home/ubuntu/proj/proj_pill'
+        dir_solution_home = r'/home/jupyter-j8a803/proj/proj_pill'
         num_workers = 4
         num_threads = 2
         dist_backend = 'nccl'
-        BATCH_SIZE = 8
-        if uuid_node == 274973445269205:        # 광주AI
-            BATCH_SIZE = 56                     # train+valid:56 (opt을 올리지 않는다.), train:56
-            if job == 'hrnet_w64':
-                num_workers = 2
-                BATCH_SIZE = 32
-            if job == 'resnet152':
-                num_workers = 4
-                BATCH_SIZE = 64
-        elif uuid_node == 274973438730257:      # 광주AI2
-            BATCH_SIZE = 768
-            if job == 'paf_vgg19':
-                BATCH_SIZE = 512
+#         BATCH_SIZE = 8
+        BATCH_SIZE = 4
+        # if uuid_node == 274973445269205:        # 광주AI
+        #     BATCH_SIZE = 56                     # train+valid:56 (opt을 올리지 않는다.), train:56
+        #     if job == 'hrnet_w64':
+        #         num_workers = 2
+        #         BATCH_SIZE = 32
+        #     if job == 'resnet152':
+        #         num_workers = 4
+        #         BATCH_SIZE = 64
+        # elif uuid_node == 274973438730257:      # 광주AI2
+        #     BATCH_SIZE = 768
+        #     if job == 'paf_vgg19':
+        #         BATCH_SIZE = 512
 
 
     if run_phase == 'valid'  and run_phase == 'test':
@@ -63,29 +64,31 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
 
     # define directory
     dir_pill_class_base = 'pill_data_croped'
+    file_name = f'file_{file_number}'
     json_pill_label_path_sharp_score = 'pill_label_path_sharp_score.json'
     json_pill_prescription_type = 'pill_prescription_type.json'
-    json_pill_class_list = 'pill_class_list.json'
+    json_pill_class_list = f'pill_class_list_file{file_number}.json'
 
     FITTOSIZE = 224
     gen_type = 'read_only_image'
     dataclass = f'dataclass{dataclass}'
 
     if job == 'resnet152':
-        model_path_in = os.path.join(DIR_PROJ, f'pill_resnet152_{dataclass}_aug{aug_level}.pt')
-        model_path = os.path.join(DIR_PROJ, f'pill_resnet152_{dataclass}_aug{aug_level}.pt')
+        model_path_in = os.path.join(DIR_PROJ, 'models', f'pill_resnet152_{dataclass}_aug{aug_level}_file{file_number}.pt')
+        model_path = os.path.join(DIR_PROJ, 'models', f'pill_resnet152_{dataclass}_aug{aug_level}_file{file_number}.pt')
 
 
 
     elif job == 'hrnet_w64':
-        model_path_in = os.path.join(DIR_PROJ, f'pill_hrnet_w64_{dataclass}_aug{aug_level}.pt')
-        model_path = os.path.join(DIR_PROJ, f'pill_hrnet_w64_{dataclass}_aug{aug_level}.pt')
+        model_path_in = os.path.join(DIR_PROJ, 'models', f'pill_hrnet_w64_{dataclass}_aug{aug_level}_file{file_number}.pt')
+        model_path = os.path.join(DIR_PROJ, 'models', f'pill_hrnet_w64_{dataclass}_aug{aug_level}_file{file_number}.pt')
 
 
     #######################################################################################################
 
 
     dir_pill_class_base = os.path.join(DIR_DATA, dir_pill_class_base)
+    dir_pill_class_base_file = os.path.join(dir_pill_class_base, file_name)
     json_pill_label_path_sharp_score = os.path.join(dir_pill_class_base, json_pill_label_path_sharp_score)
     json_pill_prescription_type = os.path.join(dir_pill_class_base, json_pill_prescription_type)
     dir_output = os.path.join(DIR_DATA, 'output')  # output dir for generation from gauge info
@@ -114,8 +117,7 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
     parser.add_argument('--pill_dataset_valid_rate', default=0.1, help='dataset valid rate')
     parser.add_argument('--pill_dataset_test_rate' , default=0.1, help='dataset test rate')
     parser.add_argument('--num_classes', default=1000, help='pill dataset class number')
-
-    json_pill_class_list  = os.path.join(dir_pill_class_base, json_pill_class_list )
+    json_pill_class_list  = os.path.join(dir_pill_class_base, file_name, json_pill_class_list )
     parser.add_argument('--json_pill_class_list', type=str, default=json_pill_class_list, help='json file for json_pill_class_list ')
 
     parser.add_argument('--gen_type', default=gen_type, help='image only or annotation file')
@@ -130,7 +132,7 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
     parser.add_argument('--wd', type=float, default=0.0001, help='weight decay')
     parser.add_argument('--momentum', type=float, default=0.9, help='SGD momentum')
     parser.add_argument('--warmup_epochs', type=float, default=5, help='number of warmup epochs')
-    parser.add_argument('--epochs', type=int, default=2, help='number of epochs to train')
+    parser.add_argument('--epochs', type=int, default=100, help='number of epochs to train')
     parser.add_argument('--disable_cuda', action='store_true', default=False, help='disables CUDA training')
 
     parser.add_argument('--base_lr', type=float, default=0.001, help='learning rate for a single GPU')

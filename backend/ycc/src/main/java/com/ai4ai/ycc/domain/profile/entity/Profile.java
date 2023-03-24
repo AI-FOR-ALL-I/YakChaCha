@@ -1,7 +1,6 @@
 package com.ai4ai.ycc.domain.profile.entity;
 
 import com.ai4ai.ycc.common.entity.BaseEntity;
-import com.ai4ai.ycc.domain.account.entity.Account;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -34,6 +33,13 @@ public class Profile extends BaseEntity {
 
     @Builder
     public Profile(String name, String gender, boolean pregnancy, LocalDate birthDate) {
+        this.name = name;
+        this.gender = gender;
+        this.pregnancy = pregnancy;
+        this.birthDate = birthDate;
+    }
+
+    public void modify(String name, String gender, boolean pregnancy, LocalDate birthDate) {
         this.name = name;
         this.gender = gender;
         this.pregnancy = pregnancy;

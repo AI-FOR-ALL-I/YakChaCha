@@ -7,6 +7,7 @@ import com.ai4ai.ycc.domain.account.dto.request.SignInRequestDto;
 import com.ai4ai.ycc.domain.account.dto.response.SignInResponseDto;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.service.AccountService;
+import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class AccountController {
 
     private final ResponseService responseService;
     private final AccountService accountService;
+    private final ProfileLinkService profileLinkService;
 
     @PostMapping("/sign-in")
     public ResponseEntity<Result> signIn(@RequestBody SignInRequestDto requestDto) {
@@ -35,9 +37,10 @@ public class AccountController {
                 .body(responseService.getSuccessResult());
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Result> test(@LoginUser String id) {
-        log.info("id: {}", id);
+    @PutMapping("/withdraw")
+    public ResponseEntity<Result> withdraw(@LoginUser Account account) {
+        profileLinkService.removeAllProfile(account);
+        accountService.withdraw(account);
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
     }
