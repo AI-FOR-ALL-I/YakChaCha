@@ -11,21 +11,23 @@ class HealthTipItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      height: 200,
       padding: const EdgeInsets.all(5.0),
       child: Stack(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
           child: Image.asset(
-            'assets/images/day.png',
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.2),
+            'assets/images/sampletips.jpg',
+            fit: BoxFit.none,
+            width: 250,
+            height: 295,
+            color: Colors.black.withOpacity(0.4),
             colorBlendMode: BlendMode.darken,
           ),
         ),
         Positioned(
           bottom: 10.0,
           left: 10.0,
+          right: 10.0,
           child: Container(
             alignment: Alignment.bottomLeft,
             child: const Padding(
