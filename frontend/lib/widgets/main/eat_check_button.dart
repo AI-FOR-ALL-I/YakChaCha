@@ -7,7 +7,8 @@ class EatCheckButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6), color: Color(0xFFFFF8EA)),
+          borderRadius: BorderRadius.circular(6),
+          color: const Color(0xFFFFF8EA)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -21,12 +22,12 @@ class EatCheckButton extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             ),
-            const Expanded(
+            Expanded(
               child: Padding(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       '약 먹을 시간이에요',
                       style: TextStyle(

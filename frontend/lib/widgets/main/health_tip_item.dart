@@ -30,11 +30,11 @@ class HealthTipItem extends StatelessWidget {
           right: 10.0,
           child: Container(
             alignment: Alignment.bottomLeft,
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Text(
                     "토막상식어쩌구대박이죵",
                     style: TextStyle(
