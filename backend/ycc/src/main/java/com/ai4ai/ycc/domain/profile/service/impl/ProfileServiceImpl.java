@@ -5,6 +5,8 @@ import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.repository.ProfileRepository;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
+import com.ai4ai.ycc.error.code.ProfileErrorCode;
+import com.ai4ai.ycc.error.exception.ErrorException;
 import com.ai4ai.ycc.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,12 @@ public class ProfileServiceImpl implements ProfileService {
 
         log.info("[createProfile] 본인 프로필 생성 완료");
         return profile;
+    }
+
+    @Override
+    public Profile getProfile(long profileSeq) {
+        return profileRepository.findByProfileSeqAndDelYn(profileSeq, "N")
+                .orElseThrow(() -> new ErrorException(ProfileErrorCode.PROFILE_NOT_FOUND));
     }
 
 }

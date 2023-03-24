@@ -8,4 +8,6 @@ public interface ProfileService {
 
 
     Profile createProfile(Account account, CreateProfileRequestDto requestDto);
+
+    Profile getProfile(long profileSeq);
 }
