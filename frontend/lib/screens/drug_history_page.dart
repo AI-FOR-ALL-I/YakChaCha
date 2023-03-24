@@ -111,14 +111,30 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                         flex: 24,
                         child: ListView(
                           children: [
-                            MyPill(),
-                            MyPill(),
-                            MyPill(),
-                            MyPill(),
-                            MyPill(),
-                            MyPill(),
-                            MyPill(),
-                            MyPill(),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
                           ],
                         ),
                       ),
@@ -130,7 +146,9 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                         child: Column(
                           children: [
                             Text("복용 끝"),
-                            MyPill(),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
                           ],
                         ),
                       ),
@@ -138,7 +156,9 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                         child: Column(
                           children: [
                             Text("복용 끝"),
-                            MyPill(),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
                           ],
                         ),
                       ),
@@ -146,7 +166,9 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                         child: Column(
                           children: [
                             Text("복용 끝"),
-                            MyPill(),
+                            MyPill(
+                              isAlarmRegister: false,
+                            ),
                           ],
                         ),
                       ),

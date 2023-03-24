@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:frontend/screens/pill_details/pill_details.dart';
+import 'package:frontend/widgets/common/tag_widget.dart';
 
-class MyPill extends StatelessWidget {
-  const MyPill({super.key});
+class MyPill extends StatefulWidget {
+  const MyPill({Key? key, required this.isAlarmRegister}) : super(key: key);
+  final bool isAlarmRegister;
+
+  @override
+  State<MyPill> createState() => _MyPillState();
+}
+
+class _MyPillState extends State<MyPill> {
+  int pillCount = 1;
 
   @override
   Widget build(BuildContext context) {
+    List<List<Object>> tagList = [
+      ['태그명1', 1],
+      ['태그명2', 2],
+    ];
     return GestureDetector(
       onTap: () {
         Navigator.push(
-          context,
-
-          MaterialPageRoute(
-            builder: (context) => PillDetails(
-              
-            ),
-          )
-        );
+            context,
+            MaterialPageRoute(
+              builder: (context) => PillDetails(),
+            ));
       },
       child: AspectRatio(
         aspectRatio: 3 / 1,
@@ -41,45 +51,68 @@ class MyPill extends StatelessWidget {
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   child: Image.asset(
                     'assets/images/pills.png',
-                  )),
+                  )), // 이미지
               Expanded(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Flexible(
-                        flex: 5,
-                        child: Text("넬슨이부프로펜정"),
-                      ),
-                      Flexible(
-                        flex: 5,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: Text('넬슨이부프로펜정dasdasd',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(fontSize: 15)),
+                          )
+                        ]),
+                  ),
+                  Row(
+                    children: tagList
+                        .map((List<Object> tagInfo) => TagWidget(
+                            tagName: tagInfo[0] as String,
+                            colorIndex: tagInfo[1] as int))
+                        .toList(),
+                  )
+                ],
+              )),
+              Container(
+                  child: widget.isAlarmRegister
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 3, horizontal: 5),
-                              decoration: BoxDecoration(
-                                  color: Colors.red.shade100,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: const Text(
-                                "태그명",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 11),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  pillCount++;
+                                });
+                              },
+                              child: Icon(
+                                Icons.arrow_drop_up_outlined,
                               ),
                             ),
-                            const Text("D-3"),
+                            Text('${pillCount}'),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (pillCount > 1) {
+                                    pillCount--;
+                                  }
+                                });
+                              },
+                              child: Icon(
+                                Icons.arrow_drop_down_outlined,
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [Text('d-3')],
+                        )),
+            ], // 여기가 Row
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/alarm/alarm_widget.dart';
+import 'package:frontend/screens/alarm/alarm_create_page.dart';
 
 class AlarmPage extends StatelessWidget {
   const AlarmPage({Key? key}) : super(key: key);
@@ -23,14 +24,21 @@ class AlarmPage extends StatelessWidget {
               ListView.builder(
                   itemCount: 10,
                   itemBuilder: (context, i) {
-                    return CustomAlarmWidget();
+                    return CustomAlarmWidget(status: 3);
                   }),
               Positioned(
                 bottom: 40,
                 right: 40,
                 child: FloatingActionButton(
                     backgroundColor: Theme.of(context).colorScheme.primary,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AlarmCreatePage(
+                                    isCreate: true,
+                                  )));
+                    },
                     child: Text('+', style: TextStyle(color: Colors.white))),
               )
             ],

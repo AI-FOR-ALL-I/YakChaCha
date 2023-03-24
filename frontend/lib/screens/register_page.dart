@@ -15,7 +15,6 @@ class RegisterPage extends StatelessWidget {
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.red),
                 color: Color(0xFFE1E1E1)),
             child: Row(children: [
               Container(
@@ -35,7 +34,6 @@ class RegisterPage extends StatelessWidget {
                 margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.red),
                     color: Color(0xFFBBE4CB)),
                 child: Icon(Icons.add, color: Colors.white))),
         Expanded(
