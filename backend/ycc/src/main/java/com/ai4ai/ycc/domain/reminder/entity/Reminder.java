@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ public class Reminder extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reminder_seq;
+    private long reminderSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_seq", nullable = false)
