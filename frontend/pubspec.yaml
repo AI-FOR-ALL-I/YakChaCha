@@ -38,8 +38,9 @@ dependencies:
   kakao_flutter_sdk: ^1.4.1 # 전체 추가
   # 통신을 위해 필요한 http package
   http: ^0.13.5
+  flutter_time_picker_spinner: ^2.0.0
+  intl: ^0.18.0
   # 태그 선택기 용
-  textfield_tags: ^2.0.2
 
 dev_dependencies:
   flutter_test:

@@ -17,8 +17,12 @@ class TagWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.width * 0.07,
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.15,
+          maxHeight: MediaQuery.of(context).size.width * 0.0725,
+        ),
+        width: MediaQuery.of(context).size.width * 0.15,
+        height: MediaQuery.of(context).size.width * 0.0725,
         decoration: BoxDecoration(
             color: colorPalette[colorIndex],
             borderRadius: BorderRadius.circular(10)),

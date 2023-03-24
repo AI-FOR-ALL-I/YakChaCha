@@ -24,7 +24,7 @@ class AlarmPage extends StatelessWidget {
               ListView.builder(
                   itemCount: 10,
                   itemBuilder: (context, i) {
-                    return CustomAlarmWidget();
+                    return CustomAlarmWidget(status: 3);
                   }),
               Positioned(
                 bottom: 40,

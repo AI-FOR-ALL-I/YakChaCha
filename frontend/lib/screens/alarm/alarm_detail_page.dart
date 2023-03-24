@@ -95,7 +95,9 @@ class AlarmDetailPage extends StatelessWidget {
                       itemCount: 10,
                       // shrinkWrap: true,
                       itemBuilder: ((context, index) {
-                        return MyPill(); // TODO: MyPill이 안나오는 문제는 동준이한테 물어보기
+                        return MyPill(
+                          isAlarmRegister: false,
+                        ); // TODO: MyPill이 안나오는 문제는 동준이한테 물어보기
                       })),
                 )
               ],
