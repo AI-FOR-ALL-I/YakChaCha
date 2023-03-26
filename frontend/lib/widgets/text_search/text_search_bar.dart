@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/api_client.dart';
+import 'package:dio/dio.dart';
 
 class TextSearchBar extends StatelessWidget {
-  TextSearchBar({Key? key}) : super(key: key);
+  TextSearchBar({Key? key, this.searchResult}) : super(key: key);
+  final searchResult;
   final inputData = TextEditingController();
+
+  Future<void> searchText(word) async {
+    try {
+      Response response = await ApiClient.textSearch(word);
+      print(response);
+      print('1 try');
+    } catch (e) {
+      print('여기가 에러메세지!');
+      print(e);
+      print('2 catch');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +29,7 @@ class TextSearchBar extends StatelessWidget {
           controller: inputData,
           onChanged: (string) {
             print(inputData.text);
+            searchText(inputData.text);
           },
           decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(

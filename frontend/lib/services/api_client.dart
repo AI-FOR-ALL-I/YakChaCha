@@ -30,6 +30,12 @@ class ApiClient {
         }));
   }
 
+  // 텍스트로 검색
+  static Future<Response> textSearch(String word) async {
+    return dio.get(ApiConstants.search,
+        queryParameters: {'type': 'text', 'query': word});
+  }
+
   // 호출방법은 아래와 같은 방법인듯.
   /*
   Future<void> fetchUsers() async {

@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+
+class BottomConfirmWidget extends StatelessWidget {
+  final bool isAlarm;
+  const BottomConfirmWidget(
+      {Key? key,
+      required this.isAlarm}) // Alarm 생성/수정 페이지면 true, 약 선택 화면이면 false
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.15,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+            Colors.white.withOpacity(0),
+            Colors.white.withOpacity(0.75),
+            Colors.white.withOpacity(1),
+          ])),
+      child: isAlarm
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.alarm_outlined,
+                  size: 50,
+                ),
+                Text('알람 설정')
+              ],
+            )
+          : Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_outlined,
+                    size: 50,
+                    color: Theme.of(context).colorScheme.background,
+                  ),
+                  Text('등록')
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.cancel_outlined,
+                    size: 50,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  Text('취소')
+                ],
+              ),
+            ]),
+    );
+  }
+}

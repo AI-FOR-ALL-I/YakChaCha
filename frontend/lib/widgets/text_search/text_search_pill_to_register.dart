@@ -50,7 +50,7 @@ class Before extends StatelessWidget {
                   Flexible(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: Image.asset('assets/images/pills.png',
+                        child: Image.asset('assets/images/night.png',
                             fit: BoxFit.cover),
                       ),
                       flex: 2),
