@@ -23,7 +23,7 @@ class TextSearchPillComponent extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.asset(
-                      'assets/images/pills.png',
+                      'assets/images/night.png',
                       fit: BoxFit.cover,
                     ),
                     if (isWarning)
