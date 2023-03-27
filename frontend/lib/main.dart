@@ -1,9 +1,20 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/bottom_navigation.dart';
 import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   //KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.instance.getToken().then((String? token) {
+    if (token != null) {
+      print('FCM Token: $token');
+    } else {
+      print('Failed to get FCM Token');
+    }
+  });
   runApp(const MyApp());
 }
 
