@@ -39,6 +39,8 @@ dependencies:
   kakao_flutter_sdk: ^1.4.1
   image_picker: ^0.8.7
   get: ^4.6.5
+  firebase_messaging: ^14.3.0
+  flutter_local_notifications: ^8.2.0
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
