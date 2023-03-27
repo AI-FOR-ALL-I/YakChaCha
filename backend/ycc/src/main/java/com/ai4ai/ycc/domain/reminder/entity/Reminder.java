@@ -35,5 +35,14 @@ public class Reminder extends BaseEntity {
         this.taken = taken;
     }
 
+    public void take() {
+        this.taken = true;
+    }
+
+    public void modify(String title, String time) {
+        this.title = title;
+        this.time = time;
+    }
+
 
 }

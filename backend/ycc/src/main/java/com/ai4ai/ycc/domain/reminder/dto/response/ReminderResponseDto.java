@@ -7,6 +7,7 @@ import lombok.Getter;
 @Builder
 public class ReminderResponseDto {
 
+    private long reminderSeq;
     private String title;
     private String time;
     private boolean taken;

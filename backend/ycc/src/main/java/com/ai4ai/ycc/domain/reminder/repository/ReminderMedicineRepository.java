@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ReminderMedicineRepository extends JpaRepository<ReminderMedicine, Long> {
-    List<ReminderMedicine> findAllByReminder(Reminder reminder);
+    List<ReminderMedicine> findAllByReminderAndDelYn(Reminder reminder, String delYn);
 }

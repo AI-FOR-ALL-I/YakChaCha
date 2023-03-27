@@ -1,8 +1,6 @@
 package com.ai4ai.ycc.domain.reminder.entity;
 
 import com.ai4ai.ycc.common.entity.BaseEntity;
-import com.ai4ai.ycc.domain.account.entity.Account;
-import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;

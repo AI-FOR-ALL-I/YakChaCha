@@ -7,13 +7,14 @@ import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
+import com.ai4ai.ycc.domain.reminder.dto.request.ModifyReminderRequestDto;
+import com.ai4ai.ycc.domain.reminder.dto.request.TakeMedicineRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
-import io.netty.util.AbstractReferenceCounted;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +54,39 @@ public class ReminderController {
         return ResponseEntity.ok()
                 .body(responseService.getSingleResult(result));
     }
+
+    @GetMapping("/{profileLinkSeq}/{reminderSeq}/records/{month}")
+    public ResponseEntity<Result> getTakenRecords(@LoginUser Account account, @PathVariable long profileLinkSeq, @PathVariable long reminderSeq, @PathVariable String month) {
+        Profile profile = profileService.getProfile(account, profileLinkSeq);
+        List<Integer> result = reminderService.getTakenRecords(profile, reminderSeq, month);
+        return ResponseEntity.ok()
+                .body(responseService.getListResult(result));
+    }
+
+    @PutMapping("/take")
+    public ResponseEntity<Result> takeMedicine(@LoginUser Account account, @RequestBody TakeMedicineRequestDto requestDto) {
+        Profile profile = profileService.getProfile(account, requestDto.getProfileLinkSeq());
+        reminderService.takeMedicine(profile, requestDto.getReminderSeq());
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
+    @PutMapping
+    public ResponseEntity<Result> modifyReminder(@LoginUser Account account, @RequestBody ModifyReminderRequestDto requestDto) {
+        Profile profile = profileService.getProfile(account, requestDto.getProfileLinkSeq());
+        reminderService.modifyReminder(profile, requestDto);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
+    @PutMapping("/{profileLinkSeq}/{reminderSeq}")
+    public ResponseEntity<Result> removeReminder(@LoginUser Account account, @PathVariable long profileLinkSeq, @PathVariable long reminderSeq) {
+        Profile profile = profileService.getProfile(account, profileLinkSeq);
+        reminderService.removeReminder(profile, reminderSeq);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
 
 
 }
