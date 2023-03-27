@@ -16,8 +16,15 @@ class SettingPage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
-                  return Image.asset('assets/images/sampletips.jpg',
-                      width: 80, height: 80, fit: BoxFit.fill);
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10.0, top: 15.0, right: 5.0, bottom: 15.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.asset('assets/images/sampletips.jpg',
+                          width: 120, height: 120, fit: BoxFit.cover),
+                    ),
+                  );
                 }),
           ),
         ],
