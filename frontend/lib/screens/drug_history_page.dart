@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:frontend/models/my_pill_model.dart';
+import 'package:frontend/services/my_pill_api.dart';
 import 'package:frontend/widgets/mypills/my_pill.dart';
+import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 
 class DrugHistoryPage extends StatefulWidget {
   const DrugHistoryPage({Key? key}) : super(key: key);
@@ -24,6 +27,8 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
       isClicked = false;
     });
   }
+
+  final Future<List<MyPillModel>> myPills = MyPillApi.getMyPill();
 
   @override
   Widget build(BuildContext context) {
@@ -92,89 +97,84 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
         Flexible(
             flex: 25,
             child: isClicked
-                ? Column(
-                    children: [
-                      // 총 몇 건인지
-                      Flexible(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 0, horizontal: 20),
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text("총 4건"),
-                          ),
-                        ),
-                      ),
-                      // 컴포넌트 들 -> 탭의 선택에 따라 달라져야 함
-                      Flexible(
-                        flex: 24,
-                        child: ListView(
+                ? FutureBuilder(
+                    future: myPills,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
                           children: [
-                            MyPill(
-                              isAlarmRegister: false,
+                            // 총 몇 건인지
+                            Flexible(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 20),
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("총 4건"),
+                                ),
+                              ),
                             ),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                            MyPill(
-                              isAlarmRegister: false,
+                            // 컴포넌트 들 -> 탭의 선택에 따라 달라져야 함
+                            Flexible(
+                              flex: 24,
+                              child: myPillList(snapshot),
                             ),
                           ],
-                        ),
-                      ),
-                    ],
+                        );
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
                   )
                 : Column(
                     children: [
-                      Container(
-                        child: Column(
-                          children: [
-                            Text("복용 끝"),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                          ],
-                        ),
+                      Column(
+                        children: [
+                          Text("복용 끝"),
+                          MyPill(
+                            isAlarmRegister: false,
+                          ),
+                        ],
                       ),
-                      Container(
-                        child: Column(
-                          children: [
-                            Text("복용 끝"),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                          ],
-                        ),
+                      Column(
+                        children: [
+                          Text("복용 끝"),
+                          MyPill(
+                            isAlarmRegister: false,
+                          ),
+                        ],
                       ),
-                      Container(
-                        child: Column(
-                          children: [
-                            Text("복용 끝"),
-                            MyPill(
-                              isAlarmRegister: false,
-                            ),
-                          ],
-                        ),
+                      Column(
+                        children: [
+                          Text("복용 끝"),
+                          MyPill(
+                            isAlarmRegister: false,
+                          ),
+                        ],
                       ),
                     ],
                   )),
       ],
+    );
+  }
+
+  ListView myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+    return ListView.separated(
+      itemCount: snapshot.data!.length,
+      separatorBuilder: (context, index) => SizedBox(),
+      itemBuilder: (context, index) {
+        var pill = snapshot.data![index];
+        print(pill.title[0]);
+        return RenewMyPill(
+          id: pill.id,
+          name: pill.name,
+          picture: pill.picture,
+          title: pill.title
+        );
+      },
     );
   }
 
