@@ -56,16 +56,21 @@ class BottomConfirmWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.cancel_outlined,
-                      size: 50,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    Text('취소')
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.cancel_outlined,
+                        size: 50,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      Text('취소')
+                    ],
+                  ),
                 ),
               ]),
       );

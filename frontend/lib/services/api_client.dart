@@ -33,8 +33,11 @@ class ApiClient {
   // 텍스트로 검색
   static Future<Response> textSearch(String word) async {
     return dio.get(ApiConstants.search,
-        queryParameters: {'type': 'text', 'query': word});
+        queryParameters: {'type': 'text', 'query': word, 'profileLinkSeq': 1},
+        options: Options(headers: {'Authorization': ApiConstants.TOKEN}));
   }
+
+  // 알람 등록
 
   // 호출방법은 아래와 같은 방법인듯.
   /*

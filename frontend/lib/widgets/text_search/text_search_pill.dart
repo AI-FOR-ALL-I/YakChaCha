@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TextSearchPillComponent extends StatefulWidget {
-  const TextSearchPillComponent({super.key});
+  const TextSearchPillComponent({Key? key, this.data}) : super(key: key);
+  final Map? data;
 
   @override
   State<TextSearchPillComponent> createState() =>
@@ -33,10 +34,13 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                     child: Stack(
                       children: [
                         Image.asset(
-                          'assets/images/pills.png',
-                          fit: BoxFit.cover,
+                          'assets/images/defaultPill.png',
+                          fit: BoxFit.fitWidth,
                         ),
-                        if (isWarning)
+                        if (widget.data?['collide'] ||
+                            widget.data?['warn_pregnant'] ||
+                            widget.data?['warn_old'] ||
+                            widget.data?['warn_age'])
                           Positioned(
                             top: 10,
                             right: 10,
@@ -63,7 +67,8 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                         maxHeight: double.infinity,
                       ),
                       child: Center(
-                        child: Text('약이름'),
+                        child: Text(
+                            '${widget.data?['itemName']}'), // TODO: 이 형식으로 추출하시오
                       ),
                       color: Colors.green,
                     ),
@@ -87,30 +92,42 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                     MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Row(children: [
-                                    Text(
-                                      '임산부 주의',
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                                  ]),
-                                  Row(children: [
-                                    Text(
-                                      '노약자 주의',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ]),
-                                  Row(children: [
-                                    Text(
-                                      '어린이 주의',
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                                  ]),
-                                  Row(children: [
-                                    Text(
-                                      '충돌 약물 주의',
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                                  ]),
+                                  widget.data?['warn_pregnant']
+                                      ? Row(children: [
+                                          Text(
+                                            '임산부 주의',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ])
+                                      : Container(),
+                                  widget.data?['warn_old']
+                                      ? Row(children: [
+                                          Text(
+                                            '노약자 주의',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ])
+                                      : Container(),
+                                  widget.data?['warn_age']
+                                      ? Row(children: [
+                                          Text(
+                                            '어린이 주의',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ])
+                                      : Container(),
+                                  widget.data?['collide']
+                                      ? Row(children: [
+                                          Text(
+                                            '충돌 약물 주의',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ])
+                                      : Container(), // TODO: 여기다가 클릭하면 팝업 같은 걸로 충돌 약물 뜨도록!
                                 ]),
                           ),
                         ),
