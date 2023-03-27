@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/search/text_search_page.dart';
+import 'package:frontend/screens/settings/setting_page.dart';
 
 class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomMainAppBar({Key? key, required this.isMain}) : super(key: key);
@@ -9,7 +10,7 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         leading: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text('YakChaCha',
                 style: (TextStyle(
                   color: isMain
@@ -28,8 +29,10 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: isMain ? Colors.white : Colors.grey,
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TextSearchPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const TextSearchPage()));
             },
           ),
           IconButton(
@@ -40,7 +43,10 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             icon: Icon(Icons.person_outlined,
                 color: isMain ? Colors.white : Colors.grey),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const SettingPage()));
+            },
           ),
         ],
         backgroundColor: isMain ? Colors.transparent : Colors.white,
@@ -50,5 +56,5 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
