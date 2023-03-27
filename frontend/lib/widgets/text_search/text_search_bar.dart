@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/services/api_client.dart';
 import 'package:dio/dio.dart';
+import 'dart:convert';
 
-class TextSearchBar extends StatelessWidget {
-  TextSearchBar({Key? key, this.searchResult, this.toggleIsCameraClicked})
+class TextSearchBar extends StatefulWidget {
+  TextSearchBar({Key? key, this.getResultList, this.toggleIsCameraClicked})
       : super(key: key);
-  final searchResult;
-  final inputData = TextEditingController();
+  final Function(List<dynamic>)? getResultList;
   final Function()? toggleIsCameraClicked;
+
+  @override
+  State<TextSearchBar> createState() => _TextSearchBarState();
+}
+
+class _TextSearchBarState extends State<TextSearchBar> {
+  final inputData = TextEditingController();
 
   Future<void> searchText(word) async {
     try {
       Response response = await ApiClient.textSearch(word);
-      print(response);
-      print('1 try');
+      // print(response.data);
+      var result = jsonDecode(response.toString());
+      var dataList = result['data'];
+      setState(() {
+        widget.getResultList?.call(dataList); // 이렇게 호출하기!!!
+      });
     } catch (e) {
-      print('여기가 에러메세지!');
       print(e);
-      print('2 catch');
     }
   }
 
@@ -29,10 +38,7 @@ class TextSearchBar extends StatelessWidget {
         margin: EdgeInsets.all(20),
         child: TextField(
           controller: inputData,
-          onChanged: (string) {
-            print(inputData.text);
-            searchText(inputData.text);
-          },
+          onChanged: (string) {},
           decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(
                 borderSide:
@@ -45,13 +51,17 @@ class TextSearchBar extends StatelessWidget {
               suffixIcon: Row(mainAxisSize: MainAxisSize.min, children: [
                 IconButton(
                     onPressed: () {
-                      if (toggleIsCameraClicked != null) {
-                        toggleIsCameraClicked!();
+                      if (widget.toggleIsCameraClicked != null) {
+                        widget.toggleIsCameraClicked!();
                       }
                       ;
                     },
                     icon: Icon(Icons.photo_camera_outlined)),
-                IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined)),
+                IconButton(
+                    onPressed: () {
+                      searchText(inputData.text);
+                    },
+                    icon: Icon(Icons.search_outlined)),
               ])),
         ),
       ),

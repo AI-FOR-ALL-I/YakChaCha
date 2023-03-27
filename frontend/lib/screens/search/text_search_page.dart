@@ -67,7 +67,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
           body: Column(
             children: [
               TextSearchBar(
-                  searchResult: searchResult,
+                  getResultList: getResultList,
                   toggleIsCameraClicked: toggleIsCameraClicked),
               Container(
                 child: Text('${searchResult.length} 건의 검색결과'),
@@ -76,12 +76,12 @@ class _TextSearchPageState extends State<TextSearchPage> {
               ),
               Flexible(
                 child: GridView.builder(
-                  itemCount: 10,
+                  itemCount: searchResult.length,
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
-                    return TextSearchPillComponent();
+                    return TextSearchPillComponent(data: searchResult[index]);
                   },
                 ),
               ),

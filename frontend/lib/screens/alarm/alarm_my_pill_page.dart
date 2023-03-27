@@ -13,11 +13,10 @@ class AlarmMyPillPage extends StatefulWidget {
 }
 
 class _AlarmMyPillPageState extends State<AlarmMyPillPage> {
-  var tempList = AlarmPillController().selectedList;
-
   @override
   Widget build(BuildContext context) {
     Get.put(AlarmPillController());
+    var tempList = Get.find<AlarmPillController>().selectedList;
     return Scaffold(
       appBar: SimpleAppBar(title: '복약 목록 선택'),
       body: Stack(children: [
@@ -34,8 +33,10 @@ class _AlarmMyPillPageState extends State<AlarmMyPillPage> {
                           setState(() {
                             if (!tempList.contains(index)) {
                               tempList.add(index);
+                              print(tempList);
                             } else {
                               tempList.remove(index);
+                              print(tempList);
                             }
                           }); // TODO: 리스트의 들어갈 map자료 넣기!!
                         },
