@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface TakenRecordRepository extends JpaRepository<TakenRecord, Long> {
 
-    List<TakenRecord> findAllByReminderAndDateBetween(Reminder reminder, LocalDate startDate, LocalDate endDate);
+    List<TakenRecord> findAllByReminderAndDelYnAndDateBetween(Reminder reminder, String delYn, LocalDate startDate, LocalDate endDate);
 
+    List<TakenRecord> findAllByReminderAndDelYn(Reminder reminder, String delYn);
 }

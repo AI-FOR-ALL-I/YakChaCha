@@ -14,6 +14,7 @@ import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,6 +78,15 @@ public class ReminderController {
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
     }
+
+    @PutMapping("/{profileLinkSeq}/{reminderSeq}")
+    public ResponseEntity<Result> removeReminder(@LoginUser Account account, @PathVariable long profileLinkSeq, @PathVariable long reminderSeq) {
+        Profile profile = profileService.getProfile(account, profileLinkSeq);
+        reminderService.removeReminder(profile, reminderSeq);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
 
 
 }

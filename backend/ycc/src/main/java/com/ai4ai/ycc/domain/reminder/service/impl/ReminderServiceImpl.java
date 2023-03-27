@@ -74,10 +74,8 @@ public class ReminderServiceImpl implements ReminderService {
         Collections.sort(reminderList, new Comparator<Reminder>() {
             @Override
             public int compare(Reminder o1, Reminder o2) {
-                log.info("{}, {}", o1.getTime(), o2.getTime());
                 LocalTime t1 = dateUtil.convertToTimeFormat(o1.getTime());
                 LocalTime t2 = dateUtil.convertToTimeFormat(o2.getTime());
-                log.info("{}, {}", t1, t2);
                 return t1.compareTo(t2);
             }
         });
@@ -93,9 +91,7 @@ public class ReminderServiceImpl implements ReminderService {
         boolean found = false;
 
         for (Reminder reminder : reminderList) {
-            log.info(reminder.getTime());
             LocalTime time = dateUtil.convertToTimeFormat(reminder.getTime());
-            log.info("{}", time);
             if (found) {
                 status = 4;
             } else if (reminder.isTaken()) {
@@ -173,7 +169,7 @@ public class ReminderServiceImpl implements ReminderService {
 
         LocalDate startDate = dateUtil.convertToDateFormat(month + "-01");
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
-        List<TakenRecord> takenRecords = takenRecordRepository.findAllByReminderAndDateBetween(reminder, startDate, endDate);
+        List<TakenRecord> takenRecords = takenRecordRepository.findAllByReminderAndDelYnAndDateBetween(reminder, "N", startDate, endDate);
 
         List<Integer> result = new ArrayList<>();
 
@@ -209,5 +205,25 @@ public class ReminderServiceImpl implements ReminderService {
             reminderMedicineRepository.save(reminderMedicine);
         });
 
+    }
+
+    @Override
+    public void removeReminder(Profile profile, long reminderSeq) {
+        log.info("[removeReminder] 리마인더 삭제 시작");
+        Reminder reminder = reminderRepository.findByReminderSeqAndProfileAndDelYn(reminderSeq, profile, "N")
+                .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
+
+        log.info("[removeReminder] 약 섭취 기록 조회");
+        List<TakenRecord> recordList = takenRecordRepository.findAllByReminderAndDelYn(reminder, "N");
+        recordList.forEach(r -> r.remove());
+        log.info("[removeReminder] 약 섭취 기록 삭제 완료");
+
+        log.info("[removeReminder] 리마인더 약 목록 조회");
+        List<ReminderMedicine> reminderMedicineList = reminderMedicineRepository.findAllByReminderAndDelYn(reminder, "N");
+        reminderMedicineList.forEach(rm -> rm.remove());
+        log.info("[removeReminder] 리마인더 약 목록 삭제 완료");
+
+        reminder.remove();
+        log.info("[removeReminder] 리마인더 삭제 완료");
     }
 }
