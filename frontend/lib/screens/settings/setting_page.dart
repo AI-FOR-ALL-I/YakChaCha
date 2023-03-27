@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
+import 'package:frontend/widgets/settings/setting_menu_item.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -26,6 +27,48 @@ class SettingPage extends StatelessWidget {
                     ),
                   );
                 }),
+          ),
+          TextButton(
+              onPressed: () {},
+              child: const Text(
+                '사용자 설정',
+                style: TextStyle(color: Colors.black54),
+              )),
+          const SettingMenuItem(
+            iconName: Icons.person,
+            menuTitle: '회원인증',
+          ),
+          const SettingMenuItem(
+            iconName: Icons.security_rounded,
+            menuTitle: '비밀번호 변경',
+          ),
+          const SettingMenuItem(
+            iconName: Icons.notifications_active_rounded,
+            menuTitle: '알림설정',
+          ),
+          const SettingMenuItem(
+            iconName: Icons.autorenew_rounded,
+            menuTitle: '회원연동',
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 8.0, bottom: 8.0),
+            child: Row(
+              children: [
+                TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      '로그아웃',
+                      style: TextStyle(color: Colors.black54),
+                    )),
+                TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      '탈퇴하기',
+                      style: TextStyle(color: Colors.black54),
+                    )),
+              ],
+            ),
           ),
         ],
       ),
