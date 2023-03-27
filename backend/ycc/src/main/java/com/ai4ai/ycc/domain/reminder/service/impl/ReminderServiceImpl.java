@@ -274,4 +274,16 @@ public class ReminderServiceImpl implements ReminderService {
 
         return null;
     }
+
+    @Override
+    public void resetReminder() {
+        log.info("[resetReminder] 리마인더 초기화 시작");
+        List<Reminder> reminderList = reminderRepository.findAllByDelYn("N");
+        for (Reminder reminder : reminderList) {
+            reminder.reset();
+        }
+        log.info("[resetReminder] 리마인더 초기화 완료");
+    }
+
+
 }

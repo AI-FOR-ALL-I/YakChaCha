@@ -11,4 +11,6 @@ public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     List<Reminder> findAllByProfileAndDelYn(Profile profile, String delYn);
 
     Optional<Reminder> findByReminderSeqAndProfileAndDelYn(long reminderSeq, Profile profile, String delYn);
+
+    List<Reminder> findAllByDelYn(String delYn);
 }
