@@ -36,19 +36,18 @@ class SettingPage extends StatelessWidget {
               )),
           const SettingMenuItem(
             iconName: Icons.person,
-            menuTitle: '회원인증',
-          ),
-          const SettingMenuItem(
-            iconName: Icons.security_rounded,
-            menuTitle: '비밀번호 변경',
+            menuTitle: '사용자 설정',
+            cases: 0,
           ),
           const SettingMenuItem(
             iconName: Icons.notifications_active_rounded,
             menuTitle: '알림설정',
+            cases: 1,
           ),
           const SettingMenuItem(
             iconName: Icons.autorenew_rounded,
-            menuTitle: '회원연동',
+            menuTitle: '연동정보조회',
+            cases: 2,
           ),
           Padding(
             padding: const EdgeInsets.only(
