@@ -5,6 +5,7 @@ import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.MedicineCountDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.ModifyReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
+import com.ai4ai.ycc.domain.reminder.dto.response.NextReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.entity.Reminder;
 import com.ai4ai.ycc.domain.reminder.entity.ReminderMedicine;
@@ -225,5 +226,52 @@ public class ReminderServiceImpl implements ReminderService {
 
         reminder.remove();
         log.info("[removeReminder] 리마인더 삭제 완료");
+    }
+
+    @Override
+    public NextReminderResponseDto getNextReminder(Profile profile) {
+        log.info("[getNextReminder] 곧 다가오는 리마인더 조회");
+        List<Reminder> reminderList = reminderRepository.findAllByProfileAndDelYn(profile, "N");
+
+        log.info("[getNextReminder] 리마인더 목록 정렬 시작");
+        Collections.sort(reminderList, new Comparator<Reminder>() {
+            @Override
+            public int compare(Reminder o1, Reminder o2) {
+                LocalTime t1 = dateUtil.convertToTimeFormat(o1.getTime());
+                LocalTime t2 = dateUtil.convertToTimeFormat(o2.getTime());
+                return t1.compareTo(t2);
+            }
+        });
+        log.info("[getNextReminder] 리마인더 목록 정렬 완료");
+
+        LocalTime now = LocalTime.now();
+
+        for (Reminder reminder : reminderList) {
+            LocalTime time = dateUtil.convertToTimeFormat(reminder.getTime());
+            if (reminder.isTaken() || time.isBefore(now)) {
+                continue;
+            }
+
+            NextReminderResponseDto result = NextReminderResponseDto.builder()
+                    .reminderSeq(reminder.getReminderSeq())
+                    .title(reminder.getTitle())
+                    .time(reminder.getTime())
+                    .build();
+
+            List<ReminderMedicine> reminderMedicineList = reminderMedicineRepository.findAllByReminderAndDelYn(reminder, "N");
+
+            for (ReminderMedicine reminderMedicine : reminderMedicineList) {
+                long medicineSeq = reminderMedicine.getMedicineSeq();
+                String img = "";
+                String name = "";
+                int count = reminderMedicine.getCount();
+
+                result.addMedicine(medicineSeq, img, name, count);
+            }
+
+            return result;
+        }
+
+        return null;
     }
 }

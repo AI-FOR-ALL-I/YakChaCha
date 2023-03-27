@@ -10,11 +10,11 @@ import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.ModifyReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.TakeMedicineRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
+import com.ai4ai.ycc.domain.reminder.dto.response.NextReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,6 +87,12 @@ public class ReminderController {
                 .body(responseService.getSuccessResult());
     }
 
-
+    @GetMapping("/{profileLinkSeq}/next")
+    public ResponseEntity<Result> getNextReminder(@LoginUser Account account, @PathVariable long profileLinkSeq) {
+        Profile profile = profileService.getProfile(account, profileLinkSeq);
+        NextReminderResponseDto result = reminderService.getNextReminder(profile);
+        return ResponseEntity.ok()
+                .body(responseService.getSingleResult(result));
+    }
 
 }

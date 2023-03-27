@@ -4,6 +4,7 @@ import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.ModifyReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
+import com.ai4ai.ycc.domain.reminder.dto.response.NextReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ReminderService {
     void modifyReminder(Profile profile, ModifyReminderRequestDto requestDto);
 
     void removeReminder(Profile profile, long reminderSeq);
+
+    NextReminderResponseDto getNextReminder(Profile profile);
 }
