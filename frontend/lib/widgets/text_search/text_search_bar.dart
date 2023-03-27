@@ -3,9 +3,11 @@ import 'package:frontend/services/api_client.dart';
 import 'package:dio/dio.dart';
 
 class TextSearchBar extends StatelessWidget {
-  TextSearchBar({Key? key, this.searchResult}) : super(key: key);
+  TextSearchBar({Key? key, this.searchResult, this.toggleIsCameraClicked})
+      : super(key: key);
   final searchResult;
   final inputData = TextEditingController();
+  final Function()? toggleIsCameraClicked;
 
   Future<void> searchText(word) async {
     try {
@@ -42,7 +44,13 @@ class TextSearchBar extends StatelessWidget {
               ),
               suffixIcon: Row(mainAxisSize: MainAxisSize.min, children: [
                 IconButton(
-                    onPressed: () {}, icon: Icon(Icons.photo_camera_outlined)),
+                    onPressed: () {
+                      if (toggleIsCameraClicked != null) {
+                        toggleIsCameraClicked!();
+                      }
+                      ;
+                    },
+                    icon: Icon(Icons.photo_camera_outlined)),
                 IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined)),
               ])),
         ),
