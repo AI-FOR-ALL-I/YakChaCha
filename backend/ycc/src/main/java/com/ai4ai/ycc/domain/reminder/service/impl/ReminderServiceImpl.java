@@ -111,6 +111,7 @@ public class ReminderServiceImpl implements ReminderService {
             }
 
             resultList.add(ReminderResponseDto.builder()
+                            .reminderSeq(reminder.getReminderSeq())
                             .title(reminder.getTitle())
                             .time(reminder.getTime())
                             .taken(reminder.isTaken())
