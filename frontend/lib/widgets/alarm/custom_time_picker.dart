@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 class CustomTimePicker extends StatefulWidget {
-  const CustomTimePicker({Key? key}) : super(key: key);
-
+  const CustomTimePicker({Key? key, required this.setTime, required this.time})
+      : super(key: key);
+  final Function(DateTime) setTime;
+  final DateTime time;
   @override
   State<CustomTimePicker> createState() => _CustomTimePickerState();
 }
 
 class _CustomTimePickerState extends State<CustomTimePicker> {
-  DateTime _dateTime = DateTime.now(); // TODO: 이거 나중에 하나 위로 올려서 Props 받기
+  DateTime _dateTime = DateTime.now();
+  @override
+  void initState() {
+    super.initState();
+    _dateTime = widget.time;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +26,11 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         borderRadius: BorderRadius.circular(20.0),
         elevation: 5.0,
         child: TimePickerSpinner(
+          time: _dateTime,
           minutesInterval: 10,
           is24HourMode: false,
           onTimeChange: (time) {
-            setState(() {
-              _dateTime = time;
-              // TODO: 바꾸는 함수도 하나 올려서 Props 받기
-            });
-            print('${_dateTime.hour}:${_dateTime.minute}'); // 이 형식으로 보내세요!!
+            widget.setTime(time);
           },
           normalTextStyle: TextStyle(
             fontSize: 20,

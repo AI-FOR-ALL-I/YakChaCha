@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/bottom_navigation.dart';
+import 'package:get/get.dart';
 
 void main() {
   //KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   // This widget is th root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         colorScheme: const ColorScheme(
             brightness: Brightness.light,

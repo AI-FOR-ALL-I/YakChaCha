@@ -37,6 +37,8 @@ dependencies:
   http: ^0.13.5
   intl: ^0.18.0
   kakao_flutter_sdk: ^1.4.1
+  image_picker: ^0.8.7
+  get: ^4.6.5
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
