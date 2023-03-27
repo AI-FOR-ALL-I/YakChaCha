@@ -1,6 +1,5 @@
 package com.ai4ai.ycc.domain.reminder.service;
 
-import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
@@ -15,4 +14,6 @@ public interface ReminderService {
     ReminderDetailResponseDto getReminderDetail(Profile profile, long reminderSeq);
 
     void takeMedicine(Profile profile, long reminderSeq);
+
+    List<Integer> getTakenRecords(Profile profile, long reminderSeq, String month);
 }

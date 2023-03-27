@@ -1,6 +1,5 @@
 package com.ai4ai.ycc.domain.reminder.service.impl;
 
-import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.MedicineCountDto;
@@ -18,7 +17,6 @@ import com.ai4ai.ycc.error.exception.ErrorException;
 import com.ai4ai.ycc.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -152,6 +150,10 @@ public class ReminderServiceImpl implements ReminderService {
         Reminder reminder = reminderRepository.findByReminderSeqAndProfileAndDelYn(reminderSeq, profile, "N")
                 .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
 
+        if (reminder.isTaken()) {
+            throw new ErrorException(ReminderErrorCode.ALREADY_TAKEN);
+        }
+
         reminder.take();
 
         TakenRecord record = TakenRecord.builder()
@@ -161,5 +163,23 @@ public class ReminderServiceImpl implements ReminderService {
 
         takenRecordRepository.save(record);
 
+    }
+
+    @Override
+    public List<Integer> getTakenRecords(Profile profile, long reminderSeq, String month) {
+        Reminder reminder = reminderRepository.findByReminderSeqAndProfileAndDelYn(reminderSeq, profile, "N")
+                .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
+
+        LocalDate startDate = dateUtil.convertToDateFormat(month + "-01");
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+        List<TakenRecord> takenRecords = takenRecordRepository.findAllByReminderAndDateBetween(reminder, startDate, endDate);
+
+        List<Integer> result = new ArrayList<>();
+
+        for (TakenRecord takenRecord : takenRecords) {
+            result.add(takenRecord.getDate().getDayOfMonth());
+        }
+
+        return result;
     }
 }

@@ -55,6 +55,14 @@ public class ReminderController {
                 .body(responseService.getSingleResult(result));
     }
 
+    @GetMapping("/{profileLinkSeq}/{reminderSeq}/records/{month}")
+    public ResponseEntity<Result> getTakenRecords(@LoginUser Account account, @PathVariable long profileLinkSeq, @PathVariable long reminderSeq, @PathVariable String month) {
+        Profile profile = profileService.getProfile(account, profileLinkSeq);
+        List<Integer> result = reminderService.getTakenRecords(profile, reminderSeq, month);
+        return ResponseEntity.ok()
+                .body(responseService.getListResult(result));
+    }
+
     @PutMapping("/take")
     public ResponseEntity<Result> takeMedicine(@LoginUser Account account, @RequestBody TakeMedicineRequestDto requestDto) {
         Profile profile = profileService.getProfile(account, requestDto.getProfileLinkSeq());
