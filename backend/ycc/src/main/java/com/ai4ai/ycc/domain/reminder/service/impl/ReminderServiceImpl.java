@@ -3,6 +3,7 @@ package com.ai4ai.ycc.domain.reminder.service.impl;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.MedicineCountDto;
+import com.ai4ai.ycc.domain.reminder.dto.request.ModifyReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.entity.Reminder;
@@ -131,7 +132,7 @@ public class ReminderServiceImpl implements ReminderService {
                 .time(reminder.getTime())
                 .build();
 
-        List<ReminderMedicine> reminderMedicineList = reminderMedicineRepository.findAllByReminder(reminder);
+        List<ReminderMedicine> reminderMedicineList = reminderMedicineRepository.findAllByReminderAndDelYn(reminder, "N");
 
         for (ReminderMedicine reminderMedicine : reminderMedicineList) {
             long medicineSeq = reminderMedicine.getMedicineSeq();
@@ -181,5 +182,32 @@ public class ReminderServiceImpl implements ReminderService {
         }
 
         return result;
+    }
+
+    @Override
+    public void modifyReminder(Profile profile, ModifyReminderRequestDto requestDto) {
+        long reminderSeq = requestDto.getReminderSeq();
+        Reminder reminder = reminderRepository.findByReminderSeqAndProfileAndDelYn(reminderSeq, profile, "N")
+                .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
+
+        String title = requestDto.getTitle();
+        String time = requestDto.getTime();
+
+        reminder.modify(title, time);
+
+        List<ReminderMedicine> reminderMedicineList = reminderMedicineRepository.findAllByReminderAndDelYn(reminder, "N");
+        reminderMedicineList.forEach((m) -> m.remove());
+
+        List<MedicineCountDto> medicineList = requestDto.getMedicineList();
+        medicineList.forEach((m) -> {
+            log.info("[createReminder] 리마인더 등록 약: {}", m);
+            ReminderMedicine reminderMedicine = ReminderMedicine.builder()
+                    .reminder(reminder)
+                    .medicineSeq(m.getMedicineSeq())
+                    .count(m.getCount())
+                    .build();
+            reminderMedicineRepository.save(reminderMedicine);
+        });
+
     }
 }
