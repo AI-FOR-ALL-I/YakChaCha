@@ -29,7 +29,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
   }
 
   final Future<List<MyPillModel>> myPills = MyPillApi.getMyPill();
-
+  int howManyPills = 0;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -101,27 +101,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                     future: myPills,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            // 총 몇 건인지
-                            Flexible(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 20),
-                                child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("총 4건"),
-                                ),
-                              ),
-                            ),
-                            // 컴포넌트 들 -> 탭의 선택에 따라 달라져야 함
-                            Flexible(
-                              flex: 24,
-                              child: myPillList(snapshot),
-                            ),
-                          ],
-                        );
+                        return myPillList(snapshot);
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),
@@ -161,20 +141,35 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     );
   }
 
-  ListView myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
-    return ListView.separated(
-      itemCount: snapshot.data!.length,
-      separatorBuilder: (context, index) => SizedBox(),
-      itemBuilder: (context, index) {
-        var pill = snapshot.data![index];
-        print(pill.title[0]);
-        return RenewMyPill(
-          id: pill.id,
-          name: pill.name,
-          picture: pill.picture,
-          title: pill.title
-        );
-      },
+  Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+    return Column(
+      children: [
+        Flexible(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text("총 ${snapshot.data!.length.toString()}건", style: TextStyle(fontSize: 16),),
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 24,
+          child: ListView.separated(
+            itemCount: snapshot.data!.length,
+            separatorBuilder: (context, index) => SizedBox(),
+            itemBuilder: (context, index) {
+              var pill = snapshot.data![index];
+              return RenewMyPill(
+                  id: pill.id,
+                  name: pill.name,
+                  picture: pill.picture,
+                  title: pill.title);
+            },
+          ),
+        ),
+      ],
     );
   }
 

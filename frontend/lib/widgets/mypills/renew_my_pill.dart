@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/pill_details/pill_details.dart';
+import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
 import 'package:frontend/widgets/common/tag_widget.dart';
 
 class RenewMyPill extends StatelessWidget {
@@ -24,7 +24,7 @@ class RenewMyPill extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PillDetails(),
+              builder: (context) => PillDetailsForApi(),
             ));
       },
       child: AspectRatio(

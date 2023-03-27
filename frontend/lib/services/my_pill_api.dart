@@ -5,12 +5,12 @@ import 'package:http/http.dart' as http;
 
 
 class MyPillApi {
-  static const String baseUrl = "http://localhost:3001";
-  static const String medicine = "medicine";
+  static const String baseUrl = "http://localhost:3001/medicine";
+  static const String taking = "taking";
 
   static Future<List<MyPillModel>> getMyPill() async {
     List<MyPillModel> myPills = [];
-    final url = Uri.parse("$baseUrl/$medicine");
+    final url = Uri.parse("$baseUrl/$taking");
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> pills = jsonDecode(response.body);

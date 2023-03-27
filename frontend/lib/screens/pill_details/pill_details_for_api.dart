@@ -4,19 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/pill_details/pill_detail_line_state.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 
-class PillDetails extends StatefulWidget {
-  const PillDetails({super.key});
+class PillDetailsForApi extends StatelessWidget {
+  const PillDetailsForApi({super.key});
 
-  @override
-  State<PillDetails> createState() => _PillDetailsState();
-}
-
-class _PillDetailsState extends State<PillDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(title: const Text("약 상세"), centerTitle: true),
       appBar: SimpleAppBar(title: "약 상세"),
       body: ListView(
         children: [
