@@ -8,8 +8,10 @@ import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.entity.Reminder;
 import com.ai4ai.ycc.domain.reminder.entity.ReminderMedicine;
+import com.ai4ai.ycc.domain.reminder.entity.TakenRecord;
 import com.ai4ai.ycc.domain.reminder.repository.ReminderMedicineRepository;
 import com.ai4ai.ycc.domain.reminder.repository.ReminderRepository;
+import com.ai4ai.ycc.domain.reminder.repository.TakenRecordRepository;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
 import com.ai4ai.ycc.error.code.ReminderErrorCode;
 import com.ai4ai.ycc.error.exception.ErrorException;
@@ -20,11 +22,9 @@ import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Transactional
 @Service
@@ -35,6 +35,7 @@ public class ReminderServiceImpl implements ReminderService {
     private final DateUtil dateUtil;
     private final ReminderRepository reminderRepository;
     private final ReminderMedicineRepository reminderMedicineRepository;
+    private final TakenRecordRepository takenRecordRepository;
 
     @Override
     public void createReminder(Profile profile, CreateReminderRequestDto requestDto) {
@@ -143,5 +144,21 @@ public class ReminderServiceImpl implements ReminderService {
         }
 
         return result;
+    }
+
+    @Override
+    public void takeMedicine(Profile profile, long reminderSeq) {
+        Reminder reminder = reminderRepository.findByReminderSeqAndProfileAndDelYn(reminderSeq, profile, "N")
+                .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
+
+        reminder.take();
+
+        TakenRecord record = TakenRecord.builder()
+                .reminder(reminder)
+                .date(LocalDate.now())
+                .build();
+
+        takenRecordRepository.save(record);
+
     }
 }

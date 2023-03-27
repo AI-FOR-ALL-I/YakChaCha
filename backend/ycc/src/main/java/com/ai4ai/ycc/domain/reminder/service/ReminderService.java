@@ -13,4 +13,6 @@ public interface ReminderService {
     List<ReminderResponseDto> getReminderList(Profile profile);
 
     ReminderDetailResponseDto getReminderDetail(Profile profile, long reminderSeq);
+
+    void takeMedicine(Profile profile, long reminderSeq);
 }

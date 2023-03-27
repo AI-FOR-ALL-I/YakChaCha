@@ -7,6 +7,7 @@ import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
+import com.ai4ai.ycc.domain.reminder.dto.request.TakeMedicineRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderDetailResponseDto;
 import com.ai4ai.ycc.domain.reminder.dto.response.ReminderResponseDto;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
@@ -52,6 +53,14 @@ public class ReminderController {
         ReminderDetailResponseDto result = reminderService.getReminderDetail(profile, reminderSeq);
         return ResponseEntity.ok()
                 .body(responseService.getSingleResult(result));
+    }
+
+    @PutMapping("/take")
+    public ResponseEntity<Result> takeMedicine(@LoginUser Account account, @RequestBody TakeMedicineRequestDto requestDto) {
+        Profile profile = profileService.getProfile(account, requestDto.getProfileLinkSeq());
+        reminderService.takeMedicine(profile, requestDto.getReminderSeq());
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
     }
 
 
