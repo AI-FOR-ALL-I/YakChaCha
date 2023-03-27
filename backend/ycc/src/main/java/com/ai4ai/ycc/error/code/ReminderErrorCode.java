@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum ProfileErrorCode implements ErrorCode {
+public enum ReminderErrorCode implements ErrorCode {
 
-    PROFILE_NOT_FOUND("PR_001", "존재하지 않는 프로필입니다.", HttpStatus.NOT_FOUND),
+    REMINDER_ERROR_CODE("RM_000", "리마인더 에러가 발생했습니다.", HttpStatus.BAD_REQUEST),
     ;
 
     private final String code;
