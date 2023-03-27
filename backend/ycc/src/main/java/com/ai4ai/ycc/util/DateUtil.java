@@ -11,20 +11,22 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.Locale;
 
 @Component
 public class DateUtil {
 
-    private String timeFormat = "hh:mm aa";
+    private String timeFormat = "hh:mm:a";
     private String dateFormat = "yyyy-MM-dd";
     private String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
     public LocalTime convertToTimeFormat(String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timeFormat);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timeFormat, Locale.ENGLISH);
         return LocalTime.parse(time, formatter);
     }
     public String convertToStringType(LocalTime time) {
-        return time.format(DateTimeFormatter.ofPattern(timeFormat));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timeFormat, Locale.ENGLISH);
+        return time.format(formatter);
     }
 
     public LocalDate convertToDateFormat(String date) {
@@ -33,7 +35,8 @@ public class DateUtil {
     }
 
     public String convertToStringType(LocalDate date) {
-        return date.format(DateTimeFormatter.ofPattern(dateFormat));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+        return date.format(formatter);
     }
 
 }

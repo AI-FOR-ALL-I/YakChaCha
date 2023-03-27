@@ -90,19 +90,23 @@ public class ReminderServiceImpl implements ReminderService {
 
         int status = -1;
 
+        boolean found = false;
+
         for (Reminder reminder : reminderList) {
             log.info(reminder.getTime());
             LocalTime time = dateUtil.convertToTimeFormat(reminder.getTime());
             log.info("{}", time);
-            if (time.isBefore(now)) {
-                status = !reminder.isTaken() ? 1 : 2;
+            if (found) {
+                status = 4;
+            } else if (reminder.isTaken()) {
+                status = 2;
+            } else if (time.isBefore(now)) {
+                status = 1;
+            } else if (time.isBefore(now.plusHours(1))) {
+                status = 3;
+                found = true;
             } else {
-                if (isBefore) {
-                    status = 3;
-                    isBefore = false;
-                } else {
-                    status = 4;
-                }
+                status = 4;
             }
 
             resultList.add(ReminderResponseDto.builder()
