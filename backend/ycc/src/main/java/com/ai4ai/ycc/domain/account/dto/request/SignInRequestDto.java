@@ -8,5 +8,6 @@ public class SignInRequestDto {
     private String type;
     private String id;
     private String email;
+    private String deviceToken;
 
 }

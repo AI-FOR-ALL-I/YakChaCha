@@ -36,11 +36,24 @@ public class Account extends BaseAccountEntity implements UserDetails {
 
     private String refreshToken;
 
+    private String deviceToken;
+
     @Builder
-    public Account(String type, String id, String email) {
+    public Account(String type, String id, String email, String deviceToken) {
         this.type = type;
         this.id = id;
         this.email = email;
+        this.deviceToken = deviceToken;
+    }
+
+    public void login(String refreshToken, String deviceToken) {
+        this.refreshToken = refreshToken;
+        this.deviceToken = deviceToken;
+    }
+
+    public void logout() {
+        this.refreshToken = null;
+        this.deviceToken = null;
     }
 
     public void putRefreshToken(String refreshToken) {
