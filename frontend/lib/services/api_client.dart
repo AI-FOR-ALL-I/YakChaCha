@@ -9,13 +9,15 @@ final dio = Dio(
 );
 
 class ApiClient {
-  static Future<Response> login(String type, String? email, String? id) async {
+  static Future<Response> login(
+      String type, String? email, String? id, String? deviceToken) async {
     // interceptor
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     final data = {
       'type': type,
       'id': id,
       'email': email,
+      'deviceToken': deviceToken,
     };
     return dio.post(ApiConstants.login,
         data: data,
