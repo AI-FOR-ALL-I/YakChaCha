@@ -29,6 +29,7 @@ public class AccountServiceImpl implements AccountService {
         String type = requestDto.getType();
         String id = requestDto.getId();
         String email = requestDto.getEmail();
+        String deviceToken = requestDto.getDeviceToken();
 
         if (!accountRepository.existsByIdAndDelYn(id, "N")) {
             log.info("[SignIn] 새로운 계정 등록 시작");
@@ -36,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
                     .type(type)
                     .id(id)
                     .email(email)
+                    .deviceToken(deviceToken)
                     .build();
             accountRepository.save(newAccount);
             log.info("[SignIn] 새로운 계정 등록 완료");
