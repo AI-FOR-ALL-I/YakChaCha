@@ -49,7 +49,6 @@ class BottomConfirmWidget extends StatelessWidget {
                       Navigator.pop(context);
                     } else if (registerFinal != null) {
                       registerFinal!();
-                      Navigator.pop(context);
                     }
                   },
                   child: Column(

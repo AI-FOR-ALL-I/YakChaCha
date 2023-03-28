@@ -3,8 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:frontend/widgets/common/tag_picker.dart';
 
 class TextSearchPillToRgister extends StatefulWidget {
-  const TextSearchPillToRgister({Key? key, this.data}) : super(key: key);
+  const TextSearchPillToRgister(
+      {Key? key, this.data, required this.setRegisterList})
+      : super(key: key);
   final Map? data;
+  final Function setRegisterList;
 
   // {itemSeq: 2, itemName: 12, img: https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/151317992996500014, type_code: null, collide: false, warn_pregnant: false, warn_old: false, warn_age: false, collide_list: []}
 
@@ -19,18 +22,22 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
   @override
   void initState() {
     super.initState();
+
     isOpen = false;
     item = {
       'item_seq': widget.data!['itemSeq'],
-      'startDate': DateTime.now(),
-      'endDate': DateTime.now(),
-      'selectedTagList': []
+      'start_date': DateFormat('yyyy.MM.dd').format(DateTime.now()),
+      'end_date': DateFormat('yyyy.MM.dd').format(DateTime.now()),
+      'tagList': []
     };
   }
 
+  // TODO: 만약 start_date와 endDate의 크기 비교 필요(둘중 하나를 설정하면, 그거 이전 이후로 나머지의 범위를 설정하느 방법도,...)
+  // TODO: 새 태그를 만들었을 시, 태그를 바로 위에 입력되게하는 로직 필요
   setTagList(data) {
     setState(() {
-      item['selectedTagList'] = data;
+      item['tagList'] = data;
+      widget.setRegisterList(item, item['item_seq']);
     });
   }
 
@@ -53,8 +60,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                        '${DateFormat('yyyy.MM.dd').format(item['startDate'])} 부터'),
+                    Text('${item['start_date']} 부터'),
                     GestureDetector(
                       onTap: () {
                         showDatePicker(
@@ -65,7 +71,8 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                         ).then((selectedDate) {
                           if (selectedDate != null) {
                             setState(() {
-                              item['startDate'] = selectedDate;
+                              item['start_date'] =
+                                  DateFormat('yyyy.MM.dd').format(selectedDate);
                             });
                           }
                         });
@@ -74,8 +81,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                         Icons.date_range_outlined,
                       ),
                     ),
-                    Text(
-                        '${DateFormat('yyyy.MM.dd').format(item['endDate'])} 까지'),
+                    Text('${item['end_date']} 까지'),
                     GestureDetector(
                       onTap: () {
                         showDatePicker(
@@ -86,7 +92,8 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                         ).then((selectedDate) {
                           if (selectedDate != null) {
                             setState(() {
-                              item['endDate'] = selectedDate;
+                              item['end_date'] =
+                                  DateFormat('yyyy.MM.dd').format(selectedDate);
                             });
                           }
                         });

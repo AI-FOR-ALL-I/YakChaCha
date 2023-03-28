@@ -39,6 +39,16 @@ class ApiClient {
         options: Options(headers: {'Authorization': ApiConstants.TOKEN}));
   }
 
+  // 알약 등록
+  static Future<Response> pillRegister(List data) async {
+    return dio.post(ApiConstants.pillRegister,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorzation': ApiConstants.TOKEN
+        }),
+        data: data);
+  }
+
   // 알람 등록
 
   // 호출방법은 아래와 같은 방법인듯.

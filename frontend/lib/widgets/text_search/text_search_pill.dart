@@ -14,6 +14,7 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.data);
     bool isWarning = true;
     return AspectRatio(
       aspectRatio: 1.2 / 1,
@@ -33,10 +34,15 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                     flex: 2,
                     child: Stack(
                       children: [
-                        Image.asset(
-                          'assets/images/defaultPill.png',
-                          fit: BoxFit.fitWidth,
-                        ),
+                        widget.data?['img'] == null
+                            ? Image.asset(
+                                'assets/images/defaultPill.png',
+                                fit: BoxFit.fitWidth,
+                              )
+                            : Image.network(
+                                '${widget.data?['img']}',
+                                fit: BoxFit.fitWidth,
+                              ),
                         if (widget.data?['collide'] ||
                             widget.data?['warn_pregnant'] ||
                             widget.data?['warn_old'] ||

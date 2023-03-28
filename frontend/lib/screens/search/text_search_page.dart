@@ -81,7 +81,16 @@ class _TextSearchPageState extends State<TextSearchPage> {
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
                   itemBuilder: (BuildContext context, int index) {
-                    return TextSearchPillComponent(data: searchResult[index]);
+                    return GestureDetector(
+                        onTap: () {
+                          // Navigator.pop(context);
+                          Navigator.pop(
+                              context,
+                              searchResult[
+                                  index]); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
+                        },
+                        child:
+                            TextSearchPillComponent(data: searchResult[index]));
                   },
                 ),
               ),
