@@ -7,18 +7,18 @@ import 'package:frontend/widgets/common/tag_widget.dart';
 class RenewMyPill extends StatelessWidget {
   final String id, name, picture;
   final List title;
-
+  final bool isTaken;
   const RenewMyPill({
     super.key,
     required this.id,
     required this.name,
     required this.picture,
     required this.title,
+    required this.isTaken,
   });
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -85,10 +85,12 @@ class RenewMyPill extends StatelessWidget {
                 ),
               )),
               Container(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [Text('d-3')],
-              )),
+                  child: isTaken
+                      ? SizedBox()
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [Text('d-3')],
+                        )),
             ], // 여기가 Row
           ),
         ),

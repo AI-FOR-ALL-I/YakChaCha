@@ -4,7 +4,7 @@ import 'package:frontend/models/pill_detail_model.dart';
 import 'package:http/http.dart' as http;
 
 class PillDetailApi {
-  static const String baseUrl = "http://localhost:3001/medicine";
+  static const String baseUrl = "http://10.0.2.2:3001/medicine";
   static const String detail = "detail";
 
   static Future<PillDetailModel> getPillDetail(pillNum) async {

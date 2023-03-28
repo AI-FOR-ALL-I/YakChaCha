@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/my_pill_model.dart';
 import 'package:frontend/services/my_pill_api.dart';
+import 'package:frontend/services/taken_pill_api.dart';
 import 'package:frontend/widgets/mypills/my_pill.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 
@@ -29,6 +30,8 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
   }
 
   final Future<List<MyPillModel>> myPills = MyPillApi.getMyPill();
+  final Future<List<MyPillModel>> takenPills = TakenPillApi.getTakenPill();
+
   int howManyPills = 0;
   @override
   Widget build(BuildContext context) {
@@ -109,35 +112,41 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                       }
                     },
                   )
-                : Column(
-                    children: [
-                      Column(
-                        children: [
-                          Text("복용 끝"),
-                          MyPill(
-                            isAlarmRegister: false,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("복용 끝"),
-                          MyPill(
-                            isAlarmRegister: false,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("복용 끝"),
-                          MyPill(
-                            isAlarmRegister: false,
-                          ),
-                        ],
-                      ),
-                    ],
-                  )),
+                : FutureBuilder(
+                    future: takenPills,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return takenPillList(snapshot);
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    })),
       ],
+    );
+  }
+
+  ListView takenPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+    return ListView.separated(
+      itemCount: snapshot.data!.length,
+      separatorBuilder: (context, index) => SizedBox(),
+      itemBuilder: (context, index) {
+        var pill = snapshot.data![index];
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text("복용 끝"),
+            RenewMyPill(
+              id: pill.id,
+              name: pill.name,
+              picture: pill.picture,
+              title: pill.title,
+              isTaken: true,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -150,7 +159,10 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             child: Container(
               alignment: Alignment.centerLeft,
-              child: Text("총 ${snapshot.data!.length.toString()}건", style: TextStyle(fontSize: 16),),
+              child: Text(
+                "총 ${snapshot.data!.length.toString()}건",
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ),
         ),
@@ -162,10 +174,12 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
             itemBuilder: (context, index) {
               var pill = snapshot.data![index];
               return RenewMyPill(
-                  id: pill.id,
-                  name: pill.name,
-                  picture: pill.picture,
-                  title: pill.title);
+                id: pill.id,
+                name: pill.name,
+                picture: pill.picture,
+                title: pill.title,
+                isTaken: false,
+              );
             },
           ),
         ),
