@@ -7,8 +7,8 @@ class ApiConstants {
   // base url
   static const String baseurl = 'https://j8a803.p.ssafy.io/api';
   // 계정
-  static const String login = '$baseurl/sign-in';
-  static const String logout = '$baseurl/sign-out';
+  static const String login = '$baseurl/account/sign-in';
+  static const String logout = '$baseurl/account/sign-out';
 
   // 검색
   static const String search = '$baseurl/medicine/search';
