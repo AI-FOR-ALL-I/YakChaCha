@@ -43,6 +43,8 @@ public class Medicine {
 	@Column(length = 255)
 	private String classNo;
 
+	@Column
+	private String ediCode;
 	@Column(length = 83)
 	private String validTerm;
 	@Column(length = 618)
