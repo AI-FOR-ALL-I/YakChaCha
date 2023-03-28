@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,8 @@ import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDetailDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
+import com.ai4ai.ycc.domain.medicine.dto.MedicineTakingDto;
+import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
 import com.ai4ai.ycc.domain.medicine.service.MedicineService;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
@@ -56,6 +60,21 @@ public class MedicineController {
                 .body(responseService.getSingleResult(medicine));
     }
 
+    @GetMapping("/taking")
+    public ResponseEntity<Result> showMyTakingList(@RequestParam Long profileLinkSeq, @LoginUser Account account){
+        Profile profile=profileService.getProfile(account, profileLinkSeq);
+        List<MedicineTakingDto> output = medicineService.searchTakingMedicine(profile);
+        return ResponseEntity.ok()
+            .body(responseService.getListResult(output));
+    }
+
+    @PostMapping("/taking")
+    public ResponseEntity<Result> registMedicine(@RequestBody List<RegistRequestDto> requestDto, @RequestParam Long profileLinkSeq, @LoginUser Account account) {
+        Profile profile=profileService.getProfile(account, profileLinkSeq);
+        Boolean response = medicineService.regist(requestDto,profile);
+        return ResponseEntity.ok()
+            .body(responseService.getSingleResult(response));
+    }
     @GetMapping("/test")
     public ResponseEntity<Result> test() {
         return ResponseEntity.ok()
