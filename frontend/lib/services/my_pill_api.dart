@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 
 
 class MyPillApi {
-  static const String baseUrl = "http://localhost:3001/medicine";
-  static const String taking = "taking";
+  static const String baseUrl = "http://localhost:3001";
+  static const String taking = "medicineTaking";
 
   static Future<List<MyPillModel>> getMyPill() async {
     List<MyPillModel> myPills = [];
