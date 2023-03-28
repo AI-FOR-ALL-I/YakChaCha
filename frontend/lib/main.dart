@@ -1,11 +1,13 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/bottom_navigation.dart';
+import 'package:frontend/screens/login/social_login.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
-  //KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
+  KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.instance.getToken().then((String? token) {
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
             onSurface: Color(0xFF848293)), // Point-Purple
       ), // color:Theme.of(context).colorScheme.primary
       title: 'bottomNavigationBar Test',
-      home: const BottomNavigation(),
+      home: const SocialLogin(),
     );
   }
 }
