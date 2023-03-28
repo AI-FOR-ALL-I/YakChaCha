@@ -24,7 +24,7 @@ class RenewMyPill extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PillDetailsForApi(),
+              builder: (context) => PillDetailsForApi(num: id),
             ));
       },
       child: AspectRatio(
