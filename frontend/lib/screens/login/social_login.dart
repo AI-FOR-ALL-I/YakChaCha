@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/bottom_navigation.dart';
+import 'package:frontend/screens/profile/create_profile_page.dart';
+import 'package:frontend/services/api_client.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:dio/dio.dart';
 
 class SocialLogin extends StatelessWidget {
   const SocialLogin({Key? key}) : super(key: key);
 
-  void _get_user_info() async {
+  void getUserInfo(BuildContext context) async {
     try {
-      AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
-      print('토큰 정보 보기 성공'
-          '\n회원정보: ${tokenInfo.id}'
-          '\n만료시간: ${tokenInfo.expiresIn} 초');
       User user = await UserApi.instance.me();
-      print('사용자 정보 요청 성공'
-          '\n회원번호: ${user.id}'
-          '\n이메일:${user.kakaoAccount?.email}'
-          '\n닉네임: ${user.kakaoAccount?.profile?.nickname}');
+      Response response = await ApiClient.login(
+          'KAKAO', user.kakaoAccount?.email, user.id.toString());
+      if (response.statusCode == 200) {
+        // 요청 성공!
+        Map<String, dynamic> responseData = response.data;
+        if (responseData['data']['profile'] == true) {
+          // navigate to ProfileSelectPage
+        } else {
+          // navigate to CreateProfilePage
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CreateProfilePage()));
+        }
+      }
+      // print('Response check $response');
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
@@ -22,40 +34,66 @@ class SocialLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Container(
-            color: Colors.white,
-            child: Center(
-                child: TextButton(
-                    child: const Text("카카오 로그인"),
-                    onPressed: () async {
-                      if (await isKakaoTalkInstalled()) {
-                        try {
-                          await UserApi.instance.loginWithKakaoTalk();
-                          print('카카오톡으로 로그인 성공');
-                          _get_user_info();
-                        } catch (error) {
-                          print('카카오톡으로 로그인 실패 $error');
-                          // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
-                          try {
-                            OAuthToken token =
-                                await UserApi.instance.loginWithKakaoAccount();
-                            //print('카카오계정으로 로그인 성공');
-                            print('카카오계정으로 로그인 성공 ${token.accessToken}');
-                            _get_user_info();
-                          } catch (error) {
-                            print('카카오계정으로 로그인 실패 $error');
-                          }
-                        }
-                      } else {
-                        try {
-                          await UserApi.instance.loginWithKakaoAccount();
-                          print('카카오계정으로 로그인 성공');
-                          _get_user_info();
-                        } catch (error) {
-                          print('카카오계정으로 로그인 실패 $error');
-                        }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: GestureDetector(
+                  onTap: () async {
+                    // do something on
+                    // MARK: - 임시로 홈화면으로 이동해주는 버튼으로 설정
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNavigation()),
+                    );
+                  },
+                  child: Image.asset(
+                    'assets/images/sampletips.jpg',
+                    width: 100.0,
+                    height: 100.0,
+                  )),
+            ),
+            GestureDetector(
+                onTap: () async {
+                  // do something on
+                  if (await isKakaoTalkInstalled()) {
+                    try {
+                      await UserApi.instance.loginWithKakaoTalk();
+                      print('설치된 카카오톡으로 로그인 성공');
+                      getUserInfo(context);
+                    } catch (error) {
+                      print('설치된 카카오톡으로 로그인 실패 $error');
+                      // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+                      try {
+                        OAuthToken token =
+                            await UserApi.instance.loginWithKakaoAccount();
+                        //print('카카오계정으로 로그인 성공');
+                        print('웹에서 카카오계정으로 로그인 성공 ${token.accessToken}');
+                        getUserInfo(context);
+                      } catch (error) {
+                        print('웹에서 카카오계정으로 로그인 실패 $error');
                       }
-                    }))));
+                    }
+                  } else {
+                    try {
+                      await UserApi.instance.loginWithKakaoAccount();
+                      print('카카오계정으로 로그인 성공');
+                      getUserInfo(context);
+                    } catch (error) {
+                      print('카카오계정으로 로그인 실패 $error');
+                    }
+                  }
+                },
+                child: Image.asset('assets/images/kakao_login_large.png')),
+            //TextButton(child: const Text("카카오 로그인"), onPressed: () async {})
+          ],
+        ),
+      ),
+    );
   }
 }
