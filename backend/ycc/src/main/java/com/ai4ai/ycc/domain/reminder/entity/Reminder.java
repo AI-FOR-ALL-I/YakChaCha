@@ -44,5 +44,7 @@ public class Reminder extends BaseEntity {
         this.time = time;
     }
 
-
+    public void reset() {
+        this.taken = false;
+    }
 }

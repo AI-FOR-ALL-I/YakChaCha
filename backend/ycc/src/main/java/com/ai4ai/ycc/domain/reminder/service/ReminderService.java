@@ -24,4 +24,6 @@ public interface ReminderService {
     void removeReminder(Profile profile, long reminderSeq);
 
     NextReminderResponseDto getNextReminder(Profile profile);
+
+    void resetReminder();
 }
