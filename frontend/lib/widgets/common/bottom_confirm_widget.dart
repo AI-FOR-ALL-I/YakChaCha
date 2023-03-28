@@ -5,11 +5,14 @@ import 'package:frontend/controller/alarm_pill_controller.dart';
 class BottomConfirmWidget extends StatelessWidget {
   final bool isAlarm;
   final List? tempList;
-  const BottomConfirmWidget(
-      {Key? key,
-      required this.isAlarm,
-      this.tempList}) // Alarm 생성/수정 페이지면 true, 약 선택 화면이면 false
-      : super(key: key);
+  final Function? registerFinal;
+  const BottomConfirmWidget({
+    Key? key,
+    required this.isAlarm,
+    this.tempList,
+    this.registerFinal,
+  }) // Alarm 생성/수정 페이지면 true, 약 선택 화면이면 false
+  : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +44,13 @@ class BottomConfirmWidget extends StatelessWidget {
             : Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 GestureDetector(
                   onTap: () {
-                    controller.add(tempList);
-                    Navigator.pop(context);
+                    if (tempList != null) {
+                      controller.add(tempList);
+                      Navigator.pop(context);
+                    } else if (registerFinal != null) {
+                      registerFinal!();
+                      Navigator.pop(context);
+                    }
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

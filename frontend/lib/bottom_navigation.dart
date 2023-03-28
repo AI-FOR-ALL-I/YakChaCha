@@ -26,9 +26,62 @@ class _BottomNavigationState extends State<BottomNavigation> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 2) {
+      // 알약 등록용 다이얼로그
+      showDialog(
+          context: context,
+          builder: (BuildContext constext) {
+            return Dialog(
+                child: Container(
+              height: 200.0,
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext constext) {
+                              return Dialog(
+                                child: Container(
+                                  height: 200.0,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('사진 촬영'),
+                                      Text('앨범에서 가져오기')
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      child: Text('알약 사진으로 등록')),
+                  Text('처방전 사진으로 등록'),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterPage()),
+                        );
+                      },
+                      child: Text('텍스트 검색으로 등록'))
+                ],
+              ),
+            ));
+          });
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
