@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/bottom_navigation.dart';
+import 'package:frontend/screens/profile/create_profile_page.dart';
 import 'package:frontend/services/api_client.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:dio/dio.dart';
@@ -7,22 +8,22 @@ import 'package:dio/dio.dart';
 class SocialLogin extends StatelessWidget {
   const SocialLogin({Key? key}) : super(key: key);
 
-  void getUserInfo() async {
+  void getUserInfo(BuildContext context) async {
     try {
       User user = await UserApi.instance.me();
-      // print('사용자 정보 요청 성공'
-      //     '\n회원번호: ${user.id}'
-      //     '\n이메일:${user.kakaoAccount?.email}'
-      //     '\n닉네임: ${user.kakaoAccount?.profile?.nickname}');
       Response response = await ApiClient.login(
           'KAKAO', user.kakaoAccount?.email, user.id.toString());
       if (response.statusCode == 200) {
         // 요청 성공!
         Map<String, dynamic> responseData = response.data;
         if (responseData['data']['profile'] == true) {
-          // 프로필 생성된 적 있기 때문에 바로 프로필 선택화면으로 넘어갑니다요
+          // navigate to ProfileSelectPage
         } else {
-          // 없으니까 프로필 생성화면으로 move...
+          // navigate to CreateProfilePage
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CreateProfilePage()));
         }
       }
       // print('Response check $response');
@@ -64,7 +65,7 @@ class SocialLogin extends StatelessWidget {
                     try {
                       await UserApi.instance.loginWithKakaoTalk();
                       print('설치된 카카오톡으로 로그인 성공');
-                      getUserInfo();
+                      getUserInfo(context);
                     } catch (error) {
                       print('설치된 카카오톡으로 로그인 실패 $error');
                       // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
@@ -73,7 +74,7 @@ class SocialLogin extends StatelessWidget {
                             await UserApi.instance.loginWithKakaoAccount();
                         //print('카카오계정으로 로그인 성공');
                         print('웹에서 카카오계정으로 로그인 성공 ${token.accessToken}');
-                        getUserInfo();
+                        getUserInfo(context);
                       } catch (error) {
                         print('웹에서 카카오계정으로 로그인 실패 $error');
                       }
@@ -82,7 +83,7 @@ class SocialLogin extends StatelessWidget {
                     try {
                       await UserApi.instance.loginWithKakaoAccount();
                       print('카카오계정으로 로그인 성공');
-                      getUserInfo();
+                      getUserInfo(context);
                     } catch (error) {
                       print('카카오계정으로 로그인 실패 $error');
                     }
