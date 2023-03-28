@@ -13,7 +13,7 @@ class SocialLogin extends StatelessWidget {
 
   void getUserInfo(BuildContext context) async {
     //Get.put(FirebaseController());
-    //Get.put(AuthController());
+    Get.put(AuthController());
     final firebaseController = Get.find<FirebaseController>();
     final authController = Get.find<AuthController>();
     final firebaseToken = firebaseController.firebaseToken;
