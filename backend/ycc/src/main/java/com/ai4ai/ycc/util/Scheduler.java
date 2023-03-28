@@ -24,7 +24,7 @@ public class Scheduler {
         reminderService.resetReminder();
     }
 
-    @Scheduled(cron = "0 0/1 * * * *")
+//    @Scheduled(cron = "0 0/1 * * * *")
     public void test() throws Exception {
         log.warn("TEST!!! {}", LocalDateTime.now());
 //        fcmUtil.sendFcmMessage(token, "누구게!!", "맞춰봐!!");
