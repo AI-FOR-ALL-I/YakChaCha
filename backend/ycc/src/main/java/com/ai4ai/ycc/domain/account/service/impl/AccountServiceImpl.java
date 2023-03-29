@@ -28,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
 
         String type = requestDto.getType();
         String id = requestDto.getId();
+        String name = requestDto.getName();
         String email = requestDto.getEmail();
         String deviceToken = requestDto.getDeviceToken();
 
@@ -36,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
             Account newAccount = Account.builder()
                     .type(type)
                     .id(id)
+                    .name(name)
                     .email(email)
                     .deviceToken(deviceToken)
                     .build();

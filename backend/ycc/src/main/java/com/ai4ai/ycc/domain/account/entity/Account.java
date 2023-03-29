@@ -32,6 +32,9 @@ public class Account extends BaseAccountEntity implements UserDetails {
     private String id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String email;
 
     private String refreshToken;
@@ -39,9 +42,10 @@ public class Account extends BaseAccountEntity implements UserDetails {
     private String deviceToken;
 
     @Builder
-    public Account(String type, String id, String email, String deviceToken) {
+    public Account(String type, String id, String name, String email, String deviceToken) {
         this.type = type;
         this.id = id;
+        this.name = name;
         this.email = email;
         this.deviceToken = deviceToken;
     }
