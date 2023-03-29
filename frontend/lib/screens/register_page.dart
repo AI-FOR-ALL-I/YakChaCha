@@ -85,12 +85,19 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               if (controller.displayList.isNotEmpty)
                 Expanded(
-                    child: ListView(
-                        children: controller.displayList
-                            .map((pill) => TextSearchPillToRgister(data: pill))
-                            .toList()))
+                    child: ListView(children: [
+                  ...controller.displayList
+                      .map((pill) => TextSearchPillToRgister(data: pill))
+                      .toList(),
+                  SizedBox(height: 100)
+                ]))
             ],
-          )
+          ),
+          if (controller.displayList.isNotEmpty)
+            Positioned(
+                child: BottomConfirmWidget(
+                    isAlarm: false, confirm: controller.dioRequest),
+                bottom: 0)
         ]);
       }),
     );

@@ -14,6 +14,7 @@ final dio = Dio(
 
 class ApiPillRegister {
   static Future<Response> pillRegister(List data) async {
+    print('dio');
     return dio.post(ApiConstants.pillRegister,
         options: Options(headers: {
           'Content-Type': 'application/json',

@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:frontend/services/api_pill_register.dart';
+import 'dart:convert';
 
 class PillRegisterController extends GetxController {
   List displayList = [];
@@ -133,8 +134,15 @@ class PillRegisterController extends GetxController {
   }
 
   // TODO: 여기서 dio 요청보내기
-  void dioRequest() {
-    // ApiPillRegister.pillRegister(data: registerList);
+  Future<void> dioRequest() async {
+    print('controller');
+    try {
+      dio.Response response = await ApiPillRegister.pillRegister(registerList);
+      Map<String, dynamic> data = response.data;
+      return data['data'];
+    } catch (e) {
+      print(e);
+    }
   }
 
   // 특정 기준 오름차순 정렬
