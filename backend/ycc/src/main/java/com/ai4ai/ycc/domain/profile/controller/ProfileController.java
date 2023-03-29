@@ -4,14 +4,12 @@ import com.ai4ai.ycc.common.annotation.LoginUser;
 import com.ai4ai.ycc.common.response.ResponseService;
 import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
-import com.ai4ai.ycc.domain.profile.dto.request.CallProfileLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -70,14 +68,6 @@ public class ProfileController {
         profileLinkService.removeProfile(account, profileLinkSeq);
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
-    }
-
-    @PostMapping("/link")
-    public ResponseEntity<Result> callProfileLink(@LoginUser Account account, @RequestBody CallProfileLinkRequestDto requestDto) {
-        log.info("[callProfileLink] 프로필 연동 요청 API 호출");
-        long receiver = profileLinkService.callProfileLink(account, requestDto);
-        return ResponseEntity.ok()
-                .body(responseService.getSingleResult(receiver));
     }
 
 }

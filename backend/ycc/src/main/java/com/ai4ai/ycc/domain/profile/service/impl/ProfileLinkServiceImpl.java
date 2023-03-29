@@ -3,9 +3,14 @@ package com.ai4ai.ycc.domain.profile.service.impl;
 import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
-import com.ai4ai.ycc.domain.profile.dto.request.CallProfileLinkRequestDto;
+import com.ai4ai.ycc.domain.profile.dto.RequestLinkDto;
+import com.ai4ai.ycc.domain.profile.dto.request.AcceptLinkRequestDto;
+import com.ai4ai.ycc.domain.profile.dto.request.SendLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
+import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
+import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
+import com.ai4ai.ycc.domain.profile.dto.response.ProfileLinkResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
@@ -19,6 +24,7 @@ import com.ai4ai.ycc.util.DateUtil;
 
 import java.util.*;
 
+import com.ai4ai.ycc.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +42,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
     private final ProfileRepository profileRepository;
     private final ProfileLinkRepository profileLinkRepository;
     private final DateUtil dateUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     public void createProfileLink(Account account, Profile profile, CreateProfileRequestDto requestDto) {
@@ -175,14 +182,155 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
     }
 
     @Override
-    public long callProfileLink(Account sender, CallProfileLinkRequestDto requestDto) {
+    public void sendLink(Account sender, SendLinkRequestDto requestDto) {
         String email = requestDto.getEmail();
 
         Account receiver = accountRepository.findByEmailAndDelYn(email, "N")
                 .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
 
+        if (sender.getAccountSeq() == receiver.getAccountSeq()) {
+            throw new ErrorException(AccountErrorCode.YOUR_ACCOUNT);
+        }
+
+        RequestLinkDto requestLinkDto = RequestLinkDto.builder()
+                .sender(RequestLinkDto.Account.builder()
+                        .accountSeq(sender.getAccountSeq())
+                        .name(sender.getName())
+                        .build())
+                .receiver(RequestLinkDto.Account.builder()
+                        .accountSeq(receiver.getAccountSeq())
+                        .name(receiver.getName())
+                        .build())
+                .build();
+
+        String key = "requestLink:" + sender.getAccountSeq();
+        redisUtil.setex(key, requestLinkDto, 1800);
+
         // 푸시 알림 보내기
 
-        return receiver.getAccountSeq();
+//        log.info("[link] redis 조회 시작");
+//        LinkDto getLinkDto = redisUtil.get(key, LinkDto.class);
+//        log.info("[link] redis 조회 완료");
+
+    }
+
+    @Override
+    public ConfirmLinkResponseDto confirmLink(Account account, long senderAccountSeq) {
+        Account sender = accountRepository.findByAccountSeqAndDelYn(senderAccountSeq, "N")
+                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+
+        String key = "requestLink:" + senderAccountSeq;
+
+        log.info("[confirmLink] redis 조회 시작");
+        RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
+        log.info("[confirmLink] redis 조회 완료");
+
+        if (requestLink == null || requestLink.getStatus() != 1 || requestLink.getReceiver().getAccountSeq() != account.getAccountSeq()) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
+        }
+
+        String senderAccountName = requestLink.getSender().getName();
+
+        log.info("[confirmLink] 요청 목록 조회");
+        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountAndDelYn(account, "N");
+        log.info("[confirmLink] ProfileLink 목록 조회 완료 > {}", profileLinkList);
+
+        List<ProfileLinkResponseDto> profiles = new ArrayList<>();
+
+        for (ProfileLink profileLink : profileLinkList) {
+            log.info("[confirmLink] Profile 조회 시작");
+            Profile profile = profileLink.getProfile();
+            log.info("[confirmLink] Profile 조회 완료 > {}", profile);
+
+            int status = 0;
+
+            boolean isOwner = account.getAccountSeq() == profileLink.getOwner().getAccountSeq();
+
+            if (isOwner) {
+                if (!profileLinkRepository.existsByAccountAndOwnerAndDelYn(sender, account, "Y")) {
+                    log.info("[confirmLink] 연동 가능한 프로필입니다.");
+                    status = 1;
+                } else {
+                    log.info("[confirmLink] 상대방이 이미 연동중인 프로필입니다.");
+                    status = 2;
+                }
+            } else {
+                log.info("[confirmLink] 본인 프로필이 아닙니다.");
+            }
+
+            log.info("[confirmLink] Profile 추가 시작");
+            profiles.add(ProfileLinkResponseDto.builder()
+                    .profileLinkSeq(profileLink.getProfileLinkSeq())
+                    .imgCode(profileLink.getImgCode())
+                    .nickname(profileLink.getNickname())
+                    .name(profile.getName())
+                    .gender(profile.getGender())
+                    .isPregnancy(profile.isPregnancy())
+                    .birthDate(dateUtil.convertToStringType(profile.getBirthDate()))
+                    .status(status)
+                    .build());
+            log.info("[confirmLink] Profile 추가 완료");
+        }
+
+        log.info("[confirmLink] 프로필 목록 조회 완료");
+
+        log.info("[confirmLink] 요청 목록 완료");
+
+        return ConfirmLinkResponseDto.builder()
+                .senderAccountSeq(senderAccountSeq)
+                .senderAccountName(senderAccountName)
+                .profiles(profiles)
+                .build();
+    }
+
+    @Override
+    public void acceptLink(Account account, long senderAccountSeq, AcceptLinkRequestDto requestDto) {
+        List<Integer> profiles = requestDto.getProfiles();
+
+        String key = "requestLink:" + senderAccountSeq;
+
+        log.info("[confirmLink] redis 조회 시작");
+        RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
+        log.info("[confirmLink] redis 조회 완료");
+
+        if (requestLink == null || requestLink.getStatus() != 1 || requestLink.getReceiver().getAccountSeq() != account.getAccountSeq()) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
+        }
+
+        String authNumber = generateAuthNumber();
+        requestLink.accept(profiles, authNumber);
+        
+        log.info("[confirmLink] redis 저장 시작");
+        redisUtil.setex(key, requestLink, 180);
+        log.info("[confirmLink] redis 저장 시작");
+        
+    }
+
+    @Override
+    public FindAuthNumberResponseDto findAuthNumber(Account account, long senderAccountSeq) {
+        String key = "requestLink:" + senderAccountSeq;
+
+        log.info("[confirmLink] redis 조회 시작");
+        RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
+        log.info("[confirmLink] redis 조회 완료");
+
+        if (requestLink == null || requestLink.getStatus() != 2 || requestLink.getReceiver().getAccountSeq() != account.getAccountSeq()) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
+        }
+
+        String senderName = requestLink.getSender().getName();
+        String authNumber = requestLink.getAuthNumber();
+
+        return FindAuthNumberResponseDto.builder()
+                .senderName(senderName)
+                .authNumber(authNumber)
+                .build();
+    }
+
+    public String generateAuthNumber() {
+        log.info("[generateAuthNumber] 인증번호 생성 시작");
+        int authNumber = (int)(Math.random() * 900000) + 100000;
+        log.info("[generateAuthNumber] 인증번호 생성 완료");
+        return String.valueOf(authNumber);
     }
 }

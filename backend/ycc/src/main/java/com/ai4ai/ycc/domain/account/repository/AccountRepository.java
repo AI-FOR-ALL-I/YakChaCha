@@ -13,4 +13,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByIdAndDelYn(String id, String delYn);
 
     Optional<Account> findByEmailAndDelYn(String email, String delYn);
+
+    Optional<Account> findByAccountSeqAndDelYn(long accountSeq, String n);
 }
