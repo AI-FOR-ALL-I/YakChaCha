@@ -28,8 +28,8 @@ class HomePage extends StatelessWidget {
               removeTop: true,
               child: ListView(
                 children: [
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       Padding(
                         padding: EdgeInsets.all(15.0),
                         child: Text(
