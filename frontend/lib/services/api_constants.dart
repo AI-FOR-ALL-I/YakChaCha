@@ -10,6 +10,9 @@ class ApiConstants {
   static const String login = '$baseurl/accounts/sign-in';
   static const String logout = '$baseurl/accounts/sign-out';
 
+  // 프로필
+  static const String createProfile = '$baseurl/profiles'; // 생성
+  static const String getProfiles = '$baseurl/profiles'; // 조회
   // 검색
   static const String search = '$baseurl/medicine/search';
 }
