@@ -12,11 +12,11 @@ public class MedicineDto {
     private Long itemSeq;
     private String itemName;
     private String img;
-    private String type_code;
+    private String typeCode;
     private boolean collide;
-    private boolean warn_pregnant;
-    private boolean warn_old;
-    private boolean warn_age;
-    private List collide_list;
+    private boolean warnPregnant;
+    private boolean warnOld;
+    private boolean warnAge;
+    private List collideList;
 
 }

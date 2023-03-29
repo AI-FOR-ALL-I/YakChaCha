@@ -33,5 +33,6 @@ public class MedicineDetailDto {
     private boolean isMine;
     private String startDate;
     private String endDate;
-    private List<String> collide_list;
+    private List<String> collideList;
+    private List<List<String>> tagList;
 }

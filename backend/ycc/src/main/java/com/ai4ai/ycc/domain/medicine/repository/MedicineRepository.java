@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ai4ai.ycc.domain.medicine.entity.Medicine;
 
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
-    List<Medicine> findByItemNameLike(String input);
-    List<Medicine> findByEdiCodeLike(String input);
+    List<Medicine> findAllByItemNameLike(String input);
+    List<Medicine> findAllByEdiCodeLike(String input);
 
     @EntityGraph(attributePaths = "detail")
     Medicine findByItemSeq(long itemSeq);
