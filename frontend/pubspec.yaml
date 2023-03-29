@@ -46,7 +46,7 @@ dependencies:
     shared_preferences: ^2.0.20
     # flutter_kakao_map: ^0.0.4
     kakaomap_webview: ^0.6.2
-    webview_flutter: ^4.0.7
+    webview_flutter: ^3.0.2
 
 
 dev_dependencies:

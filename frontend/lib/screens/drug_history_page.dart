@@ -141,7 +141,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
               itemSeq: pill.itemSeq,
               itemName: pill.itemName,
               img: pill.img,
-              tag_list: pill.tag_list,
+              tag_list: pill.tagList,
               isTaken: true,
             ),
           ],
@@ -177,7 +177,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                 itemSeq: pill.itemSeq,
                 itemName: pill.itemName,
                 img: pill.img,
-                tag_list: pill.tag_list,
+                tag_list: pill.tagList,
                 isTaken: false,
               );
             },
