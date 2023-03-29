@@ -20,43 +20,31 @@ class _SelectProfilePage extends State<SelectProfilePage> {
           child: ListView(
             children: const [
               ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
+                  imagePath: 'assets/images/sampletips.jpg',
                   title: '유저이름',
                   description: '아세트아미노펜'),
               ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
+                  imagePath: 'assets/images/sampletips.jpg',
                   title: '타이레놀',
                   description: '아세트아미노펜'),
               ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
+                  imagePath: 'assets/images/sampletips.jpg',
                   title: '타이레놀',
                   description: '아세트아미노펜'),
               ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
+                  imagePath: 'assets/images/sampletips.jpg',
                   title: '타이레놀',
                   description: '아세트아미노펜'),
               ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
+                  imagePath: 'assets/images/sampletips.jpg',
                   title: '타이레놀',
                   description: '아세트아미노펜'),
               ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
+                  imagePath: 'assets/images/sampletips.jpg',
                   title: '타이레놀',
                   description: '아세트아미노펜'),
               ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
-                  title: '타이레놀',
-                  description: '아세트아미노펜'),
-              ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
-                  title: '타이레놀',
-                  description: '아세트아미노펜'),
-              ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
-                  title: '타이레놀',
-                  description: '아세트아미노펜'),
-              ProfileInfo(
-                  imagePath: 'assets/images/pills.png',
+                  imagePath: 'assets/images/sampletips.jpg',
                   title: '타이레놀',
                   description: '아세트아미노펜'),
             ],

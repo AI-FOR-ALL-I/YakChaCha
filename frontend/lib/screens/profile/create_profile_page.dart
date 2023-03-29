@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/bottom_navigation.dart';
 import 'package:frontend/screens/profile/select_profile_image_page.dart';
+import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/text_field.dart';
 import 'package:frontend/widgets/profile/birth_date_widget.dart';
+import 'package:dio/dio.dart';
 
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({super.key});
@@ -37,6 +40,35 @@ class _CreateProfilePage extends State<CreateProfilePage> {
     setState(() {
       nickname = newNick ?? '';
     });
+  }
+
+  void sendDataToServer(BuildContext context) async {
+    try {
+      if (!isMale) {
+        gender = 'F';
+      } else {
+        gender = 'M';
+      }
+      Response response = await ApiProfiles.createProfile(
+          name, gender, isPregnant, initBirthDate, nickname, 1);
+      // 이미지 코드는 지금 임의로 1로 보내는중입니다.
+      // TODO: - 이미지 코드 설정
+      if (response.statusCode == 200) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const BottomNavigation()));
+      }
+    } catch (error) {
+      print('사용자 정보 요청 실패 $error');
+    }
+    // http.post 함수를 사용하여 데이터를 전송합니다.
+    // http.post('https://example.com/api', body: json.encode(data)).then((response) {
+    //   // 응답을 처리합니다.
+    //   print('Response status: ${response.statusCode}');
+    //   print('Response body: ${response.body}');
+    // }).catchError((error) {
+    //   // 오류를 처리합니다.
+    //   print('Error: $error');
+    // });
   }
 
   @override
@@ -122,7 +154,7 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    enrollButton(),
+                    enrollButton(context),
                   ],
                 )
               ],
@@ -207,13 +239,14 @@ class _CreateProfilePage extends State<CreateProfilePage> {
     );
   }
 
-  Widget enrollButton() {
+  Widget enrollButton(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
           onTap: () {
             // 서버통신진행
+            sendDataToServer(context);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
