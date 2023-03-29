@@ -28,25 +28,26 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cupertino_icons: ^1.0.2
-  curl_logger_dio_interceptor: ^0.0.3
-  dio: ^4.0.6
-  firebase_analytics: ^10.1.6
-  firebase_core: ^2.8.0
-  firebase_messaging: ^14.3.0
-  flutter:
-    sdk: flutter
-  flutter_local_notifications: ^8.2.0
-  flutter_time_picker_spinner: ^2.0.0
-  get: ^4.6.5
-  http: ^0.13.5
-  image_picker: ^0.8.7
-  intl: ^0.18.0
-  kakao_flutter_sdk: ^1.4.1
-  shared_preferences: ^2.0.20
-  # flutter_kakao_map: ^0.0.4
-  kakaomap_webview: ^0.6.2
-  webview_flutter: ^3.0.2
+    cupertino_icons: ^1.0.2
+    curl_logger_dio_interceptor: ^0.0.3
+    dio: ^4.0.6
+    firebase_analytics: ^10.1.6
+    firebase_core: ^2.8.0
+    firebase_messaging: ^14.3.0
+    flutter:
+        sdk: flutter
+    flutter_local_notifications: ^8.2.0
+    flutter_time_picker_spinner: ^2.0.0
+    get: ^4.6.5
+    http: ^0.13.5
+    image_picker: ^0.8.7
+    intl: ^0.18.0
+    kakao_flutter_sdk: ^1.4.1
+    shared_preferences: ^2.0.20
+    # flutter_kakao_map: ^0.0.4
+    kakaomap_webview: ^0.6.2
+    webview_flutter: ^3.0.2
+
 
 dev_dependencies:
   flutter_lints: ^2.0.0

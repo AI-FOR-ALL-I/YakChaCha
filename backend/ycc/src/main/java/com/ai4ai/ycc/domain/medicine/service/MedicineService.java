@@ -8,7 +8,6 @@ import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
 import com.ai4ai.ycc.domain.medicine.dto.TagDto;
-import com.ai4ai.ycc.domain.medicine.entity.Tag;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 
 public interface MedicineService {

@@ -6,15 +6,14 @@ import 'package:http/http.dart' as http;
 import 'package:frontend/services/api_constants.dart';
 
 class TakenPillApi {
-  static const String baseUrl = "https://j8a803.p.ssafy.io/api";
-  // static const String taken = "medicine/taken?profileLinkSeq=";
-  static const String taken = "medicine/taking?profileLinkSeq=";
+  static const String baseUrl = "https://j8a803.p.ssafy.io/api/profiles";
+  static const String taken = "medicine/my?now=true";
 
   static Future<List<MyPillModel>> getTakenPill() async {
     const queryParameters = 1;
     const token = ApiConstants.TOKEN;
     List<MyPillModel> takenPills = [];
-    final url = Uri.parse("$baseUrl/$taken$queryParameters");
+    final url = Uri.parse("$baseUrl/$queryParameters/$taken");
     final response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: token,
     });
