@@ -138,10 +138,10 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
           children: [
             Text("복용 끝"),
             RenewMyPill(
-              id: pill.id,
-              name: pill.name,
-              picture: pill.picture,
-              title: pill.title,
+              itemSeq: pill.itemSeq,
+              itemName: pill.itemName,
+              img: pill.img,
+              tag_list: pill.tag_list,
               isTaken: true,
             ),
           ],
@@ -174,10 +174,10 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
             itemBuilder: (context, index) {
               var pill = snapshot.data![index];
               return RenewMyPill(
-                id: pill.id,
-                name: pill.name,
-                picture: pill.picture,
-                title: pill.title,
+                itemSeq: pill.itemSeq,
+                itemName: pill.itemName,
+                img: pill.img,
+                tag_list: pill.tag_list,
                 isTaken: false,
               );
             },
