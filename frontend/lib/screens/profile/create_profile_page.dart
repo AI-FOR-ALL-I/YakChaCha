@@ -60,15 +60,6 @@ class _CreateProfilePage extends State<CreateProfilePage> {
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
-    // http.post 함수를 사용하여 데이터를 전송합니다.
-    // http.post('https://example.com/api', body: json.encode(data)).then((response) {
-    //   // 응답을 처리합니다.
-    //   print('Response status: ${response.statusCode}');
-    //   print('Response body: ${response.body}');
-    // }).catchError((error) {
-    //   // 오류를 처리합니다.
-    //   print('Error: $error');
-    // });
   }
 
   @override
