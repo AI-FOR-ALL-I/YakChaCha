@@ -11,8 +11,16 @@ class ApiConstants {
   static const String logout = '$baseurl/accounts/sign-out';
 
   // 프로필
-  static const String createProfile = '$baseurl/profiles'; // 생성
-  static const String getProfiles = '$baseurl/profiles'; // 조회
+  static const String profiles = 'profiles';
+  static const String createProfile = '$baseurl/$profiles'; // 생성 POST
+  static const String getProfiles = '$baseurl/$profiles'; // 프로필 전체 리스트 조회 GET
+  static const String getProfileInfo =
+      '$baseurl/$profiles/{profileLinkSeq}'; // 특정 프로필 조회 GET
+  static const String modifyProfile =
+      '$baseurl/$profiles/{profileLinkSeq}'; // 프로필 수정 PUT
+  static const String deleteProfile =
+      '$baseurl/$profiles/{profileLinkSeq}/delete'; // 프로필 삭제 PUT
+
   // 검색
   static const String search = '$baseurl/medicine/search';
 }
