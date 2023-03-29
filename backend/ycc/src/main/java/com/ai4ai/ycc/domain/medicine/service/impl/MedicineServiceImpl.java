@@ -44,10 +44,11 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public Boolean regist(List<RegistRequestDto> requestDto, Profile profile) {
-        List<Tag> tagList = tagRepository.findByProfileSeq(profile.getProfileSeq());
+        List<Tag> tagList = tagRepository.findAllByProfileSeq(profile.getProfileSeq());
         LocalDate now = LocalDate.now();
         for(RegistRequestDto registRequestDto: requestDto){
             boolean finish = false;
+            System.out.println(registRequestDto.getEndDate());
             LocalDate startDate = LocalDate.parse(registRequestDto.getStartDate(),DateTimeFormatter.ISO_DATE);
             LocalDate endDate = LocalDate.parse(registRequestDto.getEndDate(),DateTimeFormatter.ISO_DATE);
             if(endDate.isBefore(now) || startDate.isAfter(now)){// 지금 복용 안하는 약을 등록한 경우
@@ -209,7 +210,7 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public List<TagDto> showTags(Profile profile) {
-        List<Tag> tags = myMedicineHasTagRepository.findByTag_ProfileSeq(profile.getProfileSeq());
+        List<Tag> tags = tagRepository.findAllByProfileSeq(profile.getProfileSeq());
         List<TagDto> output = new ArrayList<>();
         for(Tag tag: tags){
             output.add(TagDto.builder()
