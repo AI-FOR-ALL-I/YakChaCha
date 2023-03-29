@@ -41,10 +41,12 @@ class ApiClient {
 
   // 알약 등록
   static Future<Response> pillRegister(List data) async {
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print('${data}, !!!!!!!!!!!');
     return dio.post(ApiConstants.pillRegister,
         options: Options(headers: {
           'Content-Type': 'application/json',
-          'Authorzation': ApiConstants.TOKEN
+          'Authorization': ApiConstants.TOKEN
         }),
         data: data);
   }
