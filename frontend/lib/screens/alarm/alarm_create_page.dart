@@ -104,7 +104,9 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
               ],
             ),
           ),
-          Positioned(bottom: 0, child: BottomConfirmWidget(isAlarm: true))
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomConfirmWidget(isAlarm: true))
         ]));
   }
 }

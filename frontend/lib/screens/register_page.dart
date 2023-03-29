@@ -4,7 +4,7 @@ import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/screens/search/text_search_page.dart';
 import 'package:frontend/screens/drug_history_page.dart';
 import 'package:frontend/widgets/common/bottom_confirm_widget.dart';
-import 'package:frontend/services/api_client.dart';
+import 'package:frontend/services/api_search.dart';
 import 'package:dio/dio.dart';
 import 'package:frontend/controller/pill_register_controller.dart';
 import 'package:get/get.dart';
@@ -17,6 +17,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  @override
+  void dispose() {
+    super.dispose();
+    final pillRegisterController = Get.find<PillRegisterController>();
+    pillRegisterController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(PillRegisterController());

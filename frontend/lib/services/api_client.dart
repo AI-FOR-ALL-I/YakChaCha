@@ -39,13 +39,6 @@ class ApiClient {
         }));
   }
 
-  // 텍스트로 검색
-  static Future<Response> textSearch(String word) async {
-    return dio.get(ApiConstants.search,
-        queryParameters: {'type': 'text', 'query': word, 'profileLinkSeq': 1},
-        options: Options(headers: {'Authorization': ApiConstants.TOKEN}));
-  }
-
   // 알약 등록
   static Future<Response> pillRegister(List data) async {
     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
