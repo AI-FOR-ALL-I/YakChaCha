@@ -54,6 +54,7 @@ public class MedicineServiceImpl implements MedicineService {
             }
 
             Medicine medicine = medicineRepository.findByItemSeq(registRequestDto.getItem_seq());
+            System.out.println(medicine==null);
             MyMedicine myMedicine = MyMedicine.builder()
                 .endDate(end_date)
                 .finish(finish? "Y":"N")
@@ -63,9 +64,9 @@ public class MedicineServiceImpl implements MedicineService {
                 .build();
             myMedicineRepository.save(myMedicine);
             loop:
-            for(List tag: registRequestDto.getTag_list()){
+            for(List<String> tag: registRequestDto.getTag_list()){
                 for(Tag mytag : tagList) {
-                    if(mytag.getName().equals(tag.get(0).toString())){
+                    if(mytag.getName().equals(tag.get(0))){
                         MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
                             .myMedicine(myMedicine)
                             .tag(mytag)
@@ -76,8 +77,8 @@ public class MedicineServiceImpl implements MedicineService {
                 }
                 Tag mytag = Tag.builder()
                     .profileSeq(profile.getProfileSeq())
-                    .name(tag.get(0).toString())
-                    .color(Integer.parseInt(tag.get(1).toString()))
+                    .name(tag.get(0))
+                    .color(Integer.parseInt(tag.get(1)))
                     .build();
                 tagRepository.save(mytag);
                 MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
@@ -171,9 +172,12 @@ public class MedicineServiceImpl implements MedicineService {
 
             Medicine medicine = myMedicine.getMedicine();
             List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findByMyMedicine(myMedicine);
-            List<String> tagList = new ArrayList<>();
+            List<List> tagList = new ArrayList<>();
             for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
-                tagList.add(myMedicineHasTag.getTag().getName());
+                List<String> tag = new ArrayList<>();
+                tag.add(myMedicineHasTag.getTag().getName());
+                tag.add(Long.toString(myMedicineHasTag.getTag().getColor()));
+                tagList.add(tag);
             }
 
             if(pregnant && medicine.getTypeCode().contains("임")){
@@ -226,15 +230,24 @@ public class MedicineServiceImpl implements MedicineService {
         List<String> collide_list = new ArrayList<>();
         String start_date="";
         String end_date="";
-
+        List<List<String>> tagList = new ArrayList<>();
         for(MyMedicine myMedicine: myMedicineList){
             String my_edi = myMedicine.getMedicine().getEdiCode();
+            String edi = medicine.getEdiCode();
             if(myMedicine.getMedicine().getItemSeq()== itemSeq){
                 isMine=true;
                 start_date= myMedicine.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 end_date= myMedicine.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findByMyMedicine(myMedicine);
+
+                for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
+                    List<String> tag = new ArrayList<>();
+                    tag.add(myMedicineHasTag.getTag().getName());
+                    tag.add(Long.toString(myMedicineHasTag.getTag().getColor()));
+                    tagList.add(tag);
+                }
             }
-            if(my_edi.length()>8&&collisionRepository.existsByMedicineAIdAndMedicineBId(Integer.parseInt(my_edi.substring(0,9)),Integer.parseInt(medicine.getEdiCode()))){
+            if(my_edi.length()>8&&edi.length()>8&&collisionRepository.existsByMedicineAIdAndMedicineBId(Integer.parseInt(my_edi.substring(0,9)),Integer.parseInt(edi.substring(0,9)))){
                 System.out.println("충돌!");
                 collide=true;
                 collide_list.add(myMedicine.getMedicine().getItemName());
@@ -266,6 +279,7 @@ public class MedicineServiceImpl implements MedicineService {
             .isMine(isMine)
             .startDate(start_date)
             .endDate(end_date)
+            .tag_list(tagList)
             .build();
 
         return medicineDetailDto;

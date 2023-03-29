@@ -34,4 +34,5 @@ public class MedicineDetailDto {
     private String startDate;
     private String endDate;
     private List<String> collide_list;
+    private List<List<String>> tag_list;
 }
