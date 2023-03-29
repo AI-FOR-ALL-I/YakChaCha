@@ -13,6 +13,7 @@ import com.ai4ai.ycc.domain.medicine.dto.MedicineDetailDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineTakingDto;
 import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
+import com.ai4ai.ycc.domain.medicine.entity.Collision;
 import com.ai4ai.ycc.domain.medicine.entity.Medicine;
 import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
 import com.ai4ai.ycc.domain.medicine.entity.MyMedicineHasTag;
@@ -115,11 +116,18 @@ public class MedicineServiceImpl implements MedicineService {
             if(old && medicine.getTypeCode().contains("노인")){
                 old_warn=true;
             }
-            // List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
-            // for(MyMedicine myMedicine: myMedicineList){
-            //     String my_edi = myMedicine.getMedicine().getEdiCode().substring(0,9);
-            //     if(collisionRepository.existsByMaterialAIdandMaterialBId())
-            // }
+            List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
+            System.out.println(myMedicineList.size());
+            for(MyMedicine myMedicine: myMedicineList){
+                String my_edi = myMedicine.getMedicine().getEdiCode().substring(0,9);
+                System.out.println("my_edi"+Integer.parseInt(my_edi));
+                System.out.println("edi:"+Integer.parseInt(medicine.getEdiCode()));
+                if(collisionRepository.existsByMedicineAIdAndMedicineBId(Integer.parseInt(my_edi),Integer.parseInt(medicine.getEdiCode()))){
+                    System.out.println("충돌!");
+                    collide=true;
+                    collide_list.add(myMedicine.getMedicine().getItemName());
+                }
+            }
             medicineDtoList.add(MedicineDto.builder()
                     .itemSeq(medicine.getItemSeq())
                     .img(medicine.getImg())
