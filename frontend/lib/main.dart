@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
               onSurface: Color(0xFF848293)), // Point-Purple
         ), // color:Theme.of(context).colorScheme.primary
         title: 'bottomNavigationBar Test',
-        home: BottomNavigation() // const SocialLogin(),
+        home: const SocialLogin(),
         );
   }
 }
