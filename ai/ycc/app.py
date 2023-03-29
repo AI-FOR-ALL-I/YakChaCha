@@ -1,24 +1,27 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from proj_pill.proj_pill.main_cls01_dir import *
 from PIL import Image
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/home')
-def home():
-    return 'Hello world'
-
-@app.route('/pill_search')
-def pill_search():
-    return run_search_model()
-
 @app.route('/predict', methods=['POST'])
 def predict_images():
     list_test_image = request.files.getlist('image')
+    
+    temp_dir = r'./proj_pill/proj_pill/dir_testimage'
+    os.makedirs(temp_dir, exist_ok=True)
+    
+    for i, file in enumerate(list_test_image):
+        print(os.path.join(temp_dir, f'image_{i}.png'))
+        file.save(os.path.join(temp_dir, f'image_{i}.png'))
+        
+    prediction = run_search_model()
 
-    prediction = run_prediction_model_1(list_test_image)
-    return jsonify({'prediction': prediction.tolist()})
+    for file in os.listdir(temp_dir):
+        os.remove(os.path.join(temp_dir, file))
+    
+    print(prediction)
+    return jsonify({'prediction': prediction})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',
