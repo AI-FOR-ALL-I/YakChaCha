@@ -1,23 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/bottom_navigation.dart';
+import 'package:frontend/controller/auth_controller.dart';
+import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/screens/profile/create_profile_page.dart';
+import 'package:frontend/screens/profile/select_profile_page.dart';
 import 'package:frontend/services/api_client.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get/get.dart';
 
 class SocialLogin extends StatelessWidget {
   const SocialLogin({Key? key}) : super(key: key);
 
   void getUserInfo(BuildContext context) async {
+    //Get.put(FirebaseController());
+    Get.put(AuthController());
+    final firebaseController = Get.find<FirebaseController>();
+    final authController = Get.find<AuthController>();
+    final firebaseToken = firebaseController.firebaseToken;
     try {
       User user = await UserApi.instance.me();
-      Response response = await ApiClient.login(
-          'KAKAO', user.kakaoAccount?.email, user.id.toString());
+      String? kName = user.kakaoAccount?.profile?.nickname;
+      dio.Response response = await ApiClient.login('KAKAO',
+          user.kakaoAccount?.email, user.id.toString(), firebaseToken, kName);
       if (response.statusCode == 200) {
         // 요청 성공!
         Map<String, dynamic> responseData = response.data;
+        String accessToken = responseData['data']['accessToken'];
+        print('액세스토큰 로그인할때$accessToken');
+        String refreshToken = responseData['data']['refreshToken'];
+        authController.saveTokens(accessToken, refreshToken);
         if (responseData['data']['profile'] == true) {
           // navigate to ProfileSelectPage
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SelectProfilePage()));
         } else {
           // navigate to CreateProfilePage
           Navigator.push(

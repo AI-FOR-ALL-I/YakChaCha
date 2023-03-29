@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/bottom_navigation.dart';
+import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/screens/login/social_login.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,11 +8,14 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
   KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
+  Get.put(FirebaseController());
+  final firebaseController = Get.find<FirebaseController>();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.instance.getToken().then((String? token) {
     if (token != null) {
       print('FCM Token: $token');
+      firebaseController.saveTokens(token);
     } else {
       print('Failed to get FCM Token');
     }

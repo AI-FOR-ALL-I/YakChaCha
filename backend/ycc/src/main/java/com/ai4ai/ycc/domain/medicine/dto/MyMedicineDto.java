@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class MedicineTakingDto {
+public class MyMedicineDto {
 
     private Long itemSeq;
     private String itemName;
@@ -15,10 +15,8 @@ public class MedicineTakingDto {
     private String type_code;
     private List tag_list;
     private int dDay;
-    private boolean collide;
     private boolean warn_pregnant;
     private boolean warn_old;
     private boolean warn_age;
-    private List collide_list;
 
 }

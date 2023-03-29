@@ -3,16 +3,17 @@ package com.ai4ai.ycc.domain.medicine.service.impl;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import org.springframework.stereotype.Service;
 
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDetailDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
-import com.ai4ai.ycc.domain.medicine.dto.MedicineTakingDto;
+import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
+import com.ai4ai.ycc.domain.medicine.dto.TagDto;
 import com.ai4ai.ycc.domain.medicine.entity.Medicine;
 import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
 import com.ai4ai.ycc.domain.medicine.entity.MyMedicineHasTag;
@@ -62,25 +63,26 @@ public class MedicineServiceImpl implements MedicineService {
                 .build();
             myMedicineRepository.save(myMedicine);
             loop:
-            for(String str: registRequestDto.getTag_list()){
-                for(Tag tag : tagList) {
-                    if(tag.getName().equals(str)){
+            for(List tag: registRequestDto.getTag_list()){
+                for(Tag mytag : tagList) {
+                    if(mytag.getName().equals(tag.get(0).toString())){
                         MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
                             .myMedicine(myMedicine)
-                            .tag(tag)
+                            .tag(mytag)
                             .build();
                         myMedicineHasTagRepository.save(myMedicineHasTag);
                         continue loop;
                     }
                 }
-                Tag tag = Tag.builder()
+                Tag mytag = Tag.builder()
                     .profileSeq(profile.getProfileSeq())
-                    .name(str)
+                    .name(tag.get(0).toString())
+                    .color(Integer.parseInt(tag.get(1).toString()))
                     .build();
-                tagRepository.save(tag);
+                tagRepository.save(mytag);
                 MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
                     .myMedicine(myMedicine)
-                    .tag(tag)
+                    .tag(mytag)
                     .build();
                 myMedicineHasTagRepository.save(myMedicineHasTag);
             }
@@ -89,9 +91,19 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public List<MedicineDto> searchMedicineByText(String input, Profile profile) {
+    public List<MedicineDto> searchMedicine(String input, Profile profile, String type) {
         List<MedicineDto> medicineDtoList = new ArrayList<>();
-        List<Medicine> medicineList = medicineRepository.findByItemNameLike("%"+input+"%");
+        List<Medicine> medicineList = new ArrayList<>();
+        switch(type){
+            case "text":
+                medicineList = medicineRepository.findByItemNameLike("%"+input+"%");
+                break;
+            case "img":
+                medicineList = medicineRepository.findByEdiCodeLike("%"+input+"%");
+                break;
+            default:
+                break;
+        }
         boolean pregnant = profile.isPregnancy();
         LocalDate birthdate = profile.getBirthDate();
         LocalDate now = LocalDate.now();
@@ -99,6 +111,8 @@ public class MedicineServiceImpl implements MedicineService {
         int age = period.getYears();
         boolean young = age<18? true: false;
         boolean old = age>60? true: false;
+
+        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
         for(Medicine medicine: medicineList){
             boolean pregnant_warn = false;
             boolean young_warn = false;
@@ -115,11 +129,14 @@ public class MedicineServiceImpl implements MedicineService {
             if(old && medicine.getTypeCode().contains("노인")){
                 old_warn=true;
             }
-            // List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
-            // for(MyMedicine myMedicine: myMedicineList){
-            //     String my_edi = myMedicine.getMedicine().getEdiCode().substring(0,9);
-            //     if(collisionRepository.existsByMaterialAIdandMaterialBId())
-            // }
+            for(MyMedicine myMedicine: myMedicineList){
+                String my_edi = myMedicine.getMedicine().getEdiCode();
+                if(my_edi.length()>8&&collisionRepository.existsByMedicineAIdAndMedicineBId(Integer.parseInt(my_edi.substring(0,9)),Integer.parseInt(medicine.getEdiCode()))){
+                    System.out.println("충돌!");
+                    collide=true;
+                    collide_list.add(myMedicine.getMedicine().getItemName());
+                }
+            }
             medicineDtoList.add(MedicineDto.builder()
                     .itemSeq(medicine.getItemSeq())
                     .img(medicine.getImg())
@@ -135,9 +152,9 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public List<MedicineTakingDto> searchTakingMedicine(Profile profile) {
-        List<MedicineTakingDto> medicineTakingDtos = new ArrayList<>();
-        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
+    public List<MyMedicineDto> searchMyMedicine(Profile profile, boolean taking) {
+        List<MyMedicineDto> myMedicineDtos = new ArrayList<>();
+        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N",taking?"N":"Y",profile);
         boolean pregnant = profile.isPregnancy();
         LocalDate birthdate = profile.getBirthDate();
         LocalDate now = LocalDate.now();
@@ -150,10 +167,8 @@ public class MedicineServiceImpl implements MedicineService {
             boolean pregnant_warn = false;
             boolean young_warn = false;
             boolean old_warn = false;
-            boolean collide = false;
-            period = Period.between(myMedicine.getStartDate(),now);
-            int dDay = period.getDays();
-            List collide_list = new ArrayList<String>();
+            long dDay = ChronoUnit.DAYS.between(now, myMedicine.getEndDate());
+
             Medicine medicine = myMedicine.getMedicine();
             List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findByMyMedicine(myMedicine);
             List<String> tagList = new ArrayList<>();
@@ -170,29 +185,61 @@ public class MedicineServiceImpl implements MedicineService {
             if(old && medicine.getTypeCode().contains("노인")){
                 old_warn=true;
             }
-            // collide 만들어
-            medicineTakingDtos.add(MedicineTakingDto.builder()
+
+            myMedicineDtos.add(MyMedicineDto.builder()
                 .itemSeq(medicine.getItemSeq())
                 .img(medicine.getImg())
                 .itemName(medicine.getItemName())
                 .warn_age(young_warn)
                 .warn_old(old_warn)
                 .warn_pregnant(pregnant_warn)
-                .dDay(dDay)
+                .dDay((int)dDay)
                 .tag_list(tagList)
                 .type_code(medicine.getTypeCode())
-                .collide(collide)
-                .collide_list(collide_list)
                 .build());
         }
-        return medicineTakingDtos;
+        return myMedicineDtos;
     }
 
     @Override
-    public MedicineDetailDto showDetail(long itemSeq) {
+    public List<TagDto> showTags(Profile profile) {
+        List<Tag> tags = myMedicineHasTagRepository.findByTag_ProfileSeq(profile.getProfileSeq());
+        List<TagDto> output = new ArrayList<>();
+        for(Tag tag: tags){
+            output.add(TagDto.builder()
+                    .tagSeq(tag.getTagSeq())
+                    .color(tag.getColor())
+                    .name(tag.getName())
+                .build());
+        }
+        return output;
+    }
+
+    @Override
+    public MedicineDetailDto showDetail(long itemSeq, Profile profile) {
         System.out.println(itemSeq+"의 itemSeq를 가진 약 검색");
         Medicine medicine = medicineRepository.findByItemSeq(itemSeq);
 
+        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
+        boolean collide = false;
+        boolean isMine = false;
+        List<String> collide_list = new ArrayList<>();
+        String start_date="";
+        String end_date="";
+
+        for(MyMedicine myMedicine: myMedicineList){
+            String my_edi = myMedicine.getMedicine().getEdiCode();
+            if(myMedicine.getMedicine().getItemSeq()== itemSeq){
+                isMine=true;
+                start_date= myMedicine.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                end_date= myMedicine.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            }
+            if(my_edi.length()>8&&collisionRepository.existsByMedicineAIdAndMedicineBId(Integer.parseInt(my_edi.substring(0,9)),Integer.parseInt(medicine.getEdiCode()))){
+                System.out.println("충돌!");
+                collide=true;
+                collide_list.add(myMedicine.getMedicine().getItemName());
+            }
+        }
         MedicineDetailDto medicineDetailDto=MedicineDetailDto.builder()
             .chart(medicine.getChart())
             .etcOtcCode(medicine.getEtcOtcCode())
@@ -210,22 +257,17 @@ public class MedicineServiceImpl implements MedicineService {
             .itemSeq(itemSeq)
             .itemName(medicine.getItemName())
             .img(medicine.getImg())
+            .collide(collide)
+            .collide_list(collide_list)
             .udDocData(medicine.getDetail().getUdDocData())
             .nbDocData(medicine.getDetail().getNbDocData())
             .eeDocData(medicine.getDetail().getEeDocData())
             .materialName(medicine.getDetail().getMaterialName())
+            .isMine(isMine)
+            .startDate(start_date)
+            .endDate(end_date)
             .build();
 
         return medicineDetailDto;
-    }
-
-    @Override
-    public List<MedicineDto> searchMedicineByEdi(String query, Profile profile) {
-        return null;
-    }
-
-    @Override
-    public List<MedicineDto> searchMedicineByItemseq(String query, Profile profile) {
-        return null;
     }
 }

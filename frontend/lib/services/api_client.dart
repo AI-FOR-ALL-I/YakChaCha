@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:frontend/controller/auth_controller.dart';
 import 'api_constants.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
+import 'package:get/get.dart' as getX;
 
 final dio = Dio(
   BaseOptions(
@@ -8,14 +10,19 @@ final dio = Dio(
   ),
 );
 
+final authController = getX.Get.find<AuthController>();
+
 class ApiClient {
-  static Future<Response> login(String type, String? email, String? id) async {
+  static Future<Response> login(String type, String? email, String? id,
+      String? deviceToken, String? kakaoName) async {
     // interceptor
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     final data = {
       'type': type,
       'id': id,
       'email': email,
+      'deviceToken': deviceToken,
+      'name': kakaoName,
     };
     return dio.post(ApiConstants.login,
         data: data,

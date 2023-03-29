@@ -23,11 +23,11 @@ public class Collision {
 	@Column
 	private Long collisionSeq;
 
-	@Column
-	private Long medicineAId;
+	@Column(name = "medicine_a_id")
+	private int medicineAId;
 
-	@Column
-	private Long medicineBId;
+	@Column(name = "medicine_b_id")
+	private int medicineBId;
 
 	@Column
 	private String aMaterial;

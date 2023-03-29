@@ -9,6 +9,7 @@ import com.ai4ai.ycc.domain.medicine.entity.Medicine;
 
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     List<Medicine> findByItemNameLike(String input);
+    List<Medicine> findByEdiCodeLike(String input);
 
     @EntityGraph(attributePaths = "detail")
     Medicine findByItemSeq(long itemSeq);

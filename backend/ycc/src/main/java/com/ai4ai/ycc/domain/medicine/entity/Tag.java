@@ -35,5 +35,7 @@ public class Tag extends BaseEntity {
 	private Long profileSeq;
 	@Column
 	private String name;
+	@Column
+	private int color;
 
 }

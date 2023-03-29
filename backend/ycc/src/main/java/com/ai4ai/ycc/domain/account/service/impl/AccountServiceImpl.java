@@ -28,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
 
         String type = requestDto.getType();
         String id = requestDto.getId();
+        String name = requestDto.getName();
         String email = requestDto.getEmail();
         String deviceToken = requestDto.getDeviceToken();
 
@@ -36,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
             Account newAccount = Account.builder()
                     .type(type)
                     .id(id)
+                    .name(name)
                     .email(email)
                     .deviceToken(deviceToken)
                     .build();
@@ -52,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
         String refreshToken = jwtTokenProvider.createRefreshToken(id);
         log.info("[SignIn] 토큰 생성 완료");
 
-        account.putRefreshToken(refreshToken);
+        account.login(refreshToken, deviceToken);
         accountRepository.save(account);
 
         return SignInResponseDto.builder()
@@ -66,10 +68,10 @@ public class AccountServiceImpl implements AccountService {
     public void signOut(Account account) {
         log.info("[SignOut] 로그아웃 시작");
 
-        log.info("[SignOut] refresh token 제거 시작");
-        account.removeRefreshToken();
+        log.info("[SignOut] refresh token, device token 제거 시작");
+        account.logout();
         accountRepository.save(account);
-        log.info("[SignOut] refresh token 제거 완료");
+        log.info("[SignOut] refresh token, device token 제거 완료");
 
         log.info("[SignOut] 로그아웃 완료");
     }
@@ -77,8 +79,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void withdraw(Account account) {
         log.info("[Withdrawl] 회원탈퇴 시작");
-        account.removeRefreshToken();
-        account.remove();
+        account.withdraw();
         accountRepository.save(account);
         log.info("[Withdrawl] 회원탈퇴 완료");
     }
