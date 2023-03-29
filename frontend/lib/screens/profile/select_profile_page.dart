@@ -40,6 +40,7 @@ class _SelectProfilePage extends State<SelectProfilePage> {
     }
   }
 
+  // item['nickname']
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +52,13 @@ class _SelectProfilePage extends State<SelectProfilePage> {
                 itemBuilder: (BuildContext context, int index) {
                   final item = data[index];
                   return ProfileInfo(
-                      imagePath: 'assets/images/sampletips.jpg',
-                      title: item['nickname'],
-                      description: item['birthDate']);
+                      owner: item['owner'],
+                      nickname: item['nickname'],
+                      name: item['name'],
+                      birthDate: item['birthDate'],
+                      gender: item['gender'],
+                      imageCode: item['imgCode'],
+                      profileLinkSeq: item['profileLinkSeq']);
                 })));
   }
 }
