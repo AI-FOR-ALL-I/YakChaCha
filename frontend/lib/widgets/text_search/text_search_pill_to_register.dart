@@ -39,7 +39,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['start_date']} 부터'),
+                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['startDate']} 부터'),
                       GestureDetector(
                         onTap: () {
                           showDatePicker(
@@ -61,7 +61,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                         ),
                       ),
                       Text(
-                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['end_date']} 까지'), // endDate
+                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['endDate']} 까지'), // endDate
                       GestureDetector(
                         onTap: () {
                           showDatePicker(
