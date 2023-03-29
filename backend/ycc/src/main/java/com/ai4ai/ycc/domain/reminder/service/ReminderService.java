@@ -19,7 +19,7 @@ public interface ReminderService {
 
     List<Integer> getTakenRecords(Profile profile, long reminderSeq, String month);
 
-    void modifyReminder(Profile profile, ModifyReminderRequestDto requestDto);
+    void modifyReminder(Profile profile, long reminderSeq, ModifyReminderRequestDto requestDto);
 
     void removeReminder(Profile profile, long reminderSeq);
 

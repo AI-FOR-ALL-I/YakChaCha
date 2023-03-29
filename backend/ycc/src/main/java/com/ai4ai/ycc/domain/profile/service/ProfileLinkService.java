@@ -15,7 +15,7 @@ public interface ProfileLinkService {
     ProfileResponseDto getProfile(Account account, long profileLinkSeq);
     List<ProfileResponseDto> getProfileList(Account account);
 
-    void modifyProfile(Account account, ModifyProfileRequestDto requestDto);
+    void modifyProfile(Account account, long profileLinkSeq, ModifyProfileRequestDto requestDto);
 
     void removeProfile(Account account, long profileLinkSeq);
 

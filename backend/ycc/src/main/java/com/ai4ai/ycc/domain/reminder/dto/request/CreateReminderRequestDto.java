@@ -7,7 +7,6 @@ import java.util.List;
 @Getter
 public class CreateReminderRequestDto {
 
-    private long profileLinkSeq;
     private String title;
     private String time;
 

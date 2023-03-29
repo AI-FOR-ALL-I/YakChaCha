@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/profiles")
 @RequiredArgsConstructor
 @Slf4j
 public class ProfileController {
@@ -29,21 +29,13 @@ public class ProfileController {
     private final ProfileService profileService;
     private final ProfileLinkService profileLinkService;
 
-    @PostMapping
-    public ResponseEntity<Result> createProfile(@LoginUser Account account, @RequestBody CreateProfileRequestDto requestDto) {
-        log.info("[createProfile] 프로필 생성 API 호출");
-        Profile profile = profileService.createProfile(account, requestDto);
-        profileLinkService.createProfileLink(account, profile, requestDto);
+    @GetMapping
+    public ResponseEntity<Result> getProfileList(@LoginUser Account account) {
+        log.info("[getProfileList] 프로필 목록 조회 API 호출 > {}", account);
+        List<ProfileResponseDto> result = profileLinkService.getProfileList(account);
+        log.info("[getProfileList] result: {}", result);
         return ResponseEntity.ok()
-                .body(responseService.getSuccessResult());
-    }
-
-    @PutMapping
-    public ResponseEntity<Result> modifyProfile(@LoginUser Account account, @RequestBody ModifyProfileRequestDto requestDto) {
-        log.info("[modifyProfile] 프로필 수정 API 호출");
-        profileLinkService.modifyProfile(account, requestDto);
-        return ResponseEntity.ok()
-                .body(responseService.getSuccessResult());
+                .body(responseService.getListResult(result));
     }
 
     @GetMapping("/{profileLinkSeq}")
@@ -55,22 +47,29 @@ public class ProfileController {
                 .body(responseService.getSingleResult(result));
     }
 
+    @PostMapping
+    public ResponseEntity<Result> createProfile(@LoginUser Account account, @RequestBody CreateProfileRequestDto requestDto) {
+        log.info("[createProfile] 프로필 생성 API 호출");
+        Profile profile = profileService.createProfile(account, requestDto);
+        profileLinkService.createProfileLink(account, profile, requestDto);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
     @PutMapping("/{profileLinkSeq}")
+    public ResponseEntity<Result> modifyProfile(@LoginUser Account account, @PathVariable long profileLinkSeq, @RequestBody ModifyProfileRequestDto requestDto) {
+        log.info("[modifyProfile] 프로필 수정 API 호출");
+        profileLinkService.modifyProfile(account, profileLinkSeq, requestDto);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
+    @PutMapping("/{profileLinkSeq}/delete")
     public ResponseEntity<Result> removeProfile(@LoginUser Account account, @PathVariable long profileLinkSeq) {
         log.info("[removeProfile] 본인 프로필 삭제 API 호출");
         profileLinkService.removeProfile(account, profileLinkSeq);
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
-    }
-
-
-    @GetMapping("/list")
-    public ResponseEntity<Result> getProfileList(@LoginUser Account account) {
-        log.info("[getProfileList] 프로필 목록 조회 API 호출 > {}", account);
-        List<ProfileResponseDto> result = profileLinkService.getProfileList(account);
-        log.info("[getProfileList] result: {}", result);
-        return ResponseEntity.ok()
-                .body(responseService.getListResult(result));
     }
 
     @PostMapping("/link")
