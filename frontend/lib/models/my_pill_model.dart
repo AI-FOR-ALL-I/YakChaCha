@@ -1,10 +1,11 @@
 class MyPillModel {
-  final String name, picture, id;
-  final List title;
+  final String itemName, img;
+  final int itemSeq;
+  final List tag_list;
 
   MyPillModel.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        picture = json['picture'],
-        title = json['title'],
-        id = json['id'];
+      : itemName = json['itemName'],
+        img = json['img'],
+        tag_list = json['tag_list'],
+        itemSeq = json['itemSeq'];
 }

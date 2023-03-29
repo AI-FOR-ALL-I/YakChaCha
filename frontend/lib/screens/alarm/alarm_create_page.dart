@@ -75,7 +75,7 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                     ],
                   ),
                 ),
-                TagPicker(), // 약 추가 하는 버튼
+                TagPicker(isRegister: false), // 약 추가 하는 버튼
                 AspectRatio(
                     aspectRatio: 296 / 101,
                     child: GestureDetector(
