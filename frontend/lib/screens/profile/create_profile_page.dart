@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/profile/select_profile_image_page.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/text_field.dart';
+import 'package:frontend/widgets/profile/birth_date_widget.dart';
 
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({super.key});
@@ -13,11 +14,18 @@ class CreateProfilePage extends StatefulWidget {
 class _CreateProfilePage extends State<CreateProfilePage> {
   // 프로필 생성 시 전달될 변수.
   String name = '';
+  String nickname = '';
   String gender = 'M'; // M or F
-  bool isMale = true; // 초기값은 남성
+  bool isMale = false; // 초기값은 남성
   bool isFemale = false;
   bool isPregnant = false;
-  late DateTime selectedDate;
+  String initBirthDate = '';
+
+  void onBirthDateSelected(String birthDate) {
+    // 생년월일 값 처리
+    print('Selected birth date: $birthDate');
+    initBirthDate = birthDate;
+  }
 
   void updateName(String? newName) {
     setState(() {
@@ -25,19 +33,9 @@ class _CreateProfilePage extends State<CreateProfilePage> {
     });
   }
 
-  // will be deprecated..soon!
-  String _email = '';
-  String _password = '';
-
-  void _updateEmail(String? newEmail) {
+  void updateNickname(String? newNick) {
     setState(() {
-      _email = newEmail ?? '';
-    });
-  }
-
-  void _updatePassword(String? newPassword) {
-    setState(() {
-      _password = newPassword ?? '';
+      nickname = newNick ?? '';
     });
   }
 
@@ -76,14 +74,14 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                     '이름',
                   ),
                 ),
-                TextFieldComponent(hintText: '이름', onChanged: _updateEmail),
+                TextFieldComponent(hintText: '이름', onChanged: updateName),
                 const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
                     '닉네임',
                   ),
                 ),
-                TextFieldComponent(hintText: '닉네임', onChanged: _updatePassword),
+                TextFieldComponent(hintText: '닉네임', onChanged: updateNickname),
                 const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
@@ -116,41 +114,57 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                     '생년월일 입력',
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child:
+                      BirthDateWidget(onBirthDateSelected: onBirthDateSelected),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    enrollButton(),
+                  ],
+                )
               ],
             )));
   }
 
   Widget buildGenderButton(String text, bool isSelected) {
+    //bool isSelected = gender;
     return Expanded(
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            print('isSelected $isSelected / $isMale / isFemale$isFemale');
-            if (text == '남성') {
-              isMale = true;
-              isFemale = false;
-            } else {
-              isMale = false;
-              isFemale = true;
-            }
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              //gender = true;
+              if (text == '남성') {
+                isMale = true;
+                isFemale = false;
+              } else {
+                isMale = false;
+                isFemale = true;
+              }
+              print('$isMale / isFemale$isFemale');
+            });
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: isSelected ? Colors.white : Colors.lightGreen,
+                width: 2,
+              ),
               color: isSelected ? Colors.lightGreen : Colors.white,
-              width: 2,
             ),
-            color: isSelected ? Colors.white : Colors.lightGreen,
-          ),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: isSelected ? Colors.lightGreen : Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+            child: Text(
+              text,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.lightGreen,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
           ),
         ),
@@ -160,28 +174,64 @@ class _CreateProfilePage extends State<CreateProfilePage> {
 
   Widget buildPregnancyButton(String text, bool isSelected) {
     return Expanded(
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            isPregnant = text == '예' ? true : false;
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              isPregnant = text == '예' ? true : false;
+            });
+            print('isPregnant$isPregnant');
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: isSelected ? Colors.white : Colors.lightGreen,
+                width: 2,
+              ),
               color: isSelected ? Colors.lightGreen : Colors.white,
-              width: 2,
             ),
-            color: isSelected ? Colors.white : Colors.lightGreen,
+            child: Text(
+              text,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.lightGreen,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
           ),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: isSelected ? Colors.lightGreen : Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+        ),
+      ),
+    );
+  }
+
+  Widget enrollButton() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () {
+            // 서버통신진행
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: Colors.lightGreen,
+                width: 2,
+              ),
+              color: Colors.lightGreen,
+            ),
+            child: const Text(
+              '등록하기',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
           ),
         ),
