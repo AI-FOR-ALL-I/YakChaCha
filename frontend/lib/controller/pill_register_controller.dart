@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:dio/dio.dart';
+import 'package:frontend/services/api_pill_register.dart';
 
 class PillRegisterController extends GetxController {
   List displayList = [];
@@ -7,9 +10,13 @@ class PillRegisterController extends GetxController {
   List registerList = [];
   // 안에 들어가는 요소 {itemSeq:1, start_date:'YYYY-MM-DD', end_date:'YYYY-MM-DD', tag_list:[['태그이름',1], ['태그이름', 2]]}
 
+  // TODO: 여기에 사용자가 만든 모든 태그를 다 받아오기
+  // 이후
   List tagList = [
-    ['태그명', 1],
-    ['태그명', 2]
+    ['1번', '0'],
+    ['2번', '1'],
+    ['3번', '2'],
+    ['4번', '3'],
   ];
 
   // 리스트에 없다면 등록
@@ -22,7 +29,13 @@ class PillRegisterController extends GetxController {
     bool isRegisterList = registerList.any((pill) =>
         pill.containsKey('itemSeq') && pill['itemSeq'] == data['itemSeq']);
     if (!isRegisterList) {
-      registerList.add(data);
+      var tempMap = {
+        'itemSeq': data['itemSeq'],
+        'startDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'endDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'tagList': []
+      };
+      registerList.add(tempMap);
     }
     update();
   }
@@ -46,7 +59,7 @@ class PillRegisterController extends GetxController {
   void updateStartDate(seq, date) {
     for (int i = 0; i < registerList.length; i++) {
       if (registerList[i]['itemSeq'] == seq) {
-        registerList[i]['start_date'] = date;
+        registerList[i]['startDate'] = date;
         break; // 찾았으면 for문을 더 이상 돌 필요가 없으므로 break를 사용합니다.
       }
     }
@@ -57,19 +70,20 @@ class PillRegisterController extends GetxController {
   void updateEndDate(seq, date) {
     for (int i = 0; i < registerList.length; i++) {
       if (registerList[i]['itemSeq'] == seq) {
-        registerList[i]['end_date'] = date;
+        registerList[i]['endDate'] = date;
         break; // 찾았으면 for문을 더 이상 돌 필요가 없으므로 break를 사용합니다.
       }
     }
     update();
   }
 
-  // tag_list 업데이트
+  // tag 지우기
   void deleteTag(seq, tagName) {
     for (int i = 0; i < registerList.length; i++) {
       if (registerList[i]['itemSeq'] == seq) {
-        registerList[i]['tag_list'].removeWhere((tag) => tag[0] == tagName);
-        break; // 찾았으면 for문을 더 이상 돌 필요가 없으므로 break를 사용합니다.
+        registerList[i]['tagList'].removeWhere((tag) => tag[0] == tagName);
+        print(registerList[i]['tagList']);
+        break;
       }
     }
     update();
@@ -79,10 +93,18 @@ class PillRegisterController extends GetxController {
   void addTag(seq, tagName, color) {
     for (int i = 0; i < registerList.length; i++) {
       if (registerList[i]['itemSeq'] == seq) {
-        registerList[i]['tag_list'].add([tagName, color.toString()]);
-        break; // 찾았으면 for문을 더 이상 돌 필요가 없으므로 break를 사용합니다.
+        print(registerList[i]);
+        registerList[i]['tagList'].add([tagName, color.toString()]);
+        break;
       }
     }
+
+    // tagList에 없는 태그인 경우 추가
+    bool isExistTag = tagList.any((tag) => tag[0] == tagName);
+    if (!isExistTag) {
+      tagList.add([tagName, color.toString()]);
+    }
+
     update();
   }
 
@@ -90,14 +112,15 @@ class PillRegisterController extends GetxController {
   void addNewTag(seq, tagName, color) {
     bool found = false;
     for (List tag in tagList) {
+      // 이미 태그 리스트에 있으면
       if (tag[0] == tagName) {
         addTag(seq, tagName, int.parse(tag[1]));
-        bool found = true;
+        found = true;
         break;
       }
-      if (!found) {
-        addTag(seq, tagName, color);
-      }
+    }
+    if (!found) {
+      addTag(seq, tagName, color);
     }
     update();
   }
@@ -106,6 +129,12 @@ class PillRegisterController extends GetxController {
   void clear() {
     displayList = [];
     registerList = [];
+    tagList = [];
+  }
+
+  // TODO: 여기서 dio 요청보내기
+  void dioRequest() {
+    // ApiPillRegister.pillRegister(data: registerList);
   }
 
   // 특정 기준 오름차순 정렬

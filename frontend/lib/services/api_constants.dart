@@ -1,7 +1,7 @@
 class ApiConstants {
   // Bearer Token (마스터 계정)
   static const String TOKEN =
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYiLCJpYXQiOjE2ODAwNzQ4MjAsImV4cCI6MTY4MDA3ODQyMH0.TqcDe4uR1CfI5iCFKXgOjh3tAjFPIXId_QW36PXjWfI";
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYiLCJpYXQiOjE2Nzk5MDMyODgsImV4cCI6MTY4MDUwODA4OH0.jsJ033L71MEdsfDgRT5t3F61qrFu94yGFdfwO1jS00s";
   static const int profileLinkSeq = 1;
 
   // base url
@@ -19,5 +19,6 @@ class ApiConstants {
       '$baseurl/profiles/${profileLinkSeq}/medicine/search';
 
   // 등록
-  static const String pillRegister = '$baseurl/medicine/taking';
+  static const String pillRegister =
+      '$baseurl/profiles/${profileLinkSeq}/medicine/my';
 }

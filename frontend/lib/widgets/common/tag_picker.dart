@@ -16,12 +16,12 @@ class TagPicker extends StatefulWidget {
 
 class _TagPickerState extends State<TagPicker> {
   List<List<Object>> selectedTagList = [];
-  List<List<Object>> tagList = [
-    ['태그명1', '1'],
-    ['태그명2', '2'],
-    ['태그명3', '3'],
-    ['태그명4', '4'],
-  ]; // TODO: props 혹은 Dio로 태그 다 받아오기
+  // List<List<Object>> tagList = [
+  //   ['태그명1', '1'],
+  //   ['태그명2', '2'],
+  //   ['태그명3', '3'],
+  //   ['태그명4', '4'],
+  // ]; // TODO: props 혹은 Dio로 태그 다 받아오기
 
   TextEditingController tagController = TextEditingController();
   String newTag = '';
@@ -41,12 +41,22 @@ class _TagPickerState extends State<TagPicker> {
               child: Row(children: [
                 Row(
                   children: [
-                    ...List.generate(controller.registerList.length, (i) {
-                      String tagName = controller.registerList[i][0] as String;
-                      int colorIndex = controller.registerList[i][1] as int;
+                    // if (controller.tagList != null &&
+                    //     controller.tagList.isNotEmpty)
+                    ...List.generate(
+                        controller.registerList
+                            .firstWhere((pill) =>
+                                pill['itemSeq'] == widget.seq)['tagList']
+                            .length, (i) {
+                      List tempList = controller.registerList.firstWhere(
+                          (pill) => pill['itemSeq'] == widget.seq)['tagList'];
+                      String tagName = tempList[i][0] as String;
+                      String colorIndex = tempList[i][1].toString() as String;
                       return Row(
                         children: [
-                          TagWidget(tagName: tagName, colorIndex: colorIndex),
+                          TagWidget(
+                              tagName: tagName,
+                              colorIndex: int.parse(colorIndex)),
                           GestureDetector(
                             onTap: () {
                               controller.deleteTag(widget.seq, tagName);
@@ -74,7 +84,7 @@ class _TagPickerState extends State<TagPicker> {
                                       if (event.logicalKey ==
                                           LogicalKeyboardKey.enter) {
                                         controller.addNewTag(widget.seq, newTag,
-                                            tagList.length % 4);
+                                            controller.tagList.length % 4);
                                         setState(() {
                                           newTag = '';
                                         });
@@ -115,7 +125,7 @@ class _TagPickerState extends State<TagPicker> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: GridView.builder(
-                    itemCount: tagList.length,
+                    itemCount: controller.tagList.length,
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
@@ -125,8 +135,8 @@ class _TagPickerState extends State<TagPicker> {
                             0.15 /
                             (MediaQuery.of(context).size.width * 0.0725)),
                     itemBuilder: (BuildContext context, int i) {
-                      String tagName = tagList[i][0] as String;
-                      String colorIndex = tagList[i][1] as String;
+                      String tagName = controller.tagList[i][0] as String;
+                      String colorIndex = controller.tagList[i][1] as String;
                       return GestureDetector(
                         onTap: () {
                           controller.addTag(
