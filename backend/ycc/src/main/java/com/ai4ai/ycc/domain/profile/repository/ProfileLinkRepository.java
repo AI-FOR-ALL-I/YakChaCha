@@ -31,5 +31,6 @@ public interface ProfileLinkRepository extends JpaRepository<ProfileLink, Long> 
 
     @EntityGraph(attributePaths = {"account", "profile"})
     List<ProfileLink> findAllByProfileAndDelYn(Profile profile, String delYn);
-    
+
+    boolean existsByAccountAndOwnerAndDelYn(Account sender, Account account, String delYn);
 }
