@@ -15,4 +15,7 @@ class ApiConstants {
   static const String getProfiles = '$baseurl/profiles'; // 조회
   // 검색
   static const String search = '$baseurl/medicine/search';
+
+  // 등록
+  static const String pillRegister = '$baseurl/medicine/taking';
 }
