@@ -17,8 +17,10 @@ import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDetailDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
-import com.ai4ai.ycc.domain.medicine.dto.MedicineTakingDto;
+import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
+import com.ai4ai.ycc.domain.medicine.dto.TagDto;
+import com.ai4ai.ycc.domain.medicine.entity.Tag;
 import com.ai4ai.ycc.domain.medicine.service.MedicineService;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
@@ -27,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/medicine")
+@RequestMapping("/profiles/{profileLinkSeq}/medicine")
 @RequiredArgsConstructor
 @Slf4j
 public class MedicineController {
@@ -37,48 +39,48 @@ public class MedicineController {
     private final ProfileService profileService;
 
     @GetMapping("/search")
-    public ResponseEntity<Result> searchMedicine(@RequestParam String type, @RequestParam String query, @RequestParam Long profileLinkSeq, @LoginUser
+    public ResponseEntity<Result> searchMedicine(@RequestParam String type, @RequestParam String query, @PathVariable Long profileLinkSeq, @LoginUser
         Account account){
         Profile profile=profileService.getProfile(account, profileLinkSeq);
 
         List<MedicineDto> output = null;
-        if(type.equals("text")){
-            output=medicineService.searchMedicineByText(query,profile);
-        }else if(type.equals("edi")){
-            output=medicineService.searchMedicineByEdi(query,profile);
-        }else{
-            output = medicineService.searchMedicineByItemseq(query,profile);
-        }
+        output = medicineService.searchMedicine(query,profile,type);
+
         return ResponseEntity.ok()
             .body(responseService.getListResult(output));
     }
 
     @GetMapping("/detail/{item_seq}")
-    public ResponseEntity<Result> showDetail(@PathVariable long item_seq) {
-        MedicineDetailDto medicine= medicineService.showDetail(item_seq);
+    public ResponseEntity<Result> showDetail(@PathVariable("item_seq") long item_seq, @PathVariable("profileLinkSeq") Long profileLinkSeq, @LoginUser
+    Account account) {
+        Profile profile=profileService.getProfile(account, profileLinkSeq);
+        MedicineDetailDto medicine= medicineService.showDetail(item_seq,profile);
         return ResponseEntity.ok()
                 .body(responseService.getSingleResult(medicine));
     }
 
-    @GetMapping("/taking")
-    public ResponseEntity<Result> showMyTakingList(@RequestParam Long profileLinkSeq, @LoginUser Account account){
+    @GetMapping("/my")
+    public ResponseEntity<Result> showMyMedicineList(@PathVariable Long profileLinkSeq, @LoginUser Account account, @RequestParam boolean now){
         Profile profile=profileService.getProfile(account, profileLinkSeq);
-        List<MedicineTakingDto> output = medicineService.searchTakingMedicine(profile);
+        List<MyMedicineDto> output = medicineService.searchMyMedicine(profile,now);
         return ResponseEntity.ok()
             .body(responseService.getListResult(output));
     }
 
-    @PostMapping("/taking")
-    public ResponseEntity<Result> registMedicine(@RequestBody List<RegistRequestDto> requestDto, @RequestParam Long profileLinkSeq, @LoginUser Account account) {
+    @PostMapping("/my")
+    public ResponseEntity<Result> registMedicine(@RequestBody List<RegistRequestDto> requestDto, @PathVariable Long profileLinkSeq, @LoginUser Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         Boolean response = medicineService.regist(requestDto,profile);
         return ResponseEntity.ok()
             .body(responseService.getSingleResult(response));
     }
-    @GetMapping("/test")
-    public ResponseEntity<Result> test() {
+
+    @GetMapping("/tag")
+    public ResponseEntity<Result> showTags(@PathVariable Long profileLinkSeq, @LoginUser Account account) {
+        Profile profile=profileService.getProfile(account, profileLinkSeq);
+        List<TagDto> response = medicineService.showTags(profile);
         return ResponseEntity.ok()
-                .body(responseService.getSuccessResult());
+            .body(responseService.getSingleResult(response));
     }
 
 }

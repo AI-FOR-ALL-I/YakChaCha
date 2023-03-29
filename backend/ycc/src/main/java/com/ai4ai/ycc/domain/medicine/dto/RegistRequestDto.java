@@ -13,6 +13,6 @@ public class RegistRequestDto {
     private String start_date;
     private String end_date;
     private String type_code;
-    private List<String> tag_list;
+    private List<List<Object>> tag_list;
 
 }
