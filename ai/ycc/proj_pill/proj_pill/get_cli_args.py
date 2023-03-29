@@ -15,14 +15,15 @@ is_debug = debugger_is_active()
 
 uuid_node = uuid.getnode()
 
-def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0', file_number='00'):
+def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0'):
     #######################################################################################################
     print(f'job={job} run_phase:{run_phase} aug_level:{aug_level}, dataclass:{dataclass} ')
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter, )
 
     verbose = True
     if os.name == 'nt':
-        dir_solution_home = r'C:\Users\SSAFY\Desktop\pill_data\test\proj_pill'
+        dir_solution_home = r'proj_pill'
+        # dir_solution_home = r'C:\Users\SSAFY\Desktop\pill_data\test\proj_pill'
         BATCH_SIZE = 2
         num_workers = 2
         num_threads = 1
@@ -35,8 +36,8 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
         num_workers = 4
         num_threads = 2
         dist_backend = 'nccl'
-        # BATCH_SIZE = 8
-        BATCH_SIZE = 4
+#         BATCH_SIZE = 8
+        BATCH_SIZE = 2
         # if uuid_node == 274973445269205:        # 광주AI
         #     BATCH_SIZE = 56                     # train+valid:56 (opt을 올리지 않는다.), train:56
         #     if job == 'hrnet_w64':
@@ -64,35 +65,35 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
 
     # define directory
     dir_pill_class_base = 'pill_data_croped'
-    file_name = f'file_{file_number}'
     json_pill_label_path_sharp_score = 'pill_label_path_sharp_score.json'
     json_pill_prescription_type = 'pill_prescription_type.json'
-    json_pill_class_list = f'pill_class_list_file{file_number}.json'
+    json_pill_class_list = 'pill_class_list.json'
+    json_pill_itemseq_dict = 'pill_itemseq_dict.json'
 
     FITTOSIZE = 224
     gen_type = 'read_only_image'
     dataclass = f'dataclass{dataclass}'
 
     if job == 'resnet152':
-        model_path_in = os.path.join(DIR_PROJ, 'models', f'pill_resnet152_{dataclass}_aug{aug_level}_file{file_number}.pt')
-        model_path = os.path.join(DIR_PROJ, 'models', f'pill_resnet152_{dataclass}_aug{aug_level}_file{file_number}.pt')
+        model_path_in = os.path.join(DIR_PROJ, f'pill_resnet152_{dataclass}_aug{aug_level}.pt')
+        model_path = os.path.join(DIR_PROJ, f'pill_resnet152_{dataclass}_aug{aug_level}.pt')
 
 
 
     elif job == 'hrnet_w64':
-        model_path_in = os.path.join(DIR_PROJ, 'models', f'pill_hrnet_w64_{dataclass}_aug{aug_level}_file{file_number}.pt')
-        model_path = os.path.join(DIR_PROJ, 'models', f'pill_hrnet_w64_{dataclass}_aug{aug_level}_file{file_number}.pt')
+        model_path_in = os.path.join(DIR_PROJ, f'pill_hrnet_w64_{dataclass}_aug{aug_level}.pt')
+        model_path = os.path.join(DIR_PROJ, f'pill_hrnet_w64_{dataclass}_aug{aug_level}.pt')
 
 
     #######################################################################################################
 
 
     dir_pill_class_base = os.path.join(DIR_DATA, dir_pill_class_base)
-    dir_pill_class_base_file = os.path.join(dir_pill_class_base, file_name)
     json_pill_label_path_sharp_score = os.path.join(dir_pill_class_base, json_pill_label_path_sharp_score)
     json_pill_prescription_type = os.path.join(dir_pill_class_base, json_pill_prescription_type)
+    json_pill_itemseq_dict = os.path.join(DIR_PROJ, json_pill_itemseq_dict)
     dir_output = os.path.join(DIR_DATA, 'output')  # output dir for generation from gauge info
-
+    
 
 
     dir_log = './logs'
@@ -109,6 +110,7 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
     parser.add_argument('--dir_pill_class_base', default=dir_pill_class_base, help='pill class valid directory')
     parser.add_argument('--json_pill_label_path_sharp_score', default=json_pill_label_path_sharp_score, help='pill class sharpness')
     parser.add_argument('--json_pill_prescription_type', default=json_pill_prescription_type, help='pill prescription_type')
+    parser.add_argument('--json_pill_itemseq_dict', default=json_pill_itemseq_dict, help='pill itemseq dict')
 
     parser.add_argument('--pill_dataset_class0', default=[90, 75], help='dataset camera latitude ')
     parser.add_argument('--pill_dataset_class1', default=[70, 60], help='dataset camera latitude')
@@ -117,7 +119,8 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
     parser.add_argument('--pill_dataset_valid_rate', default=0.1, help='dataset valid rate')
     parser.add_argument('--pill_dataset_test_rate' , default=0.1, help='dataset test rate')
     parser.add_argument('--num_classes', default=1000, help='pill dataset class number')
-    json_pill_class_list  = os.path.join(dir_pill_class_base, file_name, json_pill_class_list )
+
+    json_pill_class_list  = os.path.join(dir_pill_class_base, json_pill_class_list )
     parser.add_argument('--json_pill_class_list', type=str, default=json_pill_class_list, help='json file for json_pill_class_list ')
 
     parser.add_argument('--gen_type', default=gen_type, help='image only or annotation file')

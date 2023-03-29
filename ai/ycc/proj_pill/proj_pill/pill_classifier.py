@@ -150,7 +150,6 @@ def valid(args, dataloader, sampler,  model, criterion, epoch, log_writer=None, 
         with tqdm(total=len(dataloader), desc=args.tqdm_desc_head + '{} Epoch  #{}'.format( args.run_phase, epoch), disable=not verbose) as t:
             for i, (img, target, path_img, aug_name ) in enumerate(dataloader):
                 # measure data loading time
-
                 if args.cuda:
                     img = img.cuda()
                     target = target.cuda()
