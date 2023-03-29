@@ -9,10 +9,10 @@ import lombok.Getter;
 @Getter
 public class RegistRequestDto {
 
-    private Long item_seq;
-    private String start_date;
-    private String end_date;
-    private String type_code;
-    private List<List<String>> tag_list;
+    private Long itemSeq;
+    private String startDate;
+    private String endDate;
+    private String typeCode;
+    private List<List<String>> tagList;
 
 }
