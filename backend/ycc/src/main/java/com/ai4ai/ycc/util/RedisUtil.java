@@ -1,36 +1,56 @@
 package com.ai4ai.ycc.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RedisUtil {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public String getData(String key) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        return valueOperations.get(key);
+    public void save(String key, Object data)  {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(data);
+            log.info("[Redis] key: {}, value: {}", key, value);
+            redisTemplate.opsForValue().set(key, value);
+            log.info("[Redis] Save Success...");
+        } catch (JsonProcessingException e) {
+            log.warn("[Redis] Save Fail...");
+            throw new RuntimeException(e);
+        }
     }
 
-    public void setData(String key, String value) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(key, value);
+    public <T> T get(String key, Class<T> valueType) {
+        String value = redisTemplate.opsForValue().get(key);
+        log.info("[Redis] key: {}, value: {}", key, value);
+
+        if (value == null) {
+            log.info("[Redis] Not Found Key...");
+            return null;
+        }
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            T result = objectMapper.readValue(value, valueType);
+            log.info("[Redis] Get Success...");
+            return result;
+        } catch(Exception e){
+            log.warn("[Redis] Get Fail...");
+            return null;
+        }
     }
 
-    public void setDataExpire(String key, String value, long duration) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        Duration expireDuration = Duration.ofSeconds(duration);
-        valueOperations.set(key, value, expireDuration);
-    }
-
-    public void deleteData(String key) {
+    public void delete(String key) {
+        log.info("[Redis] Delete Key: {}...", key);
         redisTemplate.delete(key);
+        log.info("[Redis] Delete Success...");
     }
 
 }
