@@ -7,10 +7,10 @@ class TagWidget extends StatelessWidget {
   final String tagName;
   final int colorIndex;
   final colorPalette = {
-    1: Color(0xffffb1b1),
-    2: Color(0xffb7d1e5),
-    3: Color(0xffbbe4cb),
-    4: Color(0xffffe6b2),
+    0: Color(0xffffb1b1),
+    1: Color(0xffb7d1e5),
+    2: Color(0xffbbe4cb),
+    3: Color(0xffffe6b2),
   };
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,8 @@ import 'package:frontend/models/pill_detail_model.dart';
 import 'package:frontend/screens/pill_details/pill_detail_line_state.dart';
 import 'package:frontend/services/pill_detail_api.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
+import 'package:frontend/controller/pill_register_controller.dart';
+import 'package:get/get.dart';
 
 class PillDetailsForApi extends StatelessWidget {
   final String num;
@@ -45,14 +47,32 @@ class PillDetailsForApi extends StatelessWidget {
                 "약 등록",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.add_box_outlined,
-                  color: Color(0xFF4AC990),
-                  size: 30,
-                ),
-              )
+              GetBuilder(
+                  init: PillRegisterController(),
+                  builder: (controller) {
+                    return IconButton(
+                      onPressed: () {
+                        // TODO: 여기다가 일단 controller에 약 저장시키는 코드 + pop으로 검색 창으로 혹은 메인창으로 돌아오게하기
+                        // 필요한 자료
+                        var tempData = {
+                          'itemSeq': pillDetail.itemSeq,
+                          'img': pillDetail.img,
+                          'itemName': pillDetail.entpName,
+                          'warnPregnant': false,
+                          'warnAge': false,
+                          'warnOld': false,
+                          'collide': false
+                        };
+                        controller.add(tempData);
+                        Get.back(); // 이거 되나
+                      },
+                      icon: Icon(
+                        Icons.add_box_outlined,
+                        color: Color(0xFF4AC990),
+                        size: 30,
+                      ),
+                    );
+                  })
             ],
           ),
         ),
@@ -98,25 +118,31 @@ class PillDetailsForApi extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("태그명1",
+                Text(
+                  "태그명1",
                   style: TextStyle(fontSize: 20),
                 ),
-                Text("태그명2",
+                Text(
+                  "태그명2",
                   style: TextStyle(fontSize: 20),
                 ),
-                IconButton(onPressed: (){}, icon: Icon(Icons.mode_edit_outlined))
+                IconButton(
+                    onPressed: () {}, icon: Icon(Icons.mode_edit_outlined))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("복용기간",
+                Text(
+                  "복용기간",
                   style: TextStyle(fontSize: 20),
                 ),
-                Text("2023.03.01 ~ 2023.03.02",
+                Text(
+                  "2023.03.01 ~ 2023.03.02",
                   style: TextStyle(fontSize: 20),
                 ),
-                IconButton(onPressed: (){}, icon: Icon(Icons.mode_edit_outlined))
+                IconButton(
+                    onPressed: () {}, icon: Icon(Icons.mode_edit_outlined))
               ],
             )
           ],
