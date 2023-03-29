@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/api_client.dart';
+import 'package:frontend/services/api_search.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 
@@ -18,7 +18,7 @@ class _TextSearchBarState extends State<TextSearchBar> {
 
   Future<void> searchText(word) async {
     try {
-      Response response = await ApiClient.textSearch(word);
+      Response response = await ApiSearch.textSearch(word);
       // print(response.data);
       var result = jsonDecode(response.toString());
       var dataList = result['data'];

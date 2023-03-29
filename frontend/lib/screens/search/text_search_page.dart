@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/widgets/text_search/text_search_pill.dart';
 import 'package:frontend/widgets/text_search/text_search_bar.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
+import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -84,10 +85,12 @@ class _TextSearchPageState extends State<TextSearchPage> {
                     return GestureDetector(
                         onTap: () {
                           // Navigator.pop(context);
-                          Navigator.pop(
+                          Navigator.push(
                               context,
-                              searchResult[
-                                  index]); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
+                              MaterialPageRoute(
+                                  builder: (context) => PillDetailsForApi(
+                                      num: searchResult[index]['itemSeq']
+                                          .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
                         },
                         child:
                             TextSearchPillComponent(data: searchResult[index]));

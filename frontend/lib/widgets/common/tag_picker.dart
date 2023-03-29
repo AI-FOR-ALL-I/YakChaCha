@@ -17,10 +17,10 @@ class TagPicker extends StatefulWidget {
 class _TagPickerState extends State<TagPicker> {
   List<List<Object>> selectedTagList = [];
   List<List<Object>> tagList = [
-    ['태그명1', 1],
-    ['태그명2', 2],
-    ['태그명3', 3],
-    ['태그명4', 4],
+    ['태그명1', '1'],
+    ['태그명2', '2'],
+    ['태그명3', '3'],
+    ['태그명4', '4'],
   ]; // TODO: props 혹은 Dio로 태그 다 받아오기
 
   TextEditingController tagController = TextEditingController();
@@ -126,17 +126,19 @@ class _TagPickerState extends State<TagPicker> {
                             (MediaQuery.of(context).size.width * 0.0725)),
                     itemBuilder: (BuildContext context, int i) {
                       String tagName = tagList[i][0] as String;
-                      int colorIndex = tagList[i][1] as int;
+                      String colorIndex = tagList[i][1] as String;
                       return GestureDetector(
                         onTap: () {
-                          controller.addTag(widget.seq, tagName, colorIndex);
+                          controller.addTag(
+                              widget.seq, tagName, int.parse(colorIndex));
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 5.0),
                           child: SizedBox(
                               height: MediaQuery.of(context).size.width * 0.07,
                               child: TagWidget(
-                                  tagName: tagName, colorIndex: colorIndex)),
+                                  tagName: tagName,
+                                  colorIndex: int.parse(colorIndex))),
                         ),
                       );
                     }),

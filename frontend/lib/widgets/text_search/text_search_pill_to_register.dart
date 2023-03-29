@@ -9,7 +9,7 @@ class TextSearchPillToRgister extends StatefulWidget {
       : super(key: key);
   final Map data;
 
-  // {itemSeq: 2, itemName: 12, img: https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/151317992996500014, type_code: null, collide: false, warn_pregnant: false, warn_old: false, warn_age: false, collide_list: []}
+  // {itemSeq: 2, itemName: 12, img: https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/151317992996500014, type_code: null, collide: false, warnPregnant: false, warnOld: false, warnAge: false, collide_list: []}
 
   @override
   State<TextSearchPillToRgister> createState() =>
@@ -39,7 +39,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                          '${controller.registerList.firstWhere((pill) => pill['item_seq'] == widget.data['item_seq'])['start_date']} 부터'),
+                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['start_date']} 부터'),
                       GestureDetector(
                         onTap: () {
                           showDatePicker(
@@ -50,7 +50,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                           ).then((selectedDate) {
                             if (selectedDate != null) {
                               controller.updateStartDate(
-                                  widget.data['item_seq'],
+                                  widget.data['itemSeq'],
                                   DateFormat('yyyy-MM-dd')
                                       .format(selectedDate));
                             }
@@ -61,7 +61,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                         ),
                       ),
                       Text(
-                          '${controller.registerList.firstWhere((pill) => pill['item_seq'] == widget.data['item_seq'])['end_date']} 까지'), // endDate
+                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['end_date']} 까지'), // endDate
                       GestureDetector(
                         onTap: () {
                           showDatePicker(
@@ -72,7 +72,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                           ).then((selectedDate) {
                             if (selectedDate != null) {
                               controller.updateEndDate(
-                                  widget.data['item_seq'],
+                                  widget.data['itemSeq'],
                                   DateFormat('yyyy-MM-dd')
                                       .format(selectedDate));
                             }
@@ -84,7 +84,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                       ),
                     ],
                   ),
-                  TagPicker(seq: widget.data['item_seq'], isRegister: true)
+                  TagPicker(seq: widget.data['itemSeq'], isRegister: true)
                 ],
               ))
             ],
@@ -131,7 +131,7 @@ class Before extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 5.0),
                               child: Text(
-                                '${data?['item_name']}',
+                                '${data?['itemName']}',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -146,14 +146,14 @@ class Before extends StatelessWidget {
                                         Text(
                                           '임산부 주의',
                                           style: TextStyle(
-                                              color: data?['warn_pregnant']
+                                              color: data?['warnPregnant']
                                                   ? Colors.red
                                                   : Colors.grey),
                                         ),
                                         Text(' | '),
                                         Text('노약자 주의',
                                             style: TextStyle(
-                                                color: data?['warn_old']
+                                                color: data?['warnOld']
                                                     ? Colors.red
                                                     : Colors.grey))
                                       ],
@@ -162,7 +162,7 @@ class Before extends StatelessWidget {
                                       children: [
                                         Text('어린이 주의',
                                             style: TextStyle(
-                                                color: data?['warn_age']
+                                                color: data?['warnAge']
                                                     ? Colors.red
                                                     : Colors.grey)),
                                         Text(' | '),
