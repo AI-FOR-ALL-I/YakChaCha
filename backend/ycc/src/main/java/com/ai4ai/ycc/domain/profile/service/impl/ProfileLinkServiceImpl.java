@@ -1,6 +1,5 @@
 package com.ai4ai.ycc.domain.profile.service.impl;
 
-import com.ai4ai.ycc.common.annotation.LoginUser;
 import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
@@ -21,7 +20,6 @@ import com.ai4ai.ycc.util.DateUtil;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -118,10 +116,8 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
     }
 
     @Override
-    public void modifyProfile(Account account, ModifyProfileRequestDto requestDto) {
+    public void modifyProfile(Account account, long profileLinkSeq, ModifyProfileRequestDto requestDto) {
         log.info("[modifyProfile] Profile 수정 시작");
-
-        long profileLinkSeq = requestDto.getProfileLinkSeq();
 
         ProfileLink profileLink = profileLinkRepository.findByAccountAndProfileLinkSeqAndDelYn(account, profileLinkSeq, "N")
                 .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));

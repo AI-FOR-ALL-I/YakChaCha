@@ -56,12 +56,10 @@ public class Account extends BaseAccountEntity implements UserDetails {
         this.deviceToken = null;
     }
 
-    public void putRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public void removeRefreshToken() {
+    public void withdraw() {
         this.refreshToken = null;
+        this.deviceToken = null;
+        super.remove();
     }
 
     @Override

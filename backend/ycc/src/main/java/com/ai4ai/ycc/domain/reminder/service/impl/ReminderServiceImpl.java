@@ -182,8 +182,7 @@ public class ReminderServiceImpl implements ReminderService {
     }
 
     @Override
-    public void modifyReminder(Profile profile, ModifyReminderRequestDto requestDto) {
-        long reminderSeq = requestDto.getReminderSeq();
+    public void modifyReminder(Profile profile, long reminderSeq, ModifyReminderRequestDto requestDto) {
         Reminder reminder = reminderRepository.findByReminderSeqAndProfileAndDelYn(reminderSeq, profile, "N")
                 .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
 
