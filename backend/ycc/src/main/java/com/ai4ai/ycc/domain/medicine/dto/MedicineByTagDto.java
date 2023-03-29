@@ -7,16 +7,11 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class MyMedicineDto {
+public class MedicineByTagDto {
 
     private Long itemSeq;
     private String itemName;
     private String img;
-    private String typeCode;
-    private List tagList;
-    private int dDay;
-    private boolean warnPregnant;
-    private boolean warnOld;
-    private boolean warnAge;
+    private List<List<String>> tagList;
 
 }

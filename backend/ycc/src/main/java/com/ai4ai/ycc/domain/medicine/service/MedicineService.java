@@ -2,6 +2,7 @@ package com.ai4ai.ycc.domain.medicine.service;
 
 import java.util.List;
 
+import com.ai4ai.ycc.domain.medicine.dto.MedicineByTagDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDetailDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
@@ -20,4 +21,6 @@ public interface MedicineService {
     List<MyMedicineDto> searchMyMedicine(Profile profile, boolean now);
 
 	List<TagDto> showTags(Profile profile);
+
+	List<MedicineByTagDto> searchByTags(Profile profile, List<String> tagList);
 }

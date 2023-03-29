@@ -15,6 +15,7 @@ import com.ai4ai.ycc.common.annotation.LoginUser;
 import com.ai4ai.ycc.common.response.ResponseService;
 import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
+import com.ai4ai.ycc.domain.medicine.dto.MedicineByTagDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDetailDto;
 import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
@@ -51,10 +52,10 @@ public class MedicineController {
     }
 
     @GetMapping("/detail/{item_seq}")
-    public ResponseEntity<Result> showDetail(@PathVariable("item_seq") long item_seq, @PathVariable("profileLinkSeq") Long profileLinkSeq, @LoginUser
+    public ResponseEntity<Result> showDetail(@PathVariable("item_seq") long itemSeq, @PathVariable("profileLinkSeq") Long profileLinkSeq, @LoginUser
     Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
-        MedicineDetailDto medicine= medicineService.showDetail(item_seq,profile);
+        MedicineDetailDto medicine= medicineService.showDetail(itemSeq,profile);
         return ResponseEntity.ok()
                 .body(responseService.getSingleResult(medicine));
     }
@@ -79,6 +80,14 @@ public class MedicineController {
     public ResponseEntity<Result> showTags(@PathVariable Long profileLinkSeq, @LoginUser Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         List<TagDto> response = medicineService.showTags(profile);
+        return ResponseEntity.ok()
+            .body(responseService.getSingleResult(response));
+    }
+
+    @GetMapping("/tag/search")
+    public ResponseEntity<Result> showTags(@PathVariable("profileLinkSeq") Long profileLinkSeq, @RequestBody List<String> tagList, @LoginUser Account account) {
+        Profile profile=profileService.getProfile(account, profileLinkSeq);
+        List<MedicineByTagDto> response = medicineService.searchByTags(profile,tagList);
         return ResponseEntity.ok()
             .body(responseService.getSingleResult(response));
     }
