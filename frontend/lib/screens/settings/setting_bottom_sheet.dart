@@ -8,8 +8,8 @@ class SettingBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.25, // 화면 높이의 1/4 크기
-      child: const Column(
-        children: [
+      child: Column(
+        children: const [
           // 모달 화면 내용 구현
           BottomSheetItem(
               iconName: Icons.person, menuTitle: '프로필 추가하기', cases: 0),

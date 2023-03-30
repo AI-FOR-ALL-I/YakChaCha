@@ -41,30 +41,34 @@ class _EmailConfirmPageState extends State<EmailConfirmPage> {
             left: 0,
             right: 0,
             bottom: 16,
-            child: InkWell(
-              onTap: () {
-                // 서버통신진행
-                //sendDataToServer(context);
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 32,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                    color: Colors.lightGreen,
-                    width: 2,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: InkWell(
+                onTap: () {
+                  // 서버통신진행
+                  //sendDataToServer(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 32,
                   ),
-                  color: Colors.lightGreen,
-                ),
-                child: const Text(
-                  '등록하기',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: const Color(0xFFBBe4CB),
+                      width: 2,
+                    ),
+                    color: const Color(0xFFBBe4CB),
+                  ),
+                  child: const Text(
+                    '등록하기',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
