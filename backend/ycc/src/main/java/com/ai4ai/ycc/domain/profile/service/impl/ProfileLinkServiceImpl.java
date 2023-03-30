@@ -4,10 +4,7 @@ import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.profile.dto.RequestLinkDto;
-import com.ai4ai.ycc.domain.profile.dto.request.AcceptLinkRequestDto;
-import com.ai4ai.ycc.domain.profile.dto.request.SendLinkRequestDto;
-import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
-import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
+import com.ai4ai.ycc.domain.profile.dto.request.*;
 import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileLinkResponseDto;
@@ -326,6 +323,34 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
                 .authNumber(authNumber)
                 .build();
     }
+
+    @Override
+    public void checkAuthNumber(Account account, CheckAuthNumberRequestDto requestDto) {
+        String key = "requestLink:" + account.getAccountSeq();
+
+        log.info("[checkAuthNumber] redis 조회 시작");
+        RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
+        log.info("[checkAuthNumber] redis 조회 완료");
+
+        if (requestLink == null || requestLink.getStatus() != 2) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
+        }
+
+        String authNumber = requestDto.getAuthNumber();
+
+        log.info("[checkAuthNumber] 인증번호 확인 시작");
+        if (!requestLink.getAuthNumber().equals(authNumber)) {
+            throw new ErrorException(ProfileLinkErrorCode.INVALID_AUTH_NUMBER);
+        }
+        requestLink.certify();
+        log.info("[checkAuthNumber] 인증번호 확인 완료");
+
+        log.info("[checkAuthNumber] redis 저장 완료");
+        redisUtil.setex(key, requestLink, 600);
+        log.info("[checkAuthNumber] redis 저장 완료");
+
+    }
+
 
     public String generateAuthNumber() {
         log.info("[generateAuthNumber] 인증번호 생성 시작");

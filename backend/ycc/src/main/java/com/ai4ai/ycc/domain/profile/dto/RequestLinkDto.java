@@ -25,6 +25,10 @@ public class RequestLinkDto {
     private Account receiver;
     private List<Integer> profiles;
     private String authNumber;
+
+    // 1: S: 인증 요청 (expire: 30m)
+    // 2: R: 요청 수락 (expire: 3m)
+    // 3: S: 인증번호 확인 (expire: 10m)
     private int status;
 
     @Builder
@@ -39,6 +43,10 @@ public class RequestLinkDto {
     public void accept(List<Integer> profiles, String authNumber) {
         this.profiles = profiles;
         this.authNumber = authNumber;
+        this.status++;
+    }
+
+    public void certify() {
         this.status++;
     }
 

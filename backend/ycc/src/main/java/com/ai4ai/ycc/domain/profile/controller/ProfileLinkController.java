@@ -4,6 +4,7 @@ import com.ai4ai.ycc.common.annotation.LoginUser;
 import com.ai4ai.ycc.common.response.ResponseService;
 import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
+import com.ai4ai.ycc.domain.profile.dto.request.CheckAuthNumberRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.SendLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.AcceptLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
@@ -51,10 +52,18 @@ public class ProfileLinkController {
 
     @GetMapping("/sender/{senderAccountSeq}/auth")
     public ResponseEntity<Result> findAuthNumber(@LoginUser Account account, @PathVariable long senderAccountSeq) {
-        log.info("[findAuthNumber] 프로필 연동 비밀번호 조회 API 호출");
+        log.info("[findAuthNumber] 프로필 연동 인증번호 조회 API 호출");
         FindAuthNumberResponseDto result = profileLinkService.findAuthNumber(account, senderAccountSeq);
         return ResponseEntity.ok()
                 .body(responseService.getSingleResult(result));
+    }
+
+    @PutMapping("/auth")
+    public ResponseEntity<Result> checkAuthNumber(@LoginUser Account account, @RequestBody CheckAuthNumberRequestDto requestDto) {
+        log.info("[checkAuthNumber] 프로필 연동 인증번호 확인 API 호출");
+        profileLinkService.checkAuthNumber(account, requestDto);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
     }
 
 }
