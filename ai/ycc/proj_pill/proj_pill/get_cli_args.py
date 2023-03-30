@@ -21,15 +21,17 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter, )
 
     verbose = True
+    dir_solution_home = r'proj_pill'
+    # dir_solution_home = r'C:\Users\SSAFY\Desktop\pill_data\test\proj_pill'
+    BATCH_SIZE = 2
+    num_workers = 2
+    num_threads = 1
+    dist_backend = 'gloo'
+    if job == 'resnet152':
+        BATCH_SIZE = 12
+    
     if os.name == 'nt':
-        dir_solution_home = r'proj_pill'
-        # dir_solution_home = r'C:\Users\SSAFY\Desktop\pill_data\test\proj_pill'
-        BATCH_SIZE = 2
-        num_workers = 2
-        num_threads = 1
-        dist_backend = 'gloo'
-        if job == 'resnet152':
-            BATCH_SIZE = 12
+        pass
 
     else:
         dir_solution_home = r'/home/jupyter-j8a803/proj/proj_pill'

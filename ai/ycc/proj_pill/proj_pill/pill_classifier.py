@@ -146,6 +146,7 @@ def valid(args, dataloader, sampler,  model, criterion, epoch, log_writer=None, 
     args.list_preds = []
     args.list_target = []
     args.count_correct = 0
+    args.list_results = []
     with torch.no_grad():
         with tqdm(total=len(dataloader), desc=args.tqdm_desc_head + '{} Epoch  #{}'.format( args.run_phase, epoch), disable=not verbose) as t:
             for i, (img, target, path_img, aug_name ) in enumerate(dataloader):
@@ -163,11 +164,16 @@ def valid(args, dataloader, sampler,  model, criterion, epoch, log_writer=None, 
                     if args.run_phase == 'valid': print(f'<------- class valid fail file: {path_img[0]}, aug_name:{aug_name}')
 
                 preds = output.data.max(dim=1, keepdim=True)[1]
+                results = output.data.sort(dim=1, descending=True)
+
+
                 count_correct = preds.eq(target.data.view_as(preds)).cpu().sum()
+                
                 list_preds = preds.view(-1).tolist()
 
                 args.path_img = list(path_img)
                 args.list_preds = list_preds
+                args.list_results = results
                 args.list_target = target.detach().cpu().tolist()
                 args.count_correct = count_correct.item()
                 count_try = img.cpu().shape[0]
