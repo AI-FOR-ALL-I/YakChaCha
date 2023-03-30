@@ -34,4 +34,16 @@ class ApiProfiles {
           'Authorization': 'Bearer $accessToken'
         }));
   }
+
+  static Future<Response> getMultiProfiles() {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    return dio.get(ApiConstants.getProfiles,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken'
+          },
+        ));
+  }
 }

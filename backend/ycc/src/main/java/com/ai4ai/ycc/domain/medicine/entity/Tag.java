@@ -30,7 +30,6 @@ public class Tag extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tagSeq")
 	private Long tagSeq;
-
 	@Column
 	private Long profileSeq;
 	@Column
