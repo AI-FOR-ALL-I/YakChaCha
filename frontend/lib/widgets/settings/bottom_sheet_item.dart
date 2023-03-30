@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/profile/create_profile_page.dart';
+import 'package:frontend/screens/profile/email_confirm_page.dart';
 
 class BottomSheetItem extends StatelessWidget {
   final IconData iconName;
@@ -36,6 +37,10 @@ class BottomSheetItem extends StatelessWidget {
             }
             if (cases == 1) {
               // 이메일 확인
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const EmailConfirmPage()));
             }
           },
           child: Container(
