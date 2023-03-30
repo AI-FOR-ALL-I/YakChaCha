@@ -50,11 +50,16 @@ def run_search_model():
     print(f'valid dataset was loaded')
 
     pill_classifier(args)
+
+    results = args.list_results
+    results_sim = results[0].view(-1).tolist()[:5]
+    results_idx = results[1].view(-1).tolist()[:5]
+
+    result = {
+        'item_seq': [search(args.dict_idx_itemid[results_idx[rk]], args.json_pill_itemseq_dict)[0] for rk in range(5)],
+        'similarity': results_sim
+        } 
     
-    N = len(args.list_preds)
-    result = [(args.path_img[i], args.list_preds[i], args.dict_idx_itemid[args.list_preds[i]], search(args.dict_idx_itemid[args.list_preds[i]], args.json_pill_itemseq_dict)) for i in range(N)]
-    for i in range(N):
-        print(result[i])
     print('job done')
     return result
 
