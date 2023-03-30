@@ -53,7 +53,8 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       context: context,
       backgroundColor: Colors.black.withOpacity(0.5),
       builder: (BuildContext context) {
-        return const SettingBottomSheet();
+        return Container(
+            color: Colors.white, child: const SettingBottomSheet());
       },
     );
   }
