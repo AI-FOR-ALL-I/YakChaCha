@@ -9,12 +9,15 @@ class BottomConfirmWidget extends StatelessWidget {
   final List? tempList;
   final Function? registerFinal;
   final Function? confirm;
+  final bool isAlarmMyPill;
+
   const BottomConfirmWidget({
     Key? key,
     required this.isAlarm,
     this.tempList,
     this.registerFinal,
     this.confirm,
+    required this.isAlarmMyPill,
   }) // Alarm 생성/수정 페이지면 true, 약 선택 화면이면 false
   : super(key: key);
 
@@ -34,74 +37,120 @@ class BottomConfirmWidget extends StatelessWidget {
               Colors.white.withOpacity(0.75),
               Colors.white.withOpacity(1),
             ])),
-        child: isAlarm
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.alarm_outlined,
-                    size: 50,
-                  ),
-                  Text('알람 설정')
-                ],
-              )
-            : Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                GestureDetector(
-                  onTap: () async {
-                    if (confirm != null) {
-                      var temp = await confirm!();
-                      if (temp) {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('성공적으로 등록되었습니다!'),
-                              content: Text('3초 뒤에 메인화면으로 이동합니다~'),
-                            );
-                          },
+        child: isAlarm // 여기가 알람 등록 페이지
+            ? GestureDetector(
+                onTap: () async {
+                  bool result = await controller.dioRequest();
+                  if (result) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('성공적으로 등록되었습니다!'),
+                          content: Text('3초 뒤에 메인화면으로 이동합니다~'),
                         );
+                      },
+                    );
 
 // 3초 후에 다이얼로그를 닫음
-                        Timer(Duration(seconds: 3), () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) =>
-                          //         DrugHistoryPage())); //하니까 엄청 꺠짐....
-                        });
-                      }
-                    }
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.check_circle_outlined,
-                        size: 50,
-                        color: Theme.of(context).colorScheme.background,
-                      ),
-                      Text('등록')
-                    ],
-                  ),
+                    Timer(Duration(seconds: 3), () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) =>
+                      //         DrugHistoryPage())); //하니까 엄청 꺠짐....
+                    });
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.alarm_outlined,
+                      size: 50,
+                    ),
+                    Text('알람 설정')
+                  ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              )
+            : isAlarmMyPill // 여기가 복약 목록 선택
+                ? GestureDetector(
+                    onTap: () {
+                      controller.submitTemp();
+                      Navigator.pop(context);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.check_circle_outlined,
+                          size: 50,
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                        Text('확인')
+                      ],
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(
-                        Icons.cancel_outlined,
-                        size: 50,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      Text('취소')
-                    ],
-                  ),
-                ),
-              ]),
+                        GestureDetector(
+                          onTap: () async {
+                            if (confirm != null) {
+                              var temp = await confirm!();
+                              if (temp) {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('성공적으로 등록되었습니다!'),
+                                      content: Text('3초 뒤에 메인화면으로 이동합니다~'),
+                                    );
+                                  },
+                                );
+
+// 3초 후에 다이얼로그를 닫음
+                                Timer(Duration(seconds: 3), () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         DrugHistoryPage())); //하니까 엄청 꺠짐....
+                                });
+                              }
+                            }
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.check_circle_outlined,
+                                size: 50,
+                                color: Theme.of(context).colorScheme.background,
+                              ),
+                              Text('등록')
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.cancel_outlined,
+                                size: 50,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              Text('취소')
+                            ],
+                          ),
+                        ),
+                      ]),
       );
     });
   }

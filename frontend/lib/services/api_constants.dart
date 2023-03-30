@@ -25,7 +25,13 @@ class ApiConstants {
   static const String search =
       '$baseurl/profiles/$profileLinkSeq/medicine/search';
 
-  // 등록
+  // 약 등록
   static const String pillRegister =
-      '$baseurl/profiles/$profileLinkSeq/medicine/my';
+      '$baseurl/profiles/${profileLinkSeq}/medicine/my';
+      
+  // 알람 등록
+  static const String alarmRegister =
+      '$baseurl/profiles/${profileLinkSeq}/reminders';
+
+
 }

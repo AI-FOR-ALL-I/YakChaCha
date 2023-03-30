@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/my_pill_model.dart';
 import 'package:frontend/services/my_pill_api.dart';
 import 'package:frontend/services/taken_pill_api.dart';
-import 'package:frontend/widgets/mypills/my_pill.dart';
+import 'package:frontend/widgets/mypills/my_pill_for_alarm_register.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 
 class DrugHistoryPage extends StatefulWidget {
