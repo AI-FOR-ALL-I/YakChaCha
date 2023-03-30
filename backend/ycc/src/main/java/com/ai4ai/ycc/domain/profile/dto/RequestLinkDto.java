@@ -23,7 +23,7 @@ public class RequestLinkDto {
 
     private Account sender;
     private Account receiver;
-    private List<Integer> profiles;
+    private List<Long> profiles;
     private String authNumber;
 
     // 1: S: 인증 요청 (expire: 30m)
@@ -40,7 +40,7 @@ public class RequestLinkDto {
         this.status = 1;
     }
 
-    public void accept(List<Integer> profiles, String authNumber) {
+    public void accept(List<Long> profiles, String authNumber) {
         this.profiles = profiles;
         this.authNumber = authNumber;
         this.status++;

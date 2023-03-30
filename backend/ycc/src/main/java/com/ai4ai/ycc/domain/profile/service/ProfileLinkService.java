@@ -5,6 +5,7 @@ import com.ai4ai.ycc.domain.profile.dto.request.*;
 import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
+import com.ai4ai.ycc.domain.profile.dto.response.ReceiverProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 
 import java.util.List;
@@ -30,4 +31,8 @@ public interface ProfileLinkService {
     FindAuthNumberResponseDto findAuthNumber(Account account, long senderAccountSeq);
 
     void checkAuthNumber(Account account, CheckAuthNumberRequestDto requestDto);
+
+    List<ReceiverProfileResponseDto> getRecieverProfileList(Account account);
+
+    void linkProfiles(Account account, List<LinkProfileRequestDto> requestDto);
 }

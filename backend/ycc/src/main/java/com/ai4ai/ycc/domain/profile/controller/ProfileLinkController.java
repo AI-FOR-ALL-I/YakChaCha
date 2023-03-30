@@ -5,16 +5,20 @@ import com.ai4ai.ycc.common.response.ResponseService;
 import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.dto.request.CheckAuthNumberRequestDto;
+import com.ai4ai.ycc.domain.profile.dto.request.LinkProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.SendLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.AcceptLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
+import com.ai4ai.ycc.domain.profile.dto.response.ReceiverProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/links")
@@ -62,6 +66,23 @@ public class ProfileLinkController {
     public ResponseEntity<Result> checkAuthNumber(@LoginUser Account account, @RequestBody CheckAuthNumberRequestDto requestDto) {
         log.info("[checkAuthNumber] 프로필 연동 인증번호 확인 API 호출");
         profileLinkService.checkAuthNumber(account, requestDto);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
+    @GetMapping("/profiles")
+    public ResponseEntity<Result> getReceiverProfileList(@LoginUser Account account) {
+        log.info("[getReceiverProfileList] 프로필 연동 프로필 목록 조회 API 호출");
+        List<ReceiverProfileResponseDto> profiles = profileLinkService.getRecieverProfileList(account);
+        return ResponseEntity.ok()
+                .body(responseService.getListResult(profiles));
+    }
+
+    @PostMapping("/profiles")
+    public ResponseEntity<Result> linkProfiles(@LoginUser Account account, @RequestBody List<LinkProfileRequestDto> requestDto) {
+        log.info("[linkProfiles] 프로필 연동 등록 API 호출");
+        profileLinkService.linkProfiles(account, requestDto);
+//        List<ProfileResponseDto> profiles = profileLinkService.getRecieverProfileList(account);
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
     }
