@@ -20,10 +20,14 @@ class RenewMyPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<List<Object>> tags = [
-      ['태그명1', 1],
-      ['태그명2', 2],
-    ];
+    var imgFlag = false;
+    if (img == "") {
+      imgFlag = true;
+    }
+    // List<List<Object>> tags = [
+    //   ['태그명1', 1],
+    //   ['태그명2', 2],
+    // ];
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -55,12 +59,15 @@ class RenewMyPill extends StatelessWidget {
                     clipBehavior: Clip.hardEdge,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    child: 
-                      
-                      Image.network(
-                      img,
-                      fit: BoxFit.fill,
-                    )),
+                    child: imgFlag
+                        ? Image.asset(
+                            'assets/images/defalutPill1.png',
+                            fit: BoxFit.fill,
+                          )
+                        : Image.network(
+                            img,
+                            fit: BoxFit.fill,
+                          )),
               ), // 이미지
               Expanded(
                   child: Padding(
@@ -82,10 +89,10 @@ class RenewMyPill extends StatelessWidget {
                           ]),
                     ),
                     Row(
-                      children: tags
+                      children: tag_list
                           .map((tagInfo) => TagWidget(
-                              tagName: tagInfo[0] as String,
-                              colorIndex: tagInfo[1] as int))
+                              tagName: tagInfo[0],
+                              colorIndex: int.parse(tagInfo[1])))
                           .toList(),
                     )
                   ],

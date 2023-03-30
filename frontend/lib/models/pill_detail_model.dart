@@ -7,9 +7,12 @@ class PillDetailModel {
       storageMethod,
       nbDocData,
       typeCode,
+      startDate,
+      endDate,
       itemName;
   final int itemSeq;
-  // final bool isMine;
+  final bool mine;
+  final List tagList, collideList;
 
   PillDetailModel.fromJson(Map<String, dynamic> json)
       : img = json['img'],
@@ -21,6 +24,10 @@ class PillDetailModel {
         nbDocData = json['nbDocData'],
         typeCode = json['typeCode'],
         itemName = json['itemName'],
-        // isMine = json['isMine'],
+        mine = json['mine'],
+        startDate = json['startDate'] ?? '',
+        endDate = json['endDate'] ?? '',
+        tagList = json['tagList'] ?? [],
+        collideList = json['collideList'] ?? [],
         itemSeq = json['itemSeq'];
 }
