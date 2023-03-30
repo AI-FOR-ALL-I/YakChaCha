@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/alarm_page.dart';
+import 'package:frontend/screens/settings/setting_bottom_sheet.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -34,7 +35,10 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
               ))
         else if (title == '사용자 전환')
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              // 프로필 추가. 회원 연동 추가 모달 띄우기
+              _showModalBottomSheet(context);
+            },
             icon: const Icon(Icons.add, color: Colors.black),
           )
       ],
@@ -43,4 +47,14 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return const SettingBottomSheet();
+      },
+    );
+  }
 }
