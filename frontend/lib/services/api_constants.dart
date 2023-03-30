@@ -20,14 +20,12 @@ class ApiConstants {
       '$baseurl/$profiles/{profileLinkSeq}'; // 프로필 수정 PUT
   static const String deleteProfile =
       '$baseurl/$profiles/{profileLinkSeq}/delete'; // 프로필 삭제 PUT
-  static const String createProfile = '$baseurl/profiles'; // 생성
-  static const String getProfiles = '$baseurl/profiles'; // 조회
 
   // 검색
   static const String search =
-      '$baseurl/profiles/${profileLinkSeq}/medicine/search';
+      '$baseurl/profiles/$profileLinkSeq/medicine/search';
 
   // 등록
   static const String pillRegister =
-      '$baseurl/profiles/${profileLinkSeq}/medicine/my';
+      '$baseurl/profiles/$profileLinkSeq/medicine/my';
 }
