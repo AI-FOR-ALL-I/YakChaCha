@@ -11,10 +11,10 @@ class SelectProfileImagePage extends StatefulWidget {
 class _SelectProfileImagePageState extends State<SelectProfileImagePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: SimpleAppBar(title: '이미지 선택하기'),
+    return Scaffold(
+      appBar: const SimpleAppBar(title: '이미지 선택하기'),
       body: Column(
-        children: [Text('프로필 사진 선택하는 화면')],
+        children: const [Text('프로필 사진 선택하는 화면')],
       ),
     );
   }
