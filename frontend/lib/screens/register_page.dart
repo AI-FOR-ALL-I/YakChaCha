@@ -96,7 +96,10 @@ class _RegisterPageState extends State<RegisterPage> {
           if (controller.displayList.isNotEmpty)
             Positioned(
                 child: BottomConfirmWidget(
-                    isAlarm: false, confirm: controller.dioRequest),
+                  isAlarm: false,
+                  confirm: controller.dioRequest,
+                  isAlarmMyPill: false,
+                ),
                 bottom: 0)
         ]);
       }),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/mypills/my_pill.dart';
+import 'package:frontend/widgets/mypills/my_pill_for_alarm_register.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/tag_widget.dart';
 import 'package:frontend/screens/alarm/alarm_create_page.dart';
+import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 
 class AlarmDetailPage extends StatelessWidget {
   const AlarmDetailPage({super.key});
@@ -90,16 +91,20 @@ class AlarmDetailPage extends StatelessWidget {
                   padding: const EdgeInsets.all(20.0),
                   child: Text('총 ${3}정 | ${2} 종류'),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: 10,
-                      // shrinkWrap: true,
-                      itemBuilder: ((context, index) {
-                        return MyPill(
-                          isAlarmRegister: false,
-                        ); // TODO: MyPill이 안나오는 문제는 동준이한테 물어보기
-                      })),
-                )
+                // Expanded(
+                //   child: ListView.builder(
+                //       itemCount: 10,
+                //       // shrinkWrap: true,
+                //       itemBuilder: ((context, index) {
+                //         return RenewMyPill(
+                //           itemSeq:
+                //           itemName:,
+                //           img:,
+                //           tag_list:,
+                //           isTaken:,
+                //         ); // TODO: MyPill이 안나오는 문제는 동준이한테 물어보기
+                //       })),
+                // )
               ],
             ),
           ))
