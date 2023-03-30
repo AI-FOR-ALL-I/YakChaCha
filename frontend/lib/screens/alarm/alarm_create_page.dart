@@ -5,6 +5,7 @@ import 'package:frontend/widgets/common/tag_picker.dart';
 import 'package:frontend/widgets/common/bottom_confirm_widget.dart';
 import 'package:frontend/widgets/mypills/my_pill_for_alarm_register.dart';
 import 'package:frontend/widgets/alarm/custom_time_picker.dart';
+import 'package:frontend/widgets/alarm/tag_picker_for_alarm_page.dart';
 import 'package:frontend/screens/alarm/alarm_my_pill_page.dart';
 import 'package:frontend/controller/alarm_pill_controller.dart';
 
@@ -21,10 +22,14 @@ class AlarmCreatePage extends StatefulWidget {
 
 class _AlarmCreatePageState extends State<AlarmCreatePage> {
   var selectedPillsList = [1, 2, 3, 4, 5];
-  // 알람 등록을 위해 필요한 변수들 (일단 크리에이트만 도전)
-  String _title = '';
+  AlarmPillController controller = Get.find();
+  @override
+  void dispose() {
+    super.dispose();
+    controller.clear();
+  }
+
   DateTime _time = DateTime.now();
-  List _medicineList = [];
 
   // 약 리스트 구성하는 부분
 
@@ -58,7 +63,7 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                     ],
                   ),
                 ),
-                // TagPicker(seq: -1, isRegister: false), // 약 추가 하는 버튼 // 새로 만들
+                TagPickerForAlarmPage(),
                 AspectRatio(
                     aspectRatio: 296 / 101,
                     child: GestureDetector(
@@ -87,9 +92,12 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                     : SizedBox()
               ],
             ),
-            Positioned(
-                bottom: 0,
-                child: BottomConfirmWidget(isAlarm: true, isAlarmMyPill: false))
+            controller.displayList.isNotEmpty
+                ? Positioned(
+                    bottom: 0,
+                    child: BottomConfirmWidget(
+                        isAlarm: true, isAlarmMyPill: false))
+                : SizedBox()
           ]);
         }));
   }
