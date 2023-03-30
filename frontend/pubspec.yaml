@@ -50,7 +50,7 @@ dependencies:
     xml: ^6.2.2
     url_launcher: ^6.1.10
     location: ^4.2.0
-
+    material_design_icons_flutter: ^6.0.7096
     
     
 dev_dependencies:
