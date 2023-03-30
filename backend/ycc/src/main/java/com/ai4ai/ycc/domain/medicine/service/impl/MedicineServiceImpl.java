@@ -5,6 +5,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -224,9 +225,37 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public List<MedicineByTagDto> searchByTags(Profile profile, List<String> tagList) {
+        List<MyMedicineHasTag> myMedicineHasTagList=myMedicineHasTagRepository.findAllByTag_NameIn(tagList,
+            profile.getProfileSeq());
+        HashMap<MyMedicine, List<List<String>>> myMedicineListHashMap = new HashMap<>();
+        for(MyMedicineHasTag myMedicineHasTag : myMedicineHasTagList){
+            MyMedicine myMedicine =myMedicineHasTag.getMyMedicine();
+            if(myMedicineListHashMap.containsKey(myMedicine)) {
+                List<List<String>> tags = myMedicineListHashMap.get(myMedicine);
+                List<String> tag = new ArrayList<>();
+                tag.add(myMedicineHasTag.getTag().getName());
+                tag.add(Integer.toString(myMedicineHasTag.getTag().getColor()));
+                tags.add(tag);
+                continue;
+            }
+            List<List<String>> tags = new ArrayList<>();
+            List<String> tag = new ArrayList<>();
+            tag.add(myMedicineHasTag.getTag().getName());
+            tag.add(Integer.toString(myMedicineHasTag.getTag().getColor()));
+            tags.add(tag);
+            myMedicineListHashMap.put(myMedicine,tags);
+        }
+        List<MedicineByTagDto> output = new ArrayList<>();
+        for(MyMedicine myMedicine : myMedicineListHashMap.keySet()){
+            output.add(MedicineByTagDto.builder()
+                    .tagList(myMedicineListHashMap.get(myMedicine))
+                    .img(myMedicine.getMedicine().getImg())
+                    .itemName(myMedicine.getMedicine().getItemName())
+                    .itemSeq(myMedicine.getMedicine().getItemSeq())
+                .build());
+        }
 
-
-        return null;
+        return output;
     }
 
     @Override

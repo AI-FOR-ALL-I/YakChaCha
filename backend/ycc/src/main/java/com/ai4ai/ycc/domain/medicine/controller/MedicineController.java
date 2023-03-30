@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,6 @@ import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
 import com.ai4ai.ycc.domain.medicine.dto.TagDto;
-import com.ai4ai.ycc.domain.medicine.entity.Tag;
 import com.ai4ai.ycc.domain.medicine.service.MedicineService;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
@@ -85,9 +85,17 @@ public class MedicineController {
     }
 
     @GetMapping("/tag/search")
-    public ResponseEntity<Result> showTags(@PathVariable("profileLinkSeq") Long profileLinkSeq, @RequestBody List<String> tagList, @LoginUser Account account) {
+    public ResponseEntity<Result> searchMedicineByTags(@PathVariable Long profileLinkSeq, @RequestBody List<String> tagList, @LoginUser Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         List<MedicineByTagDto> response = medicineService.searchByTags(profile,tagList);
+        return ResponseEntity.ok()
+            .body(responseService.getSingleResult(response));
+    }
+
+    @PutMapping("/tag/delete")
+    public ResponseEntity<Result> deleteTags(@PathVariable Long profileLinkSeq, @LoginUser Account account) {
+        Profile profile=profileService.getProfile(account, profileLinkSeq);
+        List<TagDto> response = medicineService.showTags(profile);
         return ResponseEntity.ok()
             .body(responseService.getSingleResult(response));
     }
