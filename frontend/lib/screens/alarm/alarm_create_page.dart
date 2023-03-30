@@ -75,7 +75,7 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                     ],
                   ),
                 ),
-                TagPicker(isRegister: false), // 약 추가 하는 버튼
+                TagPicker(seq: -1, isRegister: false), // 약 추가 하는 버튼
                 AspectRatio(
                     aspectRatio: 296 / 101,
                     child: GestureDetector(
@@ -104,7 +104,9 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
               ],
             ),
           ),
-          Positioned(bottom: 0, child: BottomConfirmWidget(isAlarm: true))
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomConfirmWidget(isAlarm: true))
         ]));
   }
 }

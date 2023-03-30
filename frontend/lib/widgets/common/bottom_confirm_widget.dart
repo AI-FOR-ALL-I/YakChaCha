@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:frontend/controller/alarm_pill_controller.dart';
+import 'package:frontend/screens/drug_history_page.dart';
+import 'dart:async';
 
 class BottomConfirmWidget extends StatelessWidget {
   final bool isAlarm;
   final List? tempList;
   final Function? registerFinal;
+  final Function? confirm;
   const BottomConfirmWidget({
     Key? key,
     required this.isAlarm,
     this.tempList,
     this.registerFinal,
+    this.confirm,
   }) // Alarm 생성/수정 페이지면 true, 약 선택 화면이면 false
   : super(key: key);
 
@@ -43,13 +47,30 @@ class BottomConfirmWidget extends StatelessWidget {
               )
             : Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 GestureDetector(
-                  onTap: () {
-                    if (tempList != null) {
-                      controller.add(tempList);
-                      Navigator.pop(context);
-                    } else if (registerFinal != null) {
-                      registerFinal!();
-                      Navigator.pop(context);
+                  onTap: () async {
+                    if (confirm != null) {
+                      var temp = await confirm!();
+                      if (temp) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('성공적으로 등록되었습니다!'),
+                              content: Text('3초 뒤에 메인화면으로 이동합니다~'),
+                            );
+                          },
+                        );
+
+// 3초 후에 다이얼로그를 닫음
+                        Timer(Duration(seconds: 3), () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         DrugHistoryPage())); //하니까 엄청 꺠짐....
+                        });
+                      }
                     }
                   },
                   child: Column(

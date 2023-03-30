@@ -14,6 +14,7 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.data);
     bool isWarning = true;
     return AspectRatio(
       aspectRatio: 1.2 / 1,
@@ -33,14 +34,19 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                     flex: 2,
                     child: Stack(
                       children: [
-                        Image.asset(
-                          'assets/images/defaultPill.png',
-                          fit: BoxFit.fitWidth,
-                        ),
+                        widget.data?['img'] == null
+                            ? Image.asset(
+                                'assets/images/defaultPill.png',
+                                fit: BoxFit.fitWidth,
+                              )
+                            : Image.network(
+                                '${widget.data?['img']}',
+                                fit: BoxFit.fitWidth,
+                              ),
                         if (widget.data?['collide'] ||
-                            widget.data?['warn_pregnant'] ||
-                            widget.data?['warn_old'] ||
-                            widget.data?['warn_age'])
+                            widget.data?['warnPregnant'] ||
+                            widget.data?['warnOld'] ||
+                            widget.data?['warnAge'])
                           Positioned(
                             top: 10,
                             right: 10,
@@ -92,7 +98,7 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                     MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  widget.data?['warn_pregnant']
+                                  widget.data?['warnPregnant']
                                       ? Row(children: [
                                           Text(
                                             '임산부 주의',
@@ -101,7 +107,7 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                           )
                                         ])
                                       : Container(),
-                                  widget.data?['warn_old']
+                                  widget.data?['warnOld']
                                       ? Row(children: [
                                           Text(
                                             '노약자 주의',
@@ -110,7 +116,7 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                           ),
                                         ])
                                       : Container(),
-                                  widget.data?['warn_age']
+                                  widget.data?['warnAge']
                                       ? Row(children: [
                                           Text(
                                             '어린이 주의',

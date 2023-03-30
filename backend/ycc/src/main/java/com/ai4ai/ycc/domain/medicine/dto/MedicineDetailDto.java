@@ -1,6 +1,6 @@
 package com.ai4ai.ycc.domain.medicine.dto;
 
-import com.ai4ai.ycc.domain.medicine.entity.MedicineDetail;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +17,7 @@ public class MedicineDetailDto {
     private String etcOtcCode;
     private String chart;
     private String classNo;
+    private boolean collide;
     private String validTerm;
     private String storageMethod;
     private String packUnit;
@@ -29,4 +30,9 @@ public class MedicineDetailDto {
     private String udDocData;
     private String eeDocData;
     private String materialName;
+    private boolean isMine;
+    private String startDate;
+    private String endDate;
+    private List<String> collideList;
+    private List<List<String>> tagList;
 }
