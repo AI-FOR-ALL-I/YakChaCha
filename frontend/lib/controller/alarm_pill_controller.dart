@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:frontend/models/my_pill_model.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:frontend/services/api_alarm_register.dart';
+import 'package:frontend/services/api_tag.dart';
 import 'dart:convert';
 
 // A Unified Data Infrastructure Architecture
@@ -126,6 +127,7 @@ class AlarmPillController extends GetxController {
     }
   }
 
+  // .pop() 하면 다 초기화
   void clear() {
     Map registerMap = {"title": null, "time": null, "mdicineList": []};
     List selectedList = [];
@@ -135,5 +137,40 @@ class AlarmPillController extends GetxController {
     List tempList = []; // [1, 2, 3,]
 
     List myPillList = [];
+  }
+
+  // 여기부터는 태그 picker 용
+  // 태그를 선택하면, 태그 리스트를 묶어서 보낸다
+  // 결과가 돌아오면, 해당 결과를 토대로 selectedList와 displayList에 추가
+  // 태그 선택은 중복 안되도록 하기
+  List tagList = [];
+  List displayTagList = []; // tag 목록 다 가져오기
+  Future getTagList() async {
+    try {
+      var response = await ApiTag.getTagList();
+      tagList = response.data["data"];
+      print(tagList);
+    } catch (e) {
+      print(e);
+    }
+    update();
+  }
+
+  Future getPillsFromTag(data) async {
+    try {
+      var response = await ApiTag.getPillsFromTag(data);
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+    update();
+  }
+
+  void updateTagList(tagSeq, name, color) {
+    if (tagList.any((tag) => tag["name"] == name)) {
+      tagList.removeWhere((tag) => tag["name"] == name);
+    } else {
+      tagList.add({"tagSeq": tagSeq, "name": name, "color": color});
+    }
   }
 }

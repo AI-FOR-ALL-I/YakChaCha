@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/alarm/alarm_widget.dart';
 import 'package:frontend/screens/alarm/alarm_create_page.dart';
+import 'package:frontend/controller/alarm_controller.dart';
+import 'package:get/get.dart';
 
-class AlarmPage extends StatelessWidget {
+class AlarmPage extends StatefulWidget {
   const AlarmPage({Key? key}) : super(key: key);
+
+  @override
+  State<AlarmPage> createState() => _AlarmPageState();
+}
+
+class _AlarmPageState extends State<AlarmPage> {
+  @override // 알람 목록 받아오기
+  void initState() {
+    super.initState();
+    var controller = Get.put(AlarmController());
+    controller.getAlarmList();
+  }
 
   @override
   Widget build(BuildContext context) {
