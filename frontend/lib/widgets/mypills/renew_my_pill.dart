@@ -55,7 +55,9 @@ class RenewMyPill extends StatelessWidget {
                     clipBehavior: Clip.hardEdge,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    child: Image.network(
+                    child: 
+                      
+                      Image.network(
                       img,
                       fit: BoxFit.fill,
                     )),

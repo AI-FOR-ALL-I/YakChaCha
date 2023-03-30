@@ -22,7 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     const AlarmPage(),
     const RegisterPage(),
     const DrugHistoryPage(),
-    const MapPage()
+    MapPage()
   ];
 
   void _onItemTapped(int index) {
