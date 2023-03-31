@@ -11,9 +11,9 @@ import com.ai4ai.ycc.domain.medicine.dto.TagDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 
 public interface MedicineService {
-    Boolean regist(List<RegistRequestDto> requestDto, Profile profile);
+    void regist(List<RegistRequestDto> requestDto, Profile profile);
 
-    List<MedicineDto> searchMedicine(String input, Profile profile, String type);
+    List<MedicineDto> searchMedicine(List<String> input, Profile profile, String type);
 
     MedicineDetailDto showDetail(long itemSeq, Profile profile);
 
@@ -22,4 +22,8 @@ public interface MedicineService {
 	List<TagDto> showTags(Profile profile);
 
 	List<MedicineByTagDto> searchByTags(Profile profile, List<String> tagList);
+
+	void deleteTags(Profile profile, String tagName);
+
+	void deleteMyMedicine(Profile profile, long myMedicineSeq);
 }

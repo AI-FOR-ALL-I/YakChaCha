@@ -8,4 +8,5 @@ import com.ai4ai.ycc.domain.profile.entity.Profile;
 
 public interface MyMedicineRepository extends JpaRepository<MyMedicine, Long> {
     List<MyMedicine> findAllByDelYnAndFinishAndProfile(String deleted, String finished, Profile profile);
+    MyMedicine findByMyMedicineSeq(long myMedicineSeq);
 }

@@ -47,8 +47,8 @@ public class MyMedicine extends BaseEntity {
 	@Column(columnDefinition = "datetime(6)")
 	private LocalDate endDate;
 
-
 	@Column(length = 1)
 	private String finish;
+
 
 }
