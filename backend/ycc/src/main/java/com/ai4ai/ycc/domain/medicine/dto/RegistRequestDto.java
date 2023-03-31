@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class RegistRequestDto {
 
-    private Long itemSeq;
+    private long itemSeq;
     private String startDate;
     private String endDate;
     private String typeCode;

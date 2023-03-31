@@ -21,7 +21,7 @@ public class Collision {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private Long collisionSeq;
+	private long collisionSeq;
 
 	@Column(name = "medicine_a_id")
 	private int medicineAId;

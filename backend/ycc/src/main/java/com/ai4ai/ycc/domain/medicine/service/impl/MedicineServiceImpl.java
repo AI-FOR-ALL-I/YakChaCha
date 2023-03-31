@@ -5,7 +5,6 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -383,19 +382,19 @@ public class MedicineServiceImpl implements MedicineService {
             }
         });
         MedicineDetailDto medicineDetailDto=MedicineDetailDto.builder()
-            .chart(medicine.getChart())
-            .etcOtcCode(medicine.getEtcOtcCode())
-            .entpName(medicine.getEntpName())
-            .changeDate(medicine.getChangeDate())
+            .chart(medicine.getDetail().getChart())
+            .etcOtcCode(medicine.getDetail().getEtcOtcCode())
+            .entpName(medicine.getDetail().getEntpName())
+            .changeDate(medicine.getDetail().getChangeDate())
             .medicineSeq(medicine.getMedicineSeq())
-            .ingrName(medicine.getIngrName())
-            .itemPermitDate(medicine.getItemPermitDate())
-            .classNo(medicine.getClassNo())
-            .mainItemIngr(medicine.getMainItemIngr())
-            .packUnit(medicine.getPackUnit())
-            .storageMethod(medicine.getStorageMethod())
+            .ingrName(medicine.getDetail().getIngrName())
+            .itemPermitDate(medicine.getDetail().getItemPermitDate())
+            .classNo(medicine.getDetail().getClassNo())
+            .mainItemIngr(medicine.getDetail().getMainItemIngr())
+            .packUnit(medicine.getDetail().getPackUnit())
+            .storageMethod(medicine.getDetail().getStorageMethod())
             .typeCode(medicine.getTypeCode())
-            .validTerm(medicine.getValidTerm())
+            .validTerm(medicine.getDetail().getValidTerm())
             .itemSeq(itemSeq)
             .itemName(medicine.getItemName())
             .img(medicine.getImg())

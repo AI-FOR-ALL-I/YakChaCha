@@ -1,8 +1,5 @@
 package com.ai4ai.ycc.domain.medicine.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,9 +26,9 @@ public class Tag extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tagSeq")
-	private Long tagSeq;
+	private long tagSeq;
 	@Column
-	private Long profileSeq;
+	private long profileSeq;
 	@Column
 	private String name;
 	@Column

@@ -23,45 +23,20 @@ public class Medicine {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long medicineSeq;
+	private long medicineSeq;
 
-	@Column
-	private Long itemSeq;
+	@Column(unique = true)
+	private long itemSeq;
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="medicine_detail_seq")
 	private MedicineDetail detail;
 	@Column(length = 391)
 	private String itemName;
-	@Column(length = 22)
-	private String entpName;
-	@Column(length = 8)
-	private String itemPermitDate;
-	@Column(length = 5)
-	private String etcOtcCode;
-	@Column(length = 1000)
-	private String chart;
-	@Column(length = 255)
-	private String classNo;
-
-	@Column
+	@Column(length = 149)
 	private String ediCode;
-	@Column(length = 83)
-	private String validTerm;
-	@Column(length = 618)
-	private String storageMethod;
-	@Column(length = 615)
-	private String packUnit;
-	@Column(length = 200)
+	@Column(length = 35)
 	private String typeCode;
-	@Column(length = 15)
-	private String changeDate;
-
-	@Column(length = 2043)
-	private String mainItemIngr;
-	@Column(length = 3985)
-	private String ingrName;
-
-	@Column
+	@Column(length = 70)
 	private String img;
 
 

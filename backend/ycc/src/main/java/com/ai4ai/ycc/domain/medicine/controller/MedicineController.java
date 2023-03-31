@@ -41,7 +41,7 @@ public class MedicineController {
 
     // 약 검색
     @GetMapping("/search")
-    public ResponseEntity<Result> searchMedicine(@RequestParam String type, @RequestParam List<String> query, @PathVariable Long profileLinkSeq, @LoginUser
+    public ResponseEntity<Result> searchMedicine(@RequestParam String type, @RequestParam List<String> query, @PathVariable long profileLinkSeq, @LoginUser
         Account account){
         Profile profile=profileService.getProfile(account, profileLinkSeq);
 
@@ -54,7 +54,7 @@ public class MedicineController {
 
     // 약 상세정보
     @GetMapping("/detail/{item_seq}")
-    public ResponseEntity<Result> showDetail(@PathVariable("item_seq") long itemSeq, @PathVariable("profileLinkSeq") Long profileLinkSeq, @LoginUser
+    public ResponseEntity<Result> showDetail(@PathVariable("item_seq") long itemSeq, @PathVariable("profileLinkSeq") long profileLinkSeq, @LoginUser
     Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         MedicineDetailDto medicine= medicineService.showDetail(itemSeq,profile);
@@ -64,7 +64,7 @@ public class MedicineController {
 
     // 내 약 리스트
     @GetMapping("/my")
-    public ResponseEntity<Result> showMyMedicineList(@PathVariable Long profileLinkSeq, @LoginUser Account account, @RequestParam boolean now){
+    public ResponseEntity<Result> showMyMedicineList(@PathVariable long profileLinkSeq, @LoginUser Account account, @RequestParam boolean now){
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         List<MyMedicineDto> output = medicineService.searchMyMedicine(profile,now);
         return ResponseEntity.ok()
@@ -73,7 +73,7 @@ public class MedicineController {
 
     // 내 약 등록
     @PostMapping("/my")
-    public ResponseEntity<Result> registMedicine(@RequestBody List<RegistRequestDto> requestDto, @PathVariable Long profileLinkSeq, @LoginUser Account account) {
+    public ResponseEntity<Result> registMedicine(@RequestBody List<RegistRequestDto> requestDto, @PathVariable long profileLinkSeq, @LoginUser Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         medicineService.regist(requestDto,profile);
         return ResponseEntity.ok()
@@ -82,7 +82,7 @@ public class MedicineController {
 
     // 내 약 삭제
     @PutMapping("/my")
-    public ResponseEntity<Result> deleteMyMedicine(@PathVariable Long profileLinkSeq, @LoginUser Account account, @RequestParam long myMedicineSeq) {
+    public ResponseEntity<Result> deleteMyMedicine(@PathVariable long profileLinkSeq, @LoginUser Account account, @RequestParam long myMedicineSeq) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         medicineService.deleteMyMedicine(profile,myMedicineSeq);
         return ResponseEntity.ok()
@@ -91,7 +91,7 @@ public class MedicineController {
 
     // 태그 리스트 출력
     @GetMapping("/tag")
-    public ResponseEntity<Result> showTags(@PathVariable Long profileLinkSeq, @LoginUser Account account) {
+    public ResponseEntity<Result> showTags(@PathVariable long profileLinkSeq, @LoginUser Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         List<TagDto> response = medicineService.showTags(profile);
         return ResponseEntity.ok()
@@ -100,7 +100,7 @@ public class MedicineController {
 
     // 태그로 내 약 검색
     @PostMapping("/tag/search")
-    public ResponseEntity<Result> searchMedicineByTags(@PathVariable Long profileLinkSeq, @RequestBody List<String> tagList, @LoginUser Account account) {
+    public ResponseEntity<Result> searchMedicineByTags(@PathVariable long profileLinkSeq, @RequestBody List<String> tagList, @LoginUser Account account) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         List<MedicineByTagDto> response = medicineService.searchByTags(profile,tagList);
         return ResponseEntity.ok()
@@ -109,7 +109,7 @@ public class MedicineController {
 
     // 태그 삭제
     @PutMapping("/tag/delete")
-    public ResponseEntity<Result> deleteTags(@PathVariable Long profileLinkSeq, @LoginUser Account account, @RequestParam String tagName) {
+    public ResponseEntity<Result> deleteTags(@PathVariable long profileLinkSeq, @LoginUser Account account, @RequestParam String tagName) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
         medicineService.deleteTags(profile,tagName);
         return ResponseEntity.ok()

@@ -9,8 +9,8 @@ import lombok.Getter;
 @Getter
 public class MedicineDetailDto {
 
-    private Long medicineSeq;
-    private Long itemSeq;
+    private long medicineSeq;
+    private long itemSeq;
     private String itemName;
     private String entpName;
     private String itemPermitDate;
