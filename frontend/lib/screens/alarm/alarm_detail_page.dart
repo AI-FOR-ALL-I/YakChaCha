@@ -133,6 +133,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                                 img: pill["img"],
                                 tag_list: pill["tagList"],
                                 isTaken: false,
+                                dday: pill.dday,
                               );
                             }))
                         : SizedBox(),

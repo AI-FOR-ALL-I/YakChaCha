@@ -11,7 +11,7 @@ class MyPillApi {
   // static const String taking = "medicine/taking?profileLinkSeq=";
 
   static Future<List<MyPillModel>> getMyPill() async {
-    const queryParameters = 1;
+    const queryParameters = 4;
     const token = ApiConstants.TOKEN;
     List<MyPillModel> myPills = [];
     final url = Uri.parse("$baseUrl/$queryParameters/$taking");

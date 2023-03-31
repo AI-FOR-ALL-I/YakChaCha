@@ -106,6 +106,7 @@ Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
                       img: pill.img,
                       tag_list: pill.tagList,
                       isTaken: false,
+                      dday: pill.dday,
                     ),
                   ),
                 ),

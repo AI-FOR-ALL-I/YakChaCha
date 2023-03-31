@@ -6,7 +6,7 @@ import 'package:frontend/widgets/common/tag_widget.dart';
 
 class RenewMyPill extends StatelessWidget {
   final String itemName, img;
-  final int itemSeq;
+  final int itemSeq, dday;
   final List tag_list;
   final bool isTaken;
   const RenewMyPill({
@@ -15,6 +15,7 @@ class RenewMyPill extends StatelessWidget {
     required this.itemName,
     required this.img,
     required this.tag_list,
+    required this.dday,
     required this.isTaken,
   });
 
@@ -88,12 +89,19 @@ class RenewMyPill extends StatelessWidget {
                             )
                           ]),
                     ),
-                    Row(
-                      children: tag_list
-                          .map((tagInfo) => TagWidget(
-                              tagName: tagInfo[0],
-                              colorIndex: int.parse(tagInfo[1])))
-                          .toList(),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: tag_list
+                              .map((tagInfo) => TagWidget(
+                                  tagName: tagInfo[0],
+                                  colorIndex: int.parse(tagInfo[1])))
+                              .toList(),
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -103,7 +111,7 @@ class RenewMyPill extends StatelessWidget {
                       ? SizedBox()
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [Text('d-3')],
+                          children: [Text('d-$dday')],
                         )),
             ], // 여기가 Row
           ),
