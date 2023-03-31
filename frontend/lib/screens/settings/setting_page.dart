@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/profile/receiver_profile_page.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/settings/setting_menu_item.dart';
 
@@ -64,6 +65,18 @@ class SettingPage extends StatelessWidget {
                     onPressed: () {},
                     child: const Text(
                       '탈퇴하기',
+                      style: TextStyle(color: Colors.black54),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ReceiverProfilePage()));
+                    },
+                    child: const Text(
+                      '상대방 연동 화면으로 임시이동',
                       style: TextStyle(color: Colors.black54),
                     )),
               ],
