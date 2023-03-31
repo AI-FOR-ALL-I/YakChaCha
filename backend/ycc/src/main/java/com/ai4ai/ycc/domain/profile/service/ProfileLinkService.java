@@ -22,7 +22,7 @@ public interface ProfileLinkService {
 
     void removeAllProfile(Account account);
 
-    void sendLink(Account sender, SendLinkRequestDto requestDto);
+    void sendLink(Account sender, SendLinkRequestDto requestDto) ;
 
     ConfirmLinkResponseDto confirmLink(Account account, long senderAccountSeq);
 
