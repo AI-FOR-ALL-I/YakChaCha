@@ -34,12 +34,13 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                     flex: 2,
                     child: Stack(
                       children: [
-                        widget.data?['img'] == null
+                        widget.data?['img'] == ''
                             ? Image.asset(
-                                'assets/images/defaultPill.png',
+                                'assets/images/defalutPill1.png',
                                 fit: BoxFit.fitWidth,
                               )
-                            : Image.network(
+                            : 
+                            Image.network(
                                 '${widget.data?['img']}',
                                 fit: BoxFit.fitWidth,
                               ),

@@ -1,8 +1,9 @@
 class ApiConstants {
   // Bearer Token (마스터 계정)
   static const String TOKEN =
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYiLCJpYXQiOjE2Nzk5MDMyODgsImV4cCI6MTY4MDUwODA4OH0.jsJ033L71MEdsfDgRT5t3F61qrFu94yGFdfwO1jS00s";
-  static const int profileLinkSeq = 1;
+      // "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYiLCJpYXQiOjE2Nzk5MDMyODgsImV4cCI6MTY4MDUwODA4OH0.jsJ033L71MEdsfDgRT5t3F61qrFu94yGFdfwO1jS00s";
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMzQ1NjciLCJpYXQiOjE2ODAyNDU2MjksImV4cCI6MTY4MDg1MDQyOX0.R6JNpvLMH-tli-ep-YKzmNywiNLxh4sHMkItLB5-2Bg";
+  static const int profileLinkSeq = 5;
 
   // base url
   static const String baseurl = 'https://j8a803.p.ssafy.io/api';
