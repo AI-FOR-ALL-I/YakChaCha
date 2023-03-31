@@ -13,12 +13,12 @@ def check_os():
 @app.route('/run/prescription', methods=['POST'])
 def prescription_ocr():
     image = request.files['image']
-    pil_image = Image.open(image)
-    
-    prediction = run_ocr_model(pil_image)
+    image = Image.open(image)
 
-    print(prediction)
-    return jsonify({'prediction': prediction})
+    ocr_result = run_ocr_model(image)
+
+    print(ocr_result)
+    return jsonify(ocr_result)
 
 @app.route('/run/predict', methods=['POST'])
 def predict_images():

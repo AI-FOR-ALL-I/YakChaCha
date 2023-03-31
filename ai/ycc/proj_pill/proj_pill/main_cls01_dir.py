@@ -50,7 +50,7 @@ def run_search_model(pil_image):
 
     result = {
         'item_seq': [str(search(args.dict_idx_itemid[results_idx[rk]], args.json_pill_itemseq_dict)[0]) for rk in range(5)]
-        }
+    }
     
     print('job done')
     return result
