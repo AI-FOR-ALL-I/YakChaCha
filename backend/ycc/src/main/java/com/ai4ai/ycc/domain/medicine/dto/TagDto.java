@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class TagDto {
 
-    private Long tagSeq;
+    private long tagSeq;
     private String name;
     private int color;
 

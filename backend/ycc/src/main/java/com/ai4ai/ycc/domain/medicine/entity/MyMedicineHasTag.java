@@ -26,7 +26,7 @@ public class MyMedicineHasTag extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long mmhtSeq;
+	private long mmhtSeq;
 
 	@ManyToOne
 	@JoinColumn(name="myMedicineSeq")

@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class MedicineByTagDto {
 
-    private Long itemSeq;
+    private long itemSeq;
     private String itemName;
     private String img;
     private List<List<String>> tagList;

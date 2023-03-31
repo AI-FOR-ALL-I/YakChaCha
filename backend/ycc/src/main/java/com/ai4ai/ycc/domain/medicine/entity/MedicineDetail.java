@@ -20,7 +20,7 @@ public class MedicineDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long medicineDetailSeq;
+	private long medicineDetailSeq;
 	@Column(columnDefinition = "TEXT")
 	private String materialName;
 	@Column(columnDefinition = "TEXT")
@@ -29,5 +29,29 @@ public class MedicineDetail {
 	private String udDocData;
 	@Column(columnDefinition = "MEDIUMTEXT")
 	private String nbDocData;
+	@Column(length = 22)
+	private String entpName;
+	@Column(length = 8)
+	private String itemPermitDate;
+	@Column(length = 5)
+	private String etcOtcCode;
+	@Column(length = 1000)
+	private String chart;
+	@Column(length = 36)
+	private String classNo;
 
+	@Column(length = 83)
+	private String validTerm;
+	@Column(length = 618)
+	private String storageMethod;
+	@Column(length = 615)
+	private String packUnit;
+	@Column(length = 8)
+	private String changeDate;
+
+	@Column(length = 2043)
+	private String mainItemIngr;
+	@Column(length = 3985)
+	private String ingrName;
+	//edi, itemName,img,typeCode,itemSeq
 }
