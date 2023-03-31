@@ -128,94 +128,103 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
   }
 
   ListView takenPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+    var isZero = false;
+    if (snapshot.data!.length == 0) {
+      isZero = true;
+    }
     return ListView.separated(
       itemCount: snapshot.data!.length,
       separatorBuilder: (context, index) => SizedBox(),
       itemBuilder: (context, index) {
         var pill = snapshot.data![index];
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text("복용 끝"),
-            RenewMyPill(
-              itemSeq: pill.itemSeq,
-              itemName: pill.itemName,
-              img: pill.img,
-              tag_list: pill.tagList,
-              isTaken: true,
-            ),
-          ],
-        );
+        return isZero
+            ? isEmptyPills()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("복용 끝"),
+                  RenewMyPill(
+                    itemSeq: pill.itemSeq,
+                    itemName: pill.itemName,
+                    img: pill.img,
+                    tag_list: pill.tagList,
+                    isTaken: true,
+                    dday: pill.dday,
+                  ),
+                ],
+              );
       },
     );
   }
 
-  Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+  Column isEmptyPills() {
     return Column(
-      children: [
-        Flexible(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "총 ${snapshot.data!.length.toString()}건",
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          ),
-        ),
-        Flexible(
-          flex: 24,
-          child: ListView.separated(
-            itemCount: snapshot.data!.length,
-            separatorBuilder: (context, index) => SizedBox(),
-            itemBuilder: (context, index) {
-              var pill = snapshot.data![index];
-              return RenewMyPill(
-                itemSeq: pill.itemSeq,
-                itemName: pill.itemName,
-                img: pill.img,
-                tag_list: pill.tagList,
-                isTaken: false,
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  // 나의 약이 없을 때
-  Row emptyPill() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.medication,
-                  size: 58,
-                ),
-                Text(
-                  "복용한 내역이 없습니다.",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w600,
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.medication,
+                        size: 58,
+                      ),
+                      Text(
+                        "복용한 내역이 없습니다.",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ),
-          ),
-        ),
-      ],
-    );
+            );
+  }
+
+  Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+    var isZero = false;
+    if (snapshot.data!.length == 0) {
+      isZero = true;
+    }
+    return isZero
+        ? isEmptyPills()
+        : Column(
+            children: [
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "총 ${snapshot.data!.length.toString()}건",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 24,
+                child: ListView.separated(
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (context, index) => SizedBox(),
+                  itemBuilder: (context, index) {
+                    var pill = snapshot.data![index];
+                    return RenewMyPill(
+                        itemSeq: pill.itemSeq,
+                        itemName: pill.itemName,
+                        img: pill.img,
+                        tag_list: pill.tagList,
+                        isTaken: false,
+                        dday: pill.dday);
+                  },
+                ),
+              ),
+            ],
+          );
   }
 }

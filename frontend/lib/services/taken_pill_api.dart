@@ -7,7 +7,7 @@ import 'package:frontend/services/api_constants.dart';
 
 class TakenPillApi {
   static const String baseUrl = "https://j8a803.p.ssafy.io/api/profiles";
-  static const String taken = "medicine/my?now=true";
+  static const String taken = "medicine/my?now=false";
 
   static Future<List<MyPillModel>> getTakenPill() async {
     const queryParameters = 1;
