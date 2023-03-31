@@ -49,9 +49,8 @@ def run_search_model(pil_image):
     results_idx = results[1].view(-1).tolist()[:5]
 
     result = {
-        'item_seq': [search(args.dict_idx_itemid[results_idx[rk]], args.json_pill_itemseq_dict)[0] for rk in range(5)],
-        'similarity': results_sim
-        } 
+        'item_seq': [str(search(args.dict_idx_itemid[results_idx[rk]], args.json_pill_itemseq_dict)[0]) for rk in range(5)]
+        }
     
     print('job done')
     return result
