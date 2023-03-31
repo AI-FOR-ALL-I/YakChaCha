@@ -25,7 +25,7 @@ class ApiConstants {
   static const String search =
       '$baseurl/profiles/$profileLinkSeq/medicine/search';
 
-  // 등록
+  // 약 등록
   static const String pillRegister =
       '$baseurl/profiles/$profileLinkSeq/medicine/my';
 
@@ -48,4 +48,19 @@ class ApiConstants {
   static const String getProfileList = '$baseurl/$links/$profiles';
   // S 등록 POST
   static const String postSelectedProfile = '$baseurl/$links/$profiles';
+
+  // 알람 등록
+  static const String alarmRegister =
+      '$baseurl/profiles/${profileLinkSeq}/reminders';
+
+  // 내 태그목록 조회
+  static const String getTagList =
+      '$baseurl/profiles/${profileLinkSeq}/medicine/tag';
+  // 태그로 약 목록 조회
+  static const String getPillsFromTag =
+      '$baseurl/profiles/${profileLinkSeq}/medicine/tag/search';
+
+  // 알람 목록 조회 + 알람 상세 조회(+ /알람 번호)
+  static const String getAlarm =
+      '$baseurl/profiles/${profileLinkSeq}/reminders';
 }

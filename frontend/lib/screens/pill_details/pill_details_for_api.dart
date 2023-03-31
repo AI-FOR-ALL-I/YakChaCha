@@ -6,6 +6,7 @@ import 'package:frontend/screens/pill_details/pill_detail_line_state.dart';
 import 'package:frontend/services/pill_detail_api.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/controller/pill_register_controller.dart';
+import 'package:frontend/widgets/common/tag_widget.dart';
 import 'package:get/get.dart';
 
 class PillDetailsForApi extends StatelessWidget {
@@ -34,6 +35,15 @@ class PillDetailsForApi extends StatelessWidget {
 
   ListView pillDetailList(AsyncSnapshot<PillDetailModel> snapshot) {
     var pillDetail = snapshot.data!;
+    var img = '';
+    var imgFlag = false;
+    if (pillDetail.img == "") {
+      img = 'assets/images/defalutPill1.png';
+      imgFlag = true;
+    } else {
+      img = pillDetail.img;
+    }
+    // print("@@@@@@@@@@@@@@  ${pillDetail.tagList} @@@@@@@@@@@@@@@@");
     return ListView(
       children: [
         // 약 등록을 조건부로 걸어줘야함
@@ -56,7 +66,7 @@ class PillDetailsForApi extends StatelessWidget {
                         // 필요한 자료
                         var tempData = {
                           'itemSeq': pillDetail.itemSeq,
-                          'img': pillDetail.img,
+                          'img': img,
                           'itemName': pillDetail.entpName,
                           'warnPregnant': false,
                           'warnAge': false,
@@ -86,7 +96,9 @@ class PillDetailsForApi extends StatelessWidget {
           ),
           child: AspectRatio(
               aspectRatio: 2 / 1,
-              child: Image.network(pillDetail.img, fit: BoxFit.fill)),
+              child: imgFlag
+                  ? Image.asset(img, fit: BoxFit.fill)
+                  : Image.network(img, fit: BoxFit.fill)),
         ),
 
         // 약 이름 + 제조 회사
@@ -113,39 +125,35 @@ class PillDetailsForApi extends StatelessWidget {
           ],
         ),
         // 태그명 & 복용 기간 부분, 조건부로 안보이게 해야함 + 수정가능하도록
-        Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "태그명1",
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  "태그명2",
-                  style: TextStyle(fontSize: 20),
-                ),
-                IconButton(
-                    onPressed: () {}, icon: Icon(Icons.mode_edit_outlined))
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "복용기간",
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  "2023.03.01 ~ 2023.03.02",
-                  style: TextStyle(fontSize: 20),
-                ),
-                IconButton(
-                    onPressed: () {}, icon: Icon(Icons.mode_edit_outlined))
-              ],
-            )
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: pillDetail.tagList
+                    .map((tagInfo) => TagWidget(
+                        tagName: tagInfo[0], colorIndex: int.parse(tagInfo[1])))
+                    .toList(),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "복용기간:  ",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    "${pillDetail.startDate} ~ ${pillDetail.endDate}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
         // 상세 설명 부분
         Column(

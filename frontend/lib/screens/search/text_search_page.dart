@@ -5,6 +5,7 @@ import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:dio/dio.dart';
 
 class TextSearchPage extends StatefulWidget {
   const TextSearchPage({super.key});
@@ -49,14 +50,18 @@ class _TextSearchPageState extends State<TextSearchPage> {
       };
   }
 
+  // TODO: api 받아서 다시 해보기
   getCameraImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (image != null)
-      () {
-        setState(() {
-          _image = image;
-        });
-      };
+    var image =
+        await ImagePicker().pickImage(source: ImageSource.camera); // XFile 타입
+    if (image != null) {
+      FormData formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(
+          image.path,
+          //  filename: 'image.jpg'
+        ),
+      });
+    }
   }
 
   @override

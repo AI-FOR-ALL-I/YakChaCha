@@ -4,20 +4,15 @@ import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.profile.dto.RequestLinkDto;
-import com.ai4ai.ycc.domain.profile.dto.request.AcceptLinkRequestDto;
-import com.ai4ai.ycc.domain.profile.dto.request.SendLinkRequestDto;
-import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
-import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
-import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
-import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
-import com.ai4ai.ycc.domain.profile.dto.response.ProfileLinkResponseDto;
-import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
+import com.ai4ai.ycc.domain.profile.dto.request.*;
+import com.ai4ai.ycc.domain.profile.dto.response.*;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
 import com.ai4ai.ycc.domain.profile.repository.ProfileRepository;
 import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
 import com.ai4ai.ycc.error.code.AccountErrorCode;
+import com.ai4ai.ycc.error.code.ProfileErrorCode;
 import com.ai4ai.ycc.error.code.ProfileLinkErrorCode;
 import com.ai4ai.ycc.error.exception.ErrorException;
 import com.ai4ai.ycc.util.DateUtil;
@@ -247,7 +242,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
             boolean isOwner = account.getAccountSeq() == profileLink.getOwner().getAccountSeq();
 
             if (isOwner) {
-                if (!profileLinkRepository.existsByAccountAndOwnerAndDelYn(sender, account, "Y")) {
+                if (!profileLinkRepository.existsByAccountAndProfileAndDelYn(sender, profile, "N")) {
                     log.info("[confirmLink] 연동 가능한 프로필입니다.");
                     status = 1;
                 } else {
@@ -285,7 +280,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
     @Override
     public void acceptLink(Account account, long senderAccountSeq, AcceptLinkRequestDto requestDto) {
-        List<Integer> profiles = requestDto.getProfiles();
+        List<Long> profiles = requestDto.getProfiles();
 
         String key = "requestLink:" + senderAccountSeq;
 
@@ -327,10 +322,114 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
                 .build();
     }
 
+    @Override
+    public void checkAuthNumber(Account account, CheckAuthNumberRequestDto requestDto) {
+        String key = "requestLink:" + account.getAccountSeq();
+
+        log.info("[checkAuthNumber] redis 조회 시작");
+        RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
+        log.info("[checkAuthNumber] redis 조회 완료");
+
+        if (requestLink == null || requestLink.getStatus() != 2) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
+        }
+
+        String authNumber = requestDto.getAuthNumber();
+
+        log.info("[checkAuthNumber] 인증번호 확인 시작");
+        if (!requestLink.getAuthNumber().equals(authNumber)) {
+            throw new ErrorException(ProfileLinkErrorCode.INVALID_AUTH_NUMBER);
+        }
+        requestLink.certify();
+        log.info("[checkAuthNumber] 인증번호 확인 완료");
+
+        log.info("[checkAuthNumber] redis 저장 완료");
+        redisUtil.setex(key, requestLink, 600);
+        log.info("[checkAuthNumber] redis 저장 완료");
+
+    }
+
+    @Override
+    public List<ReceiverProfileResponseDto> getRecieverProfileList(Account account) {
+        String key = "requestLink:" + account.getAccountSeq();
+
+        log.info("[checkAuthNumber] redis 조회 시작");
+        RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
+        log.info("[checkAuthNumber] redis 조회 완료");
+
+        if (requestLink == null || requestLink.getStatus() != 3) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
+        }
+
+        long receiverAccountSeq = requestLink.getReceiver().getAccountSeq();
+        Account receiver = accountRepository.findByAccountSeqAndDelYn(receiverAccountSeq, "N")
+                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+
+        List<ReceiverProfileResponseDto> result = new ArrayList<>();
+
+        List<Long> profiles = requestLink.getProfiles();
+        for (Long profileSeq : profiles) {
+            Profile profile = profileRepository.findByProfileSeqAndDelYn(profileSeq, "N")
+                    .orElseThrow(() -> new ErrorException(ProfileErrorCode.PROFILE_NOT_FOUND));
+
+            ProfileLink profileLink = profileLinkRepository.findByOwnerAndProfileAndDelYn(receiver, profile, "N")
+                            .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
+
+            result.add(ReceiverProfileResponseDto.builder()
+                            .profileSeq(profileSeq)
+                            .imgCode(profileLink.getImgCode())
+                            .nickname(profileLink.getNickname())
+                            .name(profile.getName())
+                            .gender(profile.getGender())
+                            .birthDate(dateUtil.convertToStringType(profile.getBirthDate()))
+                            .isPregnancy(profile.isPregnancy())
+                    .build());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void linkProfiles(Account account, List<LinkProfileRequestDto> requestDto) {
+        log.info("[linkProfiles] 프로필 연동 등록 시작");
+        
+        String key = "requestLink:" + account.getAccountSeq();
+
+        log.info("[linkProfiles] redis 조회 시작");
+        RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
+        log.info("[linkProfiles] redis 조회 완료");
+
+        if (requestLink == null || requestLink.getStatus() != 3) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
+        }
+
+        long receiverAccountSeq = requestLink.getReceiver().getAccountSeq();
+        Account receiver = accountRepository.findByAccountSeqAndDelYn(receiverAccountSeq, "N")
+                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+
+        for (LinkProfileRequestDto linkProfile : requestDto) {
+            Profile profile = profileRepository.findByProfileSeqAndDelYn(linkProfile.getProfileSeq(), "N")
+                    .orElseThrow(() -> new ErrorException(ProfileErrorCode.PROFILE_NOT_FOUND));
+
+            ProfileLink profileLink = ProfileLink.builder()
+                    .account(account)
+                    .owner(receiver)
+                    .profile(profile)
+                    .nickname(linkProfile.getNickname())
+                    .imgCode(linkProfile.getImgCode())
+                    .build();
+
+            profileLinkRepository.save(profileLink);
+        }
+        log.info("[linkProfiles] 프로필 연동 등록 완료");
+    }
+
+
     public String generateAuthNumber() {
         log.info("[generateAuthNumber] 인증번호 생성 시작");
         int authNumber = (int)(Math.random() * 900000) + 100000;
         log.info("[generateAuthNumber] 인증번호 생성 완료");
         return String.valueOf(authNumber);
     }
+
 }

@@ -135,7 +135,6 @@ class PillRegisterController extends GetxController {
 
   // TODO: 여기서 dio 요청보내기
   Future<void> dioRequest() async {
-    print('controller');
     try {
       dio.Response response = await ApiPillRegister.pillRegister(registerList);
       Map<String, dynamic> data = response.data;

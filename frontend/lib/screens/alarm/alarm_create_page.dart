@@ -3,23 +3,18 @@ import 'package:get/get.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/tag_picker.dart';
 import 'package:frontend/widgets/common/bottom_confirm_widget.dart';
-import 'package:frontend/widgets/mypills/my_pill.dart';
+import 'package:frontend/widgets/mypills/my_pill_for_alarm_register.dart';
 import 'package:frontend/widgets/alarm/custom_time_picker.dart';
+import 'package:frontend/widgets/alarm/tag_picker_for_alarm_page.dart';
 import 'package:frontend/screens/alarm/alarm_my_pill_page.dart';
 import 'package:frontend/controller/alarm_pill_controller.dart';
 
 class AlarmCreatePage extends StatefulWidget {
-  const AlarmCreatePage(
-      {Key? key,
-      required this.isCreate,
-      this.prevTitle,
-      this.prevTime,
-      this.prevMedicineList})
-      : super(key: key);
+  const AlarmCreatePage({
+    Key? key,
+    required this.isCreate,
+  }) : super(key: key);
   final bool isCreate;
-  final String? prevTitle;
-  final String? prevTime;
-  final List? prevMedicineList;
 
   @override
   State<AlarmCreatePage> createState() => _AlarmCreatePageState();
@@ -27,18 +22,14 @@ class AlarmCreatePage extends StatefulWidget {
 
 class _AlarmCreatePageState extends State<AlarmCreatePage> {
   var selectedPillsList = [1, 2, 3, 4, 5];
-  // 알람 등록을 위해 필요한 변수들 (일단 크리에이트만 도전)
-  String _title = '';
-  DateTime _time = DateTime.now();
-  List _medicineList = [];
-
-  // 시간 설정하는 set 함수
-  setTime(time) {
-    setState(() {
-      _time = time;
-    });
-    print('${_time.hour}:${_time.minute}'); // AM/PM은 12시를 빼주는 것으로 계산할것
+  AlarmPillController controller = Get.find();
+  @override
+  void dispose() {
+    super.dispose();
+    controller.clear();
   }
+
+  DateTime _time = DateTime.now();
 
   // 약 리스트 구성하는 부분
 
@@ -50,20 +41,17 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
             title: widget.isCreate
                 ? '알람 설정'
                 : '알람 수정'), //TODO: 알람 수정인 경우에는 simpeAppBar에 알람삭제 버튼!
-        body: Stack(children: [
-          SingleChildScrollView(
-            child: Column(
+        body: GetBuilder<AlarmPillController>(builder: (controller) {
+          return Stack(children: [
+            ListView(
               children: [
                 TextField(
                   decoration: InputDecoration(hintText: '알람 제목을 입력해주세요'),
                   onChanged: (text) {
-                    setState(() {
-                      _title = text;
-                    });
-                    print(_title);
+                    controller.setTitle(text);
                   },
                 ),
-                CustomTimePicker(setTime: setTime, time: _time),
+                CustomTimePicker(setTime: controller.setTime, time: _time),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
@@ -75,7 +63,7 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                     ],
                   ),
                 ),
-                TagPicker(seq: -1, isRegister: false), // 약 추가 하는 버튼
+                TagPickerForAlarmPage(),
                 AspectRatio(
                     aspectRatio: 296 / 101,
                     child: GestureDetector(
@@ -92,21 +80,25 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                               color: Color(0xFFBBE4CB)),
                           child: Icon(Icons.add, color: Colors.white)),
                     )),
-                GetBuilder<AlarmPillController>(builder: (controller) {
-                  return Column(
-                    children: controller.selectedList
-                        .map((pill) => MyPill(
-                              isAlarmRegister: true,
-                            ))
-                        .toList(),
-                  );
-                }) // 약 목록
+                controller.displayList.isNotEmpty
+                    ? Expanded(
+                        child: Column(children: [
+                          ...controller.displayList
+                              .map((pill) => MyPillForAlarmRegister(data: pill))
+                              .toList(),
+                          SizedBox(height: 100)
+                        ]),
+                      )
+                    : SizedBox()
               ],
             ),
-          ),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: BottomConfirmWidget(isAlarm: true))
-        ]));
+            controller.displayList.isNotEmpty
+                ? Positioned(
+                    bottom: 0,
+                    child: BottomConfirmWidget(
+                        isAlarm: true, isAlarmMyPill: false))
+                : SizedBox()
+          ]);
+        }));
   }
 }

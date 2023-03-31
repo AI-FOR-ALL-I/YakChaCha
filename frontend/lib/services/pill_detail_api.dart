@@ -15,14 +15,14 @@ class PillDetailApi {
     final response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: token,
     });
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       final utfData = utf8.decode(response.bodyBytes);
-      print('utfData: $utfData');
+
       final jsonData = jsonDecode(utfData);
-      print('jsonData: $jsonData');
+
       final ans = PillDetailModel.fromJson(jsonData["data"]);
-      print('ans: $ans');
+
       return ans;
     }
     throw Error();
