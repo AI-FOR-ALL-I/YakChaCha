@@ -1,3 +1,4 @@
+import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/profile/profile_info.dart';
@@ -26,6 +27,7 @@ class _SelectProfilePage extends State<SelectProfilePage> {
     try {
       Response response = await ApiProfiles.getMultiProfiles();
       if (response.statusCode == 200) {
+        dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
         final List<Map<String, dynamic>> newData =
             List<Map<String, dynamic>>.from(response.data['data']);
         setState(() {
