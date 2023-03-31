@@ -1,44 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/profile/sender_number_page.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/text_field.dart';
 
-class EmailConfirmPage extends StatefulWidget {
-  const EmailConfirmPage({super.key});
+class SenderNumberPage extends StatefulWidget {
+  const SenderNumberPage({super.key});
 
   @override
-  State<EmailConfirmPage> createState() => _EmailConfirmPageState();
+  State<SenderNumberPage> createState() => _SenderNumberPageState();
 }
 
-class _EmailConfirmPageState extends State<EmailConfirmPage> {
-  String email = '';
-  void updateEmail(String? newEmail) {
+class _SenderNumberPageState extends State<SenderNumberPage> {
+  String veritfyCode = '';
+  void updateCode(String? newCode) {
     setState(() {
-      email = newEmail ?? '';
+      veritfyCode = newCode ?? '';
     });
   }
 
+  // 서버통신용
   void sendDataToServer(BuildContext context) async {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SimpleAppBar(title: '이메일 확인하기'),
+      appBar: const SimpleAppBar(title: '인증번호 입력'),
       body: Stack(
         children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Padding(
-              padding: EdgeInsets.only(
-                  left: 8.0, top: 15.0, right: 8.0, bottom: 5.0),
-              child: Text('상대방의 카카오계정\n이메일을 입력해주세요',
-                  style: TextStyle(fontSize: 20.0, color: Colors.black54)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 8.0, top: 15.0, right: 8.0, bottom: 5.0),
-              child: TextFieldComponent(
-                  hintText: 'yakchacha@gmail.com', onChanged: updateEmail),
-            ),
-          ]),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(
+                    left: 8.0, top: 15.0, right: 8.0, bottom: 5.0),
+                child: Text('인증번호를 등록해주세요.',
+                    style: TextStyle(fontSize: 20.0, color: Colors.black54)),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 8.0, top: 15.0, right: 8.0, bottom: 5.0),
+                child: TextFieldComponent(
+                    hintText: '상대방 화면의 인증번호 6자리 입력', onChanged: updateCode),
+              ),
+            ],
+          ),
           Positioned(
             left: 0,
             right: 0,
