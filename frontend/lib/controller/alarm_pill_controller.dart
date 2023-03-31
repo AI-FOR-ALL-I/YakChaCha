@@ -39,7 +39,7 @@ class AlarmPillController extends GetxController {
 
   // 시간 설정
   void setTime(time) {
-    String selectedTime = DateFormat('h:mm:a').format(time);
+    String selectedTime = DateFormat('hh:mm:a').format(time);
     registerMap['time'] = selectedTime;
     update();
   }

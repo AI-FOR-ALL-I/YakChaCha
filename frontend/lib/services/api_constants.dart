@@ -43,4 +43,7 @@ class ApiConstants {
   // 알람 목록 조회 + 알람 상세 조회(+ /알람 번호)
   static const String getAlarm =
       '$baseurl/profiles/${profileLinkSeq}/reminders';
+
+  // 사진 검색
+  static const String imgSearch = 'https://j8a803.p.ssafy.io/run/predict';
 }
