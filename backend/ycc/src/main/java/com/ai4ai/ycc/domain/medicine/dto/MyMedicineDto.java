@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 public class MyMedicineDto {
 
+    private Long myMedicineSeq;
     private Long itemSeq;
     private String itemName;
     private String img;
