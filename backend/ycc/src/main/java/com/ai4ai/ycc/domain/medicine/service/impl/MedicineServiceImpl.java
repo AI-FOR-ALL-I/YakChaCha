@@ -5,6 +5,9 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +48,8 @@ public class MedicineServiceImpl implements MedicineService {
     final TagRepository tagRepository;
     final MyMedicineHasTagRepository myMedicineHasTagRepository;
 
+
+    // 내 약 등록
     @Override
     public void regist(List<RegistRequestDto> requestDto, Profile profile) {
         List<Tag> tagList = tagRepository.findAllByProfileSeqAndDelYn(profile.getProfileSeq(),"N");
@@ -59,7 +64,14 @@ public class MedicineServiceImpl implements MedicineService {
             }
 
             Medicine medicine = medicineRepository.findByItemSeq(registRequestDto.getItemSeq());
-            System.out.println(medicine==null);
+            List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
+
+            for(MyMedicine temp_Medicine: myMedicineList){
+                if(temp_Medicine.getMedicine()==medicine){
+                    deleteMyMedicine(profile, temp_Medicine.getMyMedicineSeq());
+                    break;
+                }
+            }
             MyMedicine myMedicine = MyMedicine.builder()
                 .endDate(endDate)
                 .finish(finish? "Y":"N")
@@ -299,20 +311,40 @@ public class MedicineServiceImpl implements MedicineService {
         System.out.println(itemSeq+"의 itemSeq를 가진 약 검색");
         Medicine medicine = medicineRepository.findByItemSeq(itemSeq);
 
-        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
+        boolean pregnant = profile.isPregnancy();
+        LocalDate birthdate = profile.getBirthDate();
+        LocalDate now = LocalDate.now();
+        Period period = Period.between(birthdate, now);
+        int age = period.getYears();
+        boolean young = age<18? true: false;
+        boolean old = age>60? true: false;
+
+        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndProfile("N",profile);
         boolean collide = false;
         boolean isMine = false;
+        boolean pregnantWarn = false;
+        boolean youngWarn = false;
+        boolean oldWarn = false;
+        if(pregnant && medicine.getTypeCode().contains("임")){
+            pregnantWarn=true;
+        }
+        if(young && medicine.getTypeCode().contains("연령")){
+            youngWarn=true;
+        }
+        if(old && medicine.getTypeCode().contains("노인")){
+            oldWarn=true;
+        }
         List<String> collideList = new ArrayList<>();
-        String startDate="";
-        String endDate="";
+        List<String> startDate=new ArrayList<>();
+        List<String> endDate=new ArrayList<>();
         List<List<String>> tagList = new ArrayList<>();
         for(MyMedicine myMedicine: myMedicineList){
             String myEdi = myMedicine.getMedicine().getEdiCode();
             String edi = medicine.getEdiCode();
             if(myMedicine.getMedicine().getItemSeq()== itemSeq){
                 isMine=true;
-                startDate= myMedicine.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                endDate= myMedicine.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                startDate.add(myMedicine.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                endDate.add(myMedicine.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findByMyMedicineAndDelYn(myMedicine,"N");
 
                 for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
@@ -328,6 +360,28 @@ public class MedicineServiceImpl implements MedicineService {
                 collideList.add(myMedicine.getMedicine().getItemName());
             }
         }
+        Collections.sort(startDate, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                for(int i=0; i<10;i++){
+                    if(o1.charAt(i)!=o2.charAt(i)){
+                        return o1.charAt(i)-o2.charAt(i);
+                    }
+                }
+                return 0;
+            }
+        });
+        Collections.sort(endDate, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                for(int i=0; i<10;i++){
+                    if(o1.charAt(i)!=o2.charAt(i)){
+                        return o1.charAt(i)-o2.charAt(i);
+                    }
+                }
+                return 0;
+            }
+        });
         MedicineDetailDto medicineDetailDto=MedicineDetailDto.builder()
             .chart(medicine.getChart())
             .etcOtcCode(medicine.getEtcOtcCode())
@@ -354,6 +408,9 @@ public class MedicineServiceImpl implements MedicineService {
             .isMine(isMine)
             .startDate(startDate)
             .endDate(endDate)
+            .warnOld(oldWarn)
+            .warnAge(youngWarn)
+            .warnPregnant(pregnantWarn)
             .tagList(tagList)
             .build();
 

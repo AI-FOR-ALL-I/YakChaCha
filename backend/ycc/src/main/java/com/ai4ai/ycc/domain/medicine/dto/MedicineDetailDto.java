@@ -31,8 +31,11 @@ public class MedicineDetailDto {
     private String eeDocData;
     private String materialName;
     private boolean isMine;
-    private String startDate;
-    private String endDate;
+    private boolean warnPregnant;
+    private boolean warnOld;
+    private boolean warnAge;
+    private List<String> startDate;
+    private List<String> endDate;
     private List<String> collideList;
     private List<List<String>> tagList;
 }

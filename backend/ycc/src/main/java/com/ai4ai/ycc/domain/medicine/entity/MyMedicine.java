@@ -50,5 +50,10 @@ public class MyMedicine extends BaseEntity {
 	@Column(length = 1)
 	private String finish;
 
+	public void modify(LocalDate startDate, LocalDate endDate) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
 
 }
