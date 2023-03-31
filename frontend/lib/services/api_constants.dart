@@ -28,4 +28,24 @@ class ApiConstants {
   // 등록
   static const String pillRegister =
       '$baseurl/profiles/$profileLinkSeq/medicine/my';
+
+  // 프로필 연동 작업
+  static const String links = 'links';
+  static const String sender = 'sender';
+  // S 요청보내기 POST
+  static const String sendRequest = '$baseurl/$links';
+  // R 요청확인 GET ???
+  static const String getRequest = '$baseurl/$links/$sender/{senderAccountSeq}';
+  // R 요청 수락 PUT
+  static const String acceptRequest = '$baseurl/$links/{senderAccountSeq}';
+  // R 인증번호 보기 GET
+  static const String getAuthNumber =
+      '$baseurl/$links/$sender/{senderAccountSeq}';
+  // S 인증번호 확인 PUT
+  static const String sendAuthNumber =
+      '$baseurl/$links/$sender/{senderAccountSeq}';
+  // S 목록 조회 GET
+  static const String getProfileList = '$baseurl/$links/$profiles';
+  // S 등록 POST
+  static const String postSelectedProfile = '$baseurl/$links/$profiles';
 }

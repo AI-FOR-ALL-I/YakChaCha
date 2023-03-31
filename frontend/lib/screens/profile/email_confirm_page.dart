@@ -17,6 +17,7 @@ class _EmailConfirmPageState extends State<EmailConfirmPage> {
     });
   }
 
+  void sendDataToServer(BuildContext context) async {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
