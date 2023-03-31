@@ -6,6 +6,9 @@ import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:frontend/services/api_search.dart';
+import 'package:frontend/controller/pill_register_controller.dart';
+import 'package:get/get.dart' as getX;
 
 class TextSearchPage extends StatefulWidget {
   const TextSearchPage({super.key});
@@ -16,7 +19,28 @@ class TextSearchPage extends StatefulWidget {
 
 class _TextSearchPageState extends State<TextSearchPage> {
   // 검색 결과
+
   var searchResult = [];
+
+  // 이미지 전송 dio
+  Future imgSearch(formData) async {
+    try {
+      print('here');
+      var response = await ApiSearch.imgSearch(formData);
+
+      var controller = PillRegisterController();
+      getX.Get.put(controller);
+      var response2 =
+          await controller.imgSearchFinal(response.data["item_seq"]);
+
+      toggleIsCameraClicked();
+      setState(() {
+        searchResult = response2;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   // 검색 결과 저장하는 셋 함수
   getResultList(result) {
@@ -42,12 +66,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
   //TODO: 이미지 형식 제한은, 직접 이미지 파일 형식을 확인해서 분기처리 해야함
   getGalleryImage() async {
     var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null)
-      () {
-        setState(() {
-          _image = image;
-        });
-      };
+    if (image != null) () {};
   }
 
   // TODO: api 받아서 다시 해보기
@@ -61,6 +80,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
           //  filename: 'image.jpg'
         ),
       });
+      imgSearch(formData);
     }
   }
 

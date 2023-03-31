@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:frontend/services/api_pill_register.dart';
+import 'package:frontend/services/api_search.dart';
 import 'dart:convert';
 
 class PillRegisterController extends GetxController {
@@ -139,6 +141,20 @@ class PillRegisterController extends GetxController {
       dio.Response response = await ApiPillRegister.pillRegister(registerList);
       Map<String, dynamic> data = response.data;
       return data['data'];
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  List aiPillSeq = [];
+
+  Future imgSearchFinal(List data) async {
+    try {
+      if (data != null) {
+        dio.Response response = await ApiSearch.imgSearchFinal(data);
+        Map<String, dynamic> response2 = response.data;
+        return response2["data"];
+      }
     } catch (e) {
       print(e);
     }

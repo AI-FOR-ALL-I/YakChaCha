@@ -29,6 +29,7 @@ class _TagPickerForAlarmPageState extends State<TagPickerForAlarmPage> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(AlarmPillController());
     return GetBuilder<AlarmPillController>(builder: (controller) {
       return Padding(
         padding: const EdgeInsets.all(20.0),
