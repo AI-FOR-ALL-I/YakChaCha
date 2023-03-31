@@ -20,6 +20,7 @@ import com.ai4ai.ycc.util.DateUtil;
 import java.util.*;
 
 import com.ai4ai.ycc.util.RedisUtil;
+import com.ai4ai.ycc.util.firebase.FcmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
     private final ProfileLinkRepository profileLinkRepository;
     private final DateUtil dateUtil;
     private final RedisUtil redisUtil;
+    private final FcmUtil fcmUtil;
 
     @Override
     public void createProfileLink(Account account, Profile profile, CreateProfileRequestDto requestDto) {
@@ -178,6 +180,8 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
     @Override
     public void sendLink(Account sender, SendLinkRequestDto requestDto) {
+        log.info("[sendLink] 프로필 연동 요청 보내기 시작");
+        
         String email = requestDto.getEmail();
 
         Account receiver = accountRepository.findByEmailAndDelYn(email, "N")
@@ -197,16 +201,17 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
                         .name(receiver.getName())
                         .build())
                 .build();
-
+        
+        log.info("[sendLink] Redis 저장 시작");
         String key = "requestLink:" + sender.getAccountSeq();
         redisUtil.setex(key, requestLinkDto, 1800);
+        log.info("[sendLink] Redis 저장 완료");
 
-        // 푸시 알림 보내기
+        log.info("[sendLink] 푸시 알림 보내기 시작");
+        fcmUtil.sendLink(sender, receiver);
+        log.info("[sendLink] 푸시 알림 보내기 완료");
 
-//        log.info("[link] redis 조회 시작");
-//        LinkDto getLinkDto = redisUtil.get(key, LinkDto.class);
-//        log.info("[link] redis 조회 완료");
-
+        log.info("[sendLink] 프로필 연동 요청 보내기 완료");
     }
 
     @Override
