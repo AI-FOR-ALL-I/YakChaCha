@@ -10,13 +10,21 @@ class TakenPillApi {
   static const String taken = "medicine/my?now=false";
 
   static Future<List<MyPillModel>> getTakenPill() async {
-    const queryParameters = 1;
+    // controller에 저장된 토큰 불러오는 코드
+    // final authController = Get.find<AuthController>();
+    // final accessToken = authController.accessToken;
+    // print('saved accessToken$accessToken');
+    const queryParameters = 5;
+    // 토큰 불러오는 부분
     const token = ApiConstants.TOKEN;
     List<MyPillModel> takenPills = [];
     final url = Uri.parse("$baseUrl/$queryParameters/$taken");
     final response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: token,
     });
+    print(response.statusCode);
+    print(response.body);
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     if (response.statusCode == 200) {
       final pills = jsonDecode(utf8.decode(response.bodyBytes));
       for (var pill in pills["data"]) {

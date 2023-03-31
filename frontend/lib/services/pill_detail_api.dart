@@ -9,7 +9,7 @@ class PillDetailApi {
   static const String detail = "medicine/detail";
 
   static Future<PillDetailModel> getPillDetail(pillNum) async {
-    const profileNum = 1;
+    const profileNum = 5;
     const token = ApiConstants.TOKEN;
     final url = Uri.parse("$baseUrl/$profileNum/$detail/$pillNum");
     final response = await http.get(url, headers: {

@@ -11,13 +11,14 @@ class MyPillApi {
   // static const String taking = "medicine/taking?profileLinkSeq=";
 
   static Future<List<MyPillModel>> getMyPill() async {
-    const queryParameters = 4;
+    const queryParameters = 5;
     const token = ApiConstants.TOKEN;
     List<MyPillModel> myPills = [];
     final url = Uri.parse("$baseUrl/$queryParameters/$taking");
     final response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: token,
     });
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final pills = jsonDecode(utf8.decode(response.bodyBytes));
       for (var pill in pills["data"]) {
