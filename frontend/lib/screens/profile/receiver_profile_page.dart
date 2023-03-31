@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/profile/receiver_number_page.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 
 class ReceiverProfilePage extends StatefulWidget {
@@ -148,6 +149,12 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                       onTap: () {
                         // 서버통신진행
                         //sendDataToServer(context);
+                        // 번호 확인하는 페이지로 이동
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ReceiverNumberPage()));
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
