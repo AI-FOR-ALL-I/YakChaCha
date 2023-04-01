@@ -100,6 +100,8 @@ class Before extends StatelessWidget {
   final Map? data;
   @override
   Widget build(BuildContext context) {
+    print(data);
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@");
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -113,10 +115,10 @@ class Before extends StatelessWidget {
                   Flexible(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: data?['img'] != ''
+                        child: data?['img'] != 'assets/images/defaultPill1.png'
                             ? Image.network('${data?['img']}',
                                 fit: BoxFit.cover)
-                            : Image.asset('assets/images/defalutPill1.png',
+                            : Image.asset('assets/images/defaultPill1.png',
                                 fit: BoxFit.cover),
                       ),
                       flex: 2),

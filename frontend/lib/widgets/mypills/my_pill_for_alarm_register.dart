@@ -23,7 +23,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  PillDetailsForApi(num: widget.data['medicineSeq'].toString()),
+                  PillDetailsForApi(turnOnPlus:false,num: widget.data['medicineSeq'].toString()),
             ));
       },
       child: AspectRatio(
