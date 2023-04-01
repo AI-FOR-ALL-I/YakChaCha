@@ -32,11 +32,32 @@ class HomePage extends StatefulWidget {
 }
  */
 class _HomePage extends State<HomePage> {
+  List<Map<String, dynamic>> drugs = [];
   Map<String, dynamic> profileInfo = {};
   @override
   void initState() {
     super.initState();
     getUserInfo();
+    getDrugInfo();
+  }
+
+  void getDrugInfo() async {
+    final profileController = Get.find<ProfileController>();
+    final profileLinkSeq = profileController.profileLinkSeq;
+    try {
+      dio.Response response = await ApiProfiles.getMyDrugInfo(profileLinkSeq);
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> newData =
+            List<Map<String, dynamic>>.from(response.data['data']);
+        setState(() {
+          drugs = newData;
+        });
+      } else {
+        // 오류처리
+      }
+    } catch (e) {
+      e.printError(info: 'errors');
+    }
   }
 
   void getUserInfo() async {
@@ -122,12 +143,17 @@ class _HomePage extends State<HomePage> {
                     height: 150,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5,
+                        itemCount: drugs.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return const MyDrugItem(
-                            imagePath: 'assets/images/night.png',
-                            title: '약 이름 params',
-                          );
+                          final item = drugs[index];
+                          print('item$item');
+                          if (item.isEmpty) {
+                            return Container(child: const Text('비어있음....'));
+                          } else {
+                            return MyDrugItem(
+                                imagePath: 'assets/images/night.png',
+                                title: item['itemName']);
+                          }
                         }),
                   ),
                   const Padding(
