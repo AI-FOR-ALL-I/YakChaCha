@@ -21,7 +21,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   static List<Widget> pages = <Widget>[
     const HomePage(),
     const AlarmPage(),
-    const RegisterPage(),
+    const RegisterPage(isCameraOCR: false, isAlbumOCR: false),
     const DrugHistoryPage(),
     const MapPage()
   ];
@@ -50,30 +50,56 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                   height: 200.0,
                                   width:
                                       MediaQuery.of(context).size.width * 0.8,
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text('사진 촬영'),
-                                      Text('앨범에서 가져오기')
+                                      GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RegisterPage(
+                                                          isCameraOCR: true,
+                                                          isAlbumOCR: false,
+                                                        )));
+                                          },
+                                          child: Text(
+                                              '사진 촬영')), // 등록화면으로 이동시키고 동시에 카메라 킨다.
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RegisterPage(
+                                                        isCameraOCR: false,
+                                                        isAlbumOCR: true,
+                                                      )));
+                                        },
+                                        child: Text('앨범에서 가져오기'),
+                                      ) // 등록화면으로 이동시키고 동시에 앨범 킨다.
                                     ],
                                   ),
                                 ),
                               );
                             });
                       },
-                      child: const Text('알약 사진으로 등록')),
-                  const Text('처방전 사진으로 등록'),
+                      child: const Text('처방전 사진으로 등록')),
                   GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RegisterPage()),
+                              builder: (context) => const RegisterPage(
+                                    isCameraOCR: false,
+                                    isAlbumOCR: false,
+                                  )),
                         );
                       },
-                      child: const Text('텍스트 검색으로 등록'))
+                      child: const Text('텍스트 / 알약 사진 검색으로 등록'))
                 ],
               ),
             ));
@@ -109,7 +135,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
             const BottomNavigationBarItem(
                 icon: Icon(Icons.add_box_outlined),
                 label: 'register',
-                activeIcon: Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
+                activeIcon:
+                    Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
             const BottomNavigationBarItem(
                 icon: Icon(MdiIcons.pill),
                 label: 'mydrugs',

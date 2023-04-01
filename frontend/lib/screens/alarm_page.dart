@@ -14,7 +14,7 @@ class AlarmPage extends StatefulWidget {
 class _AlarmPageState extends State<AlarmPage> {
   getAlarmList() async {
     var controller = Get.put(AlarmController());
-    List alarms = await controller.getAlarmList();
+    var alarms = await controller.getAlarmList(); // List로 하면 안됨....
   }
 
   @override // 알람 목록 받아오기

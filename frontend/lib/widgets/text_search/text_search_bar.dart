@@ -54,7 +54,6 @@ class _TextSearchBarState extends State<TextSearchBar> {
                       if (widget.toggleIsCameraClicked != null) {
                         widget.toggleIsCameraClicked!();
                       }
-                      ;
                     },
                     icon: Icon(Icons.photo_camera_outlined)),
                 IconButton(

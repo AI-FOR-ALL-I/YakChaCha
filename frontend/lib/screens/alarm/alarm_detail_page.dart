@@ -29,6 +29,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
   @override // 알람 디테일 받아오기
   void initState() {
     super.initState();
+    getAlarmDetail();
   }
 
   @override
@@ -68,7 +69,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                                 textBaseline: TextBaseline.alphabetic,
                                 children: [
                                   Text(
-                                    controller.alarmDetail != null
+                                    controller.alarmDetail["time"] != null
                                         ? '${controller.alarmDetail["time"].split(':')[0]}:${controller.alarmDetail["time"].split(':')[1]}'
                                         : '00',
                                     style: TextStyle(fontSize: 40),
@@ -76,7 +77,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: Text(
-                                      controller.alarmDetail != null
+                                      controller.alarmDetail["time"] != null
                                           ? controller.alarmDetail["time"]
                                               .split(':')[2]
                                           : '00',
