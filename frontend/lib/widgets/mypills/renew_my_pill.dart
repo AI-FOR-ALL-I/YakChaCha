@@ -35,7 +35,8 @@ class RenewMyPill extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PillDetailsForApi(num: itemSeq.toString()),
+              builder: (context) =>
+                  PillDetailsForApi(turnOnPlus: false, num: itemSeq.toString()),
             ));
       },
       child: AspectRatio(
@@ -69,7 +70,7 @@ class RenewMyPill extends StatelessWidget {
                     ),
                     child: imgFlag
                         ? Image.asset(
-                            'assets/images/defalutPill1.png',
+                            'assets/images/defaultPill1.png',
                             fit: BoxFit.fill,
                           )
                         : Image.network(

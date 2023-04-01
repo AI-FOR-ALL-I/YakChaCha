@@ -11,7 +11,9 @@ import 'package:get/get.dart';
 
 class PillDetailsForApi extends StatelessWidget {
   final String num;
-  const PillDetailsForApi({super.key, required this.num});
+  final bool turnOnPlus;
+  const PillDetailsForApi(
+      {super.key, required this.num, required this.turnOnPlus});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class PillDetailsForApi extends StatelessWidget {
     var img = '';
     var imgFlag = false;
     if (pillDetail.img == "") {
-      img = 'assets/images/defalutPill1.png';
+      img = 'assets/images/defaultPill1.png';
       imgFlag = true;
     } else {
       img = pillDetail.img;
@@ -46,46 +48,50 @@ class PillDetailsForApi extends StatelessWidget {
     // print("@@@@@@@@@@@@@@  ${pillDetail.tagList} @@@@@@@@@@@@@@@@");
     return ListView(
       children: [
-        // 약 등록을 조건부로 걸어줘야함
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "약 등록",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              GetBuilder(
-                  init: PillRegisterController(),
-                  builder: (controller) {
-                    return IconButton(
-                      onPressed: () {
-                        // TODO: 여기다가 일단 controller에 약 저장시키는 코드 + pop으로 검색 창으로 혹은 메인창으로 돌아오게하기
-                        // 필요한 자료
-                        var tempData = {
-                          'itemSeq': pillDetail.itemSeq,
-                          'img': img,
-                          'itemName': pillDetail.entpName,
-                          'warnPregnant': false,
-                          'warnAge': false,
-                          'warnOld': false,
-                          'collide': false
-                        };
-                        controller.add(tempData);
-                        Get.back(); // 이거 되나
-                      },
-                      icon: Icon(
-                        Icons.add_box_outlined,
-                        color: Color(0xFF4AC990),
-                        size: 30,
-                      ),
-                    );
-                  })
-            ],
-          ),
-        ),
+        // 약 등록, turnOnPlus:true 켜짐
+        turnOnPlus
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 2, horizontal: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "약 등록",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    GetBuilder(
+                        init: PillRegisterController(),
+                        builder: (controller) {
+                          return IconButton(
+                            onPressed: () {
+                              // TODO: 여기다가 일단 controller에 약 저장시키는 코드 + pop으로 검색 창으로 혹은 메인창으로 돌아오게하기
+                              // 필요한 자료
+                              var tempData = {
+                                'itemSeq': pillDetail.itemSeq,
+                                'img': img,
+                                'itemName': pillDetail.entpName,
+                                'warnPregnant': false,
+                                'warnAge': false,
+                                'warnOld': false,
+                                'collide': false
+                              };
+                              controller.add(tempData);
+                              Get.back(); // 이거 되나
+                            },
+                            icon: Icon(
+                              Icons.add_box_outlined,
+                              color: Color(0xFF4AC990),
+                              size: 30,
+                            ),
+                          );
+                        })
+                  ],
+                ),
+              )
+            : SizedBox(),
         // 약 사진
         Container(
           margin: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
@@ -125,36 +131,41 @@ class PillDetailsForApi extends StatelessWidget {
           ],
         ),
         // 태그명 & 복용 기간 부분, 조건부로 안보이게 해야함 + 수정가능하도록
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 20),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: pillDetail.tagList
-                    .map((tagInfo) => TagWidget(
-                        tagName: tagInfo[0], colorIndex: int.parse(tagInfo[1])))
-                    .toList(),
+        turnOnPlus
+            ? SizedBox()
+            : Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 1, vertical: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: pillDetail.tagList
+                          .map((tagInfo) => TagWidget(
+                              tagName: tagInfo[0],
+                              colorIndex: int.parse(tagInfo[1])))
+                          .toList(),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "복용기간:  ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          "${pillDetail.startDate} ~ ${pillDetail.endDate}",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "복용기간:  ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                  ),
-                  Text(
-                    "${pillDetail.startDate} ~ ${pillDetail.endDate}",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
         // 상세 설명 부분
         Column(
           children: [

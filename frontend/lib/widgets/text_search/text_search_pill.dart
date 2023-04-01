@@ -36,11 +36,10 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                       children: [
                         widget.data?['img'] == ''
                             ? Image.asset(
-                                'assets/images/defalutPill1.png',
+                                'assets/images/defaultPill1.png',
                                 fit: BoxFit.fitWidth,
                               )
-                            : 
-                            Image.network(
+                            : Image.network(
                                 '${widget.data?['img']}',
                                 fit: BoxFit.fitWidth,
                               ),
