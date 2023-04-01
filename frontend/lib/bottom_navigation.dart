@@ -19,7 +19,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
   static List<Widget> pages = <Widget>[
-    const HomePage(),
+    HomePage(),
     const AlarmPage(),
     const RegisterPage(),
     const DrugHistoryPage(),
@@ -33,7 +33,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           context: context,
           builder: (BuildContext constext) {
             return Dialog(
-                child: Container(
+                child: SizedBox(
               height: 200.0,
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
@@ -50,10 +50,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                   height: 200.0,
                                   width:
                                       MediaQuery.of(context).size.width * 0.8,
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
-                                    children: [
+                                    children: const [
                                       Text('사진 촬영'),
                                       Text('앨범에서 가져오기')
                                     ],
@@ -109,7 +109,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
             const BottomNavigationBarItem(
                 icon: Icon(Icons.add_box_outlined),
                 label: 'register',
-                activeIcon: Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
+                activeIcon:
+                    Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
             const BottomNavigationBarItem(
                 icon: Icon(MdiIcons.pill),
                 label: 'mydrugs',

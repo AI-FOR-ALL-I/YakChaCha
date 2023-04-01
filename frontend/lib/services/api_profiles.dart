@@ -46,4 +46,18 @@ class ApiProfiles {
           },
         ));
   }
+
+  static Future<Response> getProfileInfo(int profileLinkSeq) {
+    final accessToken = authController.accessToken;
+    final path = ApiConstants.getProfileInfo
+        .replaceAll('{profileLinkSeq}', profileLinkSeq.toString());
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    return dio.get(path,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken'
+          },
+        ));
+  }
 }
