@@ -67,4 +67,7 @@ class ApiConstants {
 
   // 사진 검색
   static const String imgSearch = 'https://j8a803.p.ssafy.io/run/predict';
+  // 처방전 검색
+  static const String ocrSearch =
+      'http://j8a803.p.ssafy.io:8090/run/prescription';
 }

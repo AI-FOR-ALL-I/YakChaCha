@@ -24,6 +24,7 @@ class PillRegisterController extends GetxController {
 
   // 리스트에 없다면 등록
   void add(data) {
+    print(displayList);
     bool isDisplayIList = displayList.any((pill) =>
         pill.containsKey('itemSeq') && pill['itemSeq'] == data['itemSeq']);
     if (!isDisplayIList) {
@@ -146,6 +147,7 @@ class PillRegisterController extends GetxController {
     }
   }
 
+  // 알약 사진을 검색
   List aiPillSeq = [];
 
   Future imgSearchFinal(List data) async {
@@ -157,6 +159,29 @@ class PillRegisterController extends GetxController {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  // 처방전으로 등록
+  List ocrPillSeq = [];
+
+  Future ocrSearchFinal(List data) async {
+    try {
+      if (data != null) {
+        dio.Response response = await ApiSearch.ocrSearchFinal(data);
+        Map<String, dynamic> response2 = response.data;
+        print(response2["data"]);
+        return response2["data"];
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  ocrToList(ocrResultList) {
+    for (int i = 0; i < ocrResultList.length; i++) {
+      print(ocrResultList[i]);
+      add(ocrResultList[i]);
     }
   }
 
