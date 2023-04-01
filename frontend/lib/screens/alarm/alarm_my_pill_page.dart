@@ -92,7 +92,7 @@ Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              PillDetailsForApi(num: pill.itemSeq.toString())));
+                              PillDetailsForApi(turnOnPlus:false, num: pill.itemSeq.toString())));
                 }, // TODO 상세페이지로 가도록
                 child: Container(
                   child: AbsorbPointer(
