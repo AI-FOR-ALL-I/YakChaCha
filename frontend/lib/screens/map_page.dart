@@ -19,6 +19,12 @@ class _MapPageState extends State<MapPage> {
   late double _lat = 37.5586545;
   late double _lng = 126.7944739;
 
+  @override
+  void initState() {
+    super.initState();
+    determinePosition();
+  }
+
   determinePosition() async {
     final info = await Geolocator.getCurrentPosition();
     print("!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@");
@@ -31,13 +37,16 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  String _inputText = '';
+  final _focusNode = FocusNode();
+  final _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     print(_lng);
     print("!@#@!#@!#!#!@#!#");
     print(_lat);
-
     Size size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -57,20 +66,43 @@ class _MapPageState extends State<MapPage> {
                 await _openKakaoMapScreen(context);
               }),
           ElevatedButton(
-              child: const Text('현 위치로'),
+              child: const Text('현 위치로 검색'),
               onPressed: () {
                 determinePosition();
               }),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      // builder: (context) => MapTestAPP(),
-                      builder: (context) => DrugStoreSearch(),
-                    ));
-              },
-              icon: const Icon(Icons.ac_unit)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: size.width - 100,
+                child: TextField(
+                  focusNode: _focusNode,
+                  controller: _textController,
+                  maxLength: 10,
+                  decoration: const InputDecoration(
+                      hintStyle: TextStyle(color: Colors.grey),
+                      hintText: "ex) 역삼, 역삼역"),
+                  onChanged: (text) {
+                    _inputText = text;
+                  },
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    if (_inputText != "") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DrugStoreSearch(keyword: _inputText),
+                          ));
+                    } else {
+                      _focusNode.requestFocus();
+                    }
+                  },
+                  icon: const Icon(Icons.search)),
+            ],
+          ),
         ],
       ),
     );
