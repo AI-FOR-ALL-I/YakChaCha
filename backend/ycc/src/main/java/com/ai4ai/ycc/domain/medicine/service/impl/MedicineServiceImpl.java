@@ -118,11 +118,8 @@ public class MedicineServiceImpl implements MedicineService {
                 break;
             case "paper":
                 for(String tempInput: input){
-                    List<Medicine> tempArrayList = new ArrayList<>();
-                    tempArrayList = medicineRepository.findAllByEdiCodeLike("%"+tempInput+"%");
-                    for(Medicine medicine: tempArrayList){
-                        medicineList.add(medicine);
-                    }
+                    Medicine medicine = medicineRepository.findTop1ByEdiCodeLike("%"+tempInput+"%");
+                    medicineList.add(medicine);
                 }
                 break;
             case "img":
@@ -354,9 +351,14 @@ public class MedicineServiceImpl implements MedicineService {
         List<String> startDate=new ArrayList<>();
         List<String> endDate=new ArrayList<>();
         List<List<String>> tagList = new ArrayList<>();
+
+
+        String edi = medicine.getEdiCode();
+        List<Collision> collisionPossibleList=new ArrayList<>();
+        if(edi.length()>8){
+            collisionPossibleList = collisionRepository.findAllByMedicineAId(Integer.parseInt(edi.substring(0,9)));
+        }
         for(MyMedicine myMedicine: myMedicineList){
-            String myEdi = myMedicine.getMedicine().getEdiCode();
-            String edi = medicine.getEdiCode();
             if(myMedicine.getMedicine().getItemSeq()== itemSeq){
                 isMine=true;
                 startDate.add(myMedicine.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
@@ -370,10 +372,17 @@ public class MedicineServiceImpl implements MedicineService {
                     tagList.add(tag);
                 }
             }
-            if(myEdi.length()>8&&edi.length()>8&&collisionRepository.existsByMedicineAIdAndMedicineBId(Integer.parseInt(myEdi.substring(0,9)),Integer.parseInt(edi.substring(0,9)))){
-                System.out.println("충돌!");
-                collide=true;
-                collideList.add(myMedicine.getMedicine().getItemName());
+            if(edi.length()>8){
+                String myEdi = myMedicine.getMedicine().getEdiCode();
+                if(myEdi.length()>8){
+                    for(Collision collision: collisionPossibleList){
+                        if(collision.getMedicineBId()==Integer.parseInt(myEdi.substring(0,9))&&collision.getMedicineAId()==Integer.parseInt(edi.substring(0,9))){
+                            collide=true;
+                            collideList.add(myMedicine.getMedicine().getItemName());
+                        }
+                    }
+                }
+
             }
         }
         Collections.sort(startDate, new Comparator<String>() {

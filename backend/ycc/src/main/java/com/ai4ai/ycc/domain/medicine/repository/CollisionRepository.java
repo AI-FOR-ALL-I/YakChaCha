@@ -9,4 +9,5 @@ import com.ai4ai.ycc.domain.medicine.entity.Collision;
 public interface CollisionRepository extends JpaRepository<Collision, Long> {
 	boolean existsByMedicineAIdAndMedicineBId(int medicineAId, int medicineBId);
 	List<Collision> findAllByMedicineAIdIn(List<Integer> myMedicineList);
+	List<Collision> findAllByMedicineAId(int medicineAId);
 }
