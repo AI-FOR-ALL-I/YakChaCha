@@ -95,19 +95,15 @@ Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
                               PillDetailsForApi(num: pill.itemSeq.toString())));
                 }, // TODO 상세페이지로 가도록
                 child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: isSelected ? Colors.green : Colors.transparent,
-                          width: 2.0)),
                   child: AbsorbPointer(
                     child: RenewMyPill(
-                      itemSeq: pill.itemSeq,
-                      itemName: pill.itemName,
-                      img: pill.img,
-                      tag_list: pill.tagList,
-                      isTaken: false,
-                      dday: pill.dday,
-                    ),
+                        itemSeq: pill.itemSeq,
+                        itemName: pill.itemName,
+                        img: pill.img,
+                        tag_list: pill.tagList,
+                        isTaken: false,
+                        dday: pill.dday,
+                        isSelected: isSelected),
                   ),
                 ),
               );

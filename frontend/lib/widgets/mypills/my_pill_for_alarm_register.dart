@@ -47,7 +47,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                   clipBehavior: Clip.hardEdge,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  child: widget.data['img'] != null
+                  child: widget.data['img'] != ""
                       ? Image.network(widget.data['img'])
                       : Image.asset('assets/images/pills.png')),
               Flexible(
@@ -61,7 +61,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Flexible(
-                                child: Text(widget.data["title"],
+                                child: Text(widget.data["itemName"],
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: TextStyle(fontSize: 15)),

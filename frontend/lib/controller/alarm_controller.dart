@@ -7,13 +7,16 @@ import 'dart:convert';
 
 // A Unified Data Infrastructure Architecture
 class AlarmController extends GetxController {
+  var alarmList = [];
+
   Future getAlarmList() async {
     try {
       var response = await ApiAlarm.getAlarmList();
-      print(response);
+      alarmList = response.data["data"];
     } catch (e) {
       print(e);
     }
+    update();
   }
 
   Map alarmDetail = new Map();
@@ -22,9 +25,20 @@ class AlarmController extends GetxController {
     try {
       var response = await ApiAlarm.getAlarmDetail(alarmSeq);
       alarmDetail = response.data["data"];
-      print(alarmDetail);
+      return alarmDetail;
     } catch (e) {
       print(e);
     }
+    update();
+  }
+
+  Future takePill(int alarmSeq) async {
+    try {
+      var response = await ApiAlarm.takePills(alarmSeq);
+      getAlarmList();
+    } catch (e) {
+      print(e);
+    }
+    update();
   }
 }
