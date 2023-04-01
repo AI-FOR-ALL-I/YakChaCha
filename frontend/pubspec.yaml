@@ -51,7 +51,7 @@ dependencies:
     url_launcher: ^6.1.10
     location: ^4.2.0
     material_design_icons_flutter: ^6.0.7096
-    
+    xml2json: ^5.3.6
     
 dev_dependencies:
   flutter_lints: ^2.0.0
