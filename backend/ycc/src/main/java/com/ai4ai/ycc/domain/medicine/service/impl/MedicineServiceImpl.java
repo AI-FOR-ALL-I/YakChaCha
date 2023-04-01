@@ -19,6 +19,7 @@ import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
 import com.ai4ai.ycc.domain.medicine.dto.TagDto;
+import com.ai4ai.ycc.domain.medicine.entity.Collision;
 import com.ai4ai.ycc.domain.medicine.entity.Medicine;
 import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
 import com.ai4ai.ycc.domain.medicine.entity.MyMedicineHasTag;
@@ -143,6 +144,15 @@ public class MedicineServiceImpl implements MedicineService {
         boolean old = age>60? true: false;
 
         List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
+        List<Integer> myMedicineForCollide = new ArrayList<>();
+        for(MyMedicine myMedicine: myMedicineList){
+            String edi = myMedicine.getMedicine().getEdiCode();
+            if(edi.length()>8){
+                myMedicineForCollide.add(Integer.parseInt(edi.substring(0,9)));
+            }
+        }
+        List<Collision> collisionPossibleList = collisionRepository.findAllByMedicineAIdIn(myMedicineForCollide);
+
         for(Medicine medicine: medicineList){
             boolean pregnantWarn = false;
             boolean youngWarn = false;
@@ -160,14 +170,20 @@ public class MedicineServiceImpl implements MedicineService {
                 oldWarn=true;
             }
             String edi = medicine.getEdiCode();
-            for(MyMedicine myMedicine: myMedicineList){
-                String myEdi = myMedicine.getMedicine().getEdiCode();
-                if(myEdi.length()>8&&edi.length()>8&&collisionRepository.existsByMedicineAIdAndMedicineBId(Integer.parseInt(myEdi.substring(0,9)),Integer.parseInt(edi.substring(0,9)))){
-                    System.out.println("충돌!");
-                    collide=true;
-                    collideList.add(myMedicine.getMedicine().getItemName());
+            if(edi.length()>8){
+                for(MyMedicine myMedicine: myMedicineList){
+                    String myEdi = myMedicine.getMedicine().getEdiCode();
+                    if(myEdi.length()>8){
+                        for(Collision collision: collisionPossibleList){
+                            if(collision.getMedicineAId()==Integer.parseInt(myEdi.substring(0,9))&&collision.getMedicineBId()==Integer.parseInt(edi.substring(0,9))){
+                                collide=true;
+                                collideList.add(myMedicine.getMedicine().getItemName());
+                            }
+                        }
+                    }
                 }
             }
+
             medicineDtoList.add(MedicineDto.builder()
                     .itemSeq(medicine.getItemSeq())
                     .img(medicine.getImg())
@@ -319,6 +335,7 @@ public class MedicineServiceImpl implements MedicineService {
         boolean old = age>60? true: false;
 
         List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndProfile("N",profile);
+
         boolean collide = false;
         boolean isMine = false;
         boolean pregnantWarn = false;
