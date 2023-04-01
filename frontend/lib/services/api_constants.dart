@@ -21,7 +21,8 @@ class ApiConstants {
       '$baseurl/$profiles/{profileLinkSeq}'; // 프로필 수정 PUT
   static const String deleteProfile =
       '$baseurl/$profiles/{profileLinkSeq}/delete'; // 프로필 삭제 PUT
-
+  static const String getMyDrugInfo =
+      '$baseurl/$profiles/{profileLinkSeq}/medicine/my?now=true';
   // 검색
   static const String search =
       '$baseurl/profiles/$profileLinkSeq/medicine/search';
@@ -52,18 +53,17 @@ class ApiConstants {
 
   // 알람 등록
   static const String alarmRegister =
-      '$baseurl/profiles/${profileLinkSeq}/reminders';
+      '$baseurl/profiles/$profileLinkSeq/reminders';
 
   // 내 태그목록 조회
   static const String getTagList =
-      '$baseurl/profiles/${profileLinkSeq}/medicine/tag';
+      '$baseurl/profiles/$profileLinkSeq/medicine/tag';
   // 태그로 약 목록 조회
   static const String getPillsFromTag =
-      '$baseurl/profiles/${profileLinkSeq}/medicine/tag/search';
+      '$baseurl/profiles/$profileLinkSeq/medicine/tag/search';
 
   // 알람 목록 조회 + 알람 상세 조회(+ /알람 번호)
-  static const String getAlarm =
-      '$baseurl/profiles/${profileLinkSeq}/reminders';
+  static const String getAlarm = '$baseurl/profiles/$profileLinkSeq/reminders';
 
   // 사진 검색
   static const String imgSearch = 'https://j8a803.p.ssafy.io/run/predict';
