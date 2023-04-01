@@ -26,12 +26,11 @@ class ApiTag {
 
   // 태그로 약 조회
   static Future<Response> getPillsFromTag(List data) async {
-    return dio.get(
-      ApiConstants.getPillsFromTag,
-      options: Options(headers: {
-        'Content-Type': 'application/json',
-        'Authorization': ApiConstants.TOKEN
-      }),
-    );
+    return dio.post(ApiConstants.getPillsFromTag,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': ApiConstants.TOKEN
+        }),
+        data: data);
   }
 }

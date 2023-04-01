@@ -32,6 +32,16 @@ class ApiAlarm {
       }),
     );
   }
+
+  static Future<Response> takePills(int alarmSeq) async {
+    return dio.put(
+      ApiConstants.getAlarm + '/${alarmSeq}/take',
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'Authorization': ApiConstants.TOKEN
+      }),
+    );
+  }
 }
 
 

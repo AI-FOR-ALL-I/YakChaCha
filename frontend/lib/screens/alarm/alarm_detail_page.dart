@@ -8,18 +8,27 @@ import 'package:frontend/controller/alarm_controller.dart';
 import 'package:get/get.dart';
 
 class AlarmDetailPage extends StatefulWidget {
-  const AlarmDetailPage({Key? key}) : super(key: key);
+  final int seq;
+  const AlarmDetailPage({Key? key, required this.seq}) : super(key: key);
 
   @override
   State<AlarmDetailPage> createState() => _AlarmDetailPageState();
 }
 
 class _AlarmDetailPageState extends State<AlarmDetailPage> {
+  //{title: new Alarm, time: 01:00:PM, totalCount: 3, typeCount: 3, medicineList: [{medicineSeq: 197300084, img: , name: , count: 1}, {medicineSeq: 197300150, img: , name: , count: 1}, {medicineSeq: 197400040, img: , name: , count: 1}]}
+  Map alarmDetail = {};
+  getAlarmDetail() async {
+    var controller = Get.put(AlarmController());
+    Map temp = await controller.getAlarmDetail(widget.seq);
+    setState(() {
+      alarmDetail = temp;
+    });
+  }
+
   @override // 알람 디테일 받아오기
   void initState() {
     super.initState();
-    var controller = Get.put(AlarmController());
-    controller.getAlarmDetail(1);
   }
 
   @override
@@ -119,7 +128,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                         : '로딩중'),
                   ),
                   Expanded(
-                    child: controller.alarmDetail != null
+                    child: controller.alarmDetail["medicineList"] != null
                         ? ListView.builder(
                             itemCount:
                                 controller.alarmDetail['medicineList'].length,
@@ -128,12 +137,15 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                               var pill =
                                   controller.alarmDetail["medicineList"][i];
                               return RenewMyPill(
+                                // TODO: 여기 response 생기면 수정하기
                                 itemSeq: pill["medicineSeq"],
                                 itemName: pill["name"],
                                 img: pill["img"],
-                                tag_list: pill["tagList"],
+                                // tag_list: pill["tagList"],
+                                tag_list: const [],
                                 isTaken: false,
-                                dday: pill.dday,
+                                // dday: pill.dday,
+                                dday: 3,
                               );
                             }))
                         : SizedBox(),

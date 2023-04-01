@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/alarm/alarm_detail_page.dart';
-import 'package:intl/intl.dart';
+import 'package:frontend/controller/alarm_controller.dart';
+import 'package:get/get.dart';
 
 class CustomAlarmWidget extends StatelessWidget {
-  const CustomAlarmWidget({Key? key, required this.status}) : super(key: key);
-  final int status;
-
+  const CustomAlarmWidget({Key? key, required this.data}) : super(key: key);
+  final Map data;
+  // {"reminderSeq":7,"title":"new Alarm","time":"01:00:PM","taken":false,"status":4}
   @override
   Widget build(BuildContext context) {
     Color statusColor = Colors.white;
 
-    if (status == 1) {
+    if (data["status"] == 1) {
       statusColor = Theme.of(context).colorScheme.error;
-    } else if (status == 2) {
+    } else if (data["status"] == 2) {
       statusColor = Theme.of(context).colorScheme.primary;
     }
     Color statusBorderColor = Colors.transparent;
@@ -23,8 +24,11 @@ class CustomAlarmWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AlarmDetailPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    AlarmDetailPage(seq: data["reminderSeq"])));
       },
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -46,14 +50,18 @@ class CustomAlarmWidget extends StatelessWidget {
                           Container(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10.0),
-                              child: Text('알람 제목 자리~~~'),
+                              child: Text(data["title"]),
                             ),
                           ),
                           Container(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                '09:30 AM',
+                                data["time"].split(':')[0] +
+                                    ":" +
+                                    data["time"].split(':')[1] +
+                                    " " +
+                                    data["time"].split(':')[2],
                                 style: TextStyle(fontSize: 40),
                               ),
                             ),
@@ -64,9 +72,22 @@ class CustomAlarmWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0),
                       child: Container(
-                        child: Icon(Icons.radio_button_unchecked_outlined),
-                        // child: Icon(Icons.check_circle_outlined),
-                      ),
+                          child: (data["status"] == 1)
+                              ? Icon(Icons.error_outline_outlined)
+                              : (data["status"] == 2)
+                                  ? Icon(Icons.check_circle_outlined)
+                                  : GestureDetector(
+                                      child: Icon(Icons
+                                          .radio_button_unchecked_outlined),
+                                      onTap: () {
+                                        var controller =
+                                            Get.put(AlarmController());
+                                        controller
+                                            .takePill(data["reminderSeq"]);
+                                      })
+
+                          // child: Icon(Icons.check_circle_outlined),
+                          ),
                     ) // 여기가 체크 아이콘
                   ]),
             ),
