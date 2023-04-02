@@ -20,7 +20,7 @@ import com.ai4ai.ycc.util.DateUtil;
 import java.util.*;
 
 import com.ai4ai.ycc.util.RedisUtil;
-import com.ai4ai.ycc.util.firebase.FcmUtil;
+import com.ai4ai.ycc.util.FcmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

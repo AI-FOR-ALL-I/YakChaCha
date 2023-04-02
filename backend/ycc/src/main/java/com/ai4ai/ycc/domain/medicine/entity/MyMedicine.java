@@ -55,5 +55,9 @@ public class MyMedicine extends BaseEntity {
 		this.endDate = endDate;
 	}
 
+	public void taken(){
+		this.finish="Y";
+	}
+
 
 }

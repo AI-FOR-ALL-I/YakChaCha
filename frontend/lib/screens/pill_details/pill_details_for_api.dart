@@ -65,23 +65,25 @@ class PillDetailsForApi extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
-                    GetBuilder(
-                        init: PillRegisterController(),
+                    GetBuilder<PillRegisterController>(
+                        tag: "registerController",
                         builder: (controller) {
                           return IconButton(
                             onPressed: () {
-                              // TODO: 여기다가 일단 controller에 약 저장시키는 코드 + pop으로 검색 창으로 혹은 메인창으로 돌아오게하기
                               // 필요한 자료
                               var tempData = {
                                 'itemSeq': pillDetail.itemSeq,
                                 'img': img,
-                                'itemName': pillDetail.entpName,
-                                'warnPregnant': false,
+                                'itemName': pillDetail.itemName,
+                                'warnPregnant':
+                                    false, // TODO: 위험여부 받아서 여기다 넣어줘야 함...
                                 'warnAge': false,
                                 'warnOld': false,
                                 'collide': false
                               };
                               controller.add(tempData);
+                              print(controller.displayList[
+                                  controller.displayList.length - 1]);
                               Get.back(); // 이거 되나
                             },
                             icon: Icon(

@@ -16,15 +16,17 @@ class TagPicker extends StatefulWidget {
 
 class _TagPickerState extends State<TagPicker> {
   List<List<Object>> selectedTagList = [];
-  // List<List<Object>> tagList = [
-  //   ['태그명1', '1'],
-  //   ['태그명2', '2'],
-  //   ['태그명3', '3'],
-  //   ['태그명4', '4'],
-  // ]; // TODO: props 혹은 Dio로 태그 다 받아오기
+  // TODO: props 혹은 Dio로 태그 다 받아오기
 
   TextEditingController tagController = TextEditingController();
   String newTag = '';
+  @override
+  void initState() {
+    super.initState();
+    PillRegisterController pillRegisterController =
+        Get.put<PillRegisterController>(PillRegisterController());
+    pillRegisterController.getTagList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +137,11 @@ class _TagPickerState extends State<TagPicker> {
                             0.15 /
                             (MediaQuery.of(context).size.width * 0.0725)),
                     itemBuilder: (BuildContext context, int i) {
-                      String tagName = controller.tagList[i][0] as String;
-                      String colorIndex = controller.tagList[i][1] as String;
+                      List tagList = controller.tagList;
+                      print(tagList);
+                      String tagName = tagList[i]["name"] as String;
+                      String colorIndex =
+                          tagList[i]["color"].toString() as String;
                       return GestureDetector(
                         onTap: () {
                           controller.addTag(

@@ -110,7 +110,7 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                           onTap: () async {
                             if (widget.confirm != null) {
                               var temp = await widget.confirm!();
-                              if (temp) {
+                              if (temp != null && temp) {
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,

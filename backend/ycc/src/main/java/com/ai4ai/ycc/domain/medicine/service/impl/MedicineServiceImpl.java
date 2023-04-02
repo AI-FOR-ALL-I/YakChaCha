@@ -5,6 +5,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -114,7 +115,22 @@ public class MedicineServiceImpl implements MedicineService {
         List<Medicine> medicineList = new ArrayList<>();
         switch(type){
             case "text":
-                medicineList = medicineRepository.findAllByItemNameLike("%"+input.get(0)+"%");
+                String[] inputList = input.get(0).split(" ");
+                System.out.println(Arrays.toString(inputList));
+                medicineList = medicineRepository.findAllByItemNameLike("%"+inputList[0]+"%");
+                System.out.println(medicineList.size());
+                for(int i=1; i<inputList.length; i++){
+                    List<Medicine> removeList = new ArrayList<>();
+                    for(Medicine medicine: medicineList){
+                        if(!medicine.getItemName().contains(inputList[i])){
+                            removeList.add(medicine);
+                        }
+                    }
+                    for(Medicine medicine : removeList){
+                        medicineList.remove(medicine);
+                    }
+                    removeList.clear();
+                }
                 break;
             case "paper":
                 for(String tempInput: input){
@@ -316,6 +332,17 @@ public class MedicineServiceImpl implements MedicineService {
             myMedicineHasTag.remove();
         }
         myMedicine.remove();
+    }
+
+    @Override
+    public void takenMyMedicine() {
+        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinish("N","N");
+        LocalDate now = LocalDate.now();
+        for(MyMedicine myMedicine : myMedicineList){
+            if(!now.isBefore(myMedicine.getEndDate())){
+                myMedicine.taken();
+            }
+        }
     }
 
     @Override

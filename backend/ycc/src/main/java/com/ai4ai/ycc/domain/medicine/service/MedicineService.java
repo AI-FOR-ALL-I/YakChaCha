@@ -26,4 +26,6 @@ public interface MedicineService {
 	void deleteTags(Profile profile, String tagName);
 
 	void deleteMyMedicine(Profile profile, long myMedicineSeq);
+
+	void takenMyMedicine();
 }

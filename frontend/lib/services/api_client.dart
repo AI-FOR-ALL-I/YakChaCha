@@ -29,13 +29,25 @@ class ApiClient {
         options: Options(headers: {'Content-Type': 'application/json'}));
   }
 
-  static Future<Response> logout(String accessToken) async {
-    // accessToken은 따로 getX? storage에 저장할거니까 일단은 임의로 String 넣어놓음
-
+  // 로그아웃
+  static Future<Response> logout() async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     return dio.put(ApiConstants.logout,
         options: Options(headers: {
           'Content-Type': 'application/json',
-          'Authorzation': 'Bearer $accessToken'
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
+
+  // 탈퇴하기
+  static Future<Response> withDraw(String accessToken) async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    return dio.put(ApiConstants.withdraw,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
         }));
   }
 

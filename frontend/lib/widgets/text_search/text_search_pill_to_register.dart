@@ -20,78 +20,80 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
   @override
   Widget build(BuildContext context) {
     Get.put(PillRegisterController());
-    return GetBuilder<PillRegisterController>(builder: (controller) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-        child: Material(
-          elevation: 5,
-          borderRadius: BorderRadius.circular(10),
-          child: ExpansionTile(
-            title: Before(data: widget.data),
-            subtitle: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-            children: [
-              Container(
-                  child: Column(
+    return GetBuilder<PillRegisterController>(
+        tag: "registerController",
+        builder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            child: Material(
+              elevation: 5,
+              borderRadius: BorderRadius.circular(10),
+              child: ExpansionTile(
+                title: Before(data: widget.data),
+                subtitle: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Container(
+                      child: Column(
                     children: [
-                      Text(
-                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['startDate']} 부터'),
-                      GestureDetector(
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(DateTime.now().year - 5),
-                            lastDate: DateTime(DateTime.now().year + 5),
-                          ).then((selectedDate) {
-                            if (selectedDate != null) {
-                              controller.updateStartDate(
-                                  widget.data['itemSeq'],
-                                  DateFormat('yyyy-MM-dd')
-                                      .format(selectedDate));
-                            }
-                          });
-                        },
-                        child: Icon(
-                          Icons.date_range_outlined,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                              '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['startDate']} 부터'),
+                          GestureDetector(
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime.now().year - 5),
+                                lastDate: DateTime(DateTime.now().year + 5),
+                              ).then((selectedDate) {
+                                if (selectedDate != null) {
+                                  controller.updateStartDate(
+                                      widget.data['itemSeq'],
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(selectedDate));
+                                }
+                              });
+                            },
+                            child: Icon(
+                              Icons.date_range_outlined,
+                            ),
+                          ),
+                          Text(
+                              '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['endDate']} 까지'), // endDate
+                          GestureDetector(
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime.now().year - 5),
+                                lastDate: DateTime(DateTime.now().year + 5),
+                              ).then((selectedDate) {
+                                if (selectedDate != null) {
+                                  controller.updateEndDate(
+                                      widget.data['itemSeq'],
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(selectedDate));
+                                }
+                              });
+                            },
+                            child: Icon(
+                              Icons.date_range_outlined,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                          '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['endDate']} 까지'), // endDate
-                      GestureDetector(
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(DateTime.now().year - 5),
-                            lastDate: DateTime(DateTime.now().year + 5),
-                          ).then((selectedDate) {
-                            if (selectedDate != null) {
-                              controller.updateEndDate(
-                                  widget.data['itemSeq'],
-                                  DateFormat('yyyy-MM-dd')
-                                      .format(selectedDate));
-                            }
-                          });
-                        },
-                        child: Icon(
-                          Icons.date_range_outlined,
-                        ),
-                      ),
+                      TagPicker(seq: widget.data['itemSeq'], isRegister: true)
                     ],
-                  ),
-                  TagPicker(seq: widget.data['itemSeq'], isRegister: true)
+                  ))
                 ],
-              ))
-            ],
-          ),
-        ),
-      );
-    });
+              ),
+            ),
+          );
+        });
   }
 }
 
@@ -100,8 +102,6 @@ class Before extends StatelessWidget {
   final Map? data;
   @override
   Widget build(BuildContext context) {
-    print(data);
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@");
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -114,13 +114,12 @@ class Before extends StatelessWidget {
                 children: [
                   Flexible(
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: data?['img'] != 'assets/images/defaultPill1.png'
-                            ? Image.network('${data?['img']}',
-                                fit: BoxFit.cover)
-                            : Image.asset('assets/images/defaultPill1.png',
-                                fit: BoxFit.cover),
-                      ),
+                          borderRadius: BorderRadius.circular(15),
+                          child: data?['img'] != null || data?['img'] != ''
+                              ? Image.asset('assets/images/defaultPill1.png',
+                                  fit: BoxFit.cover)
+                              : Image.network('${data?['img']}',
+                                  fit: BoxFit.cover)),
                       flex: 2),
                   Flexible(
                       child: Container(
