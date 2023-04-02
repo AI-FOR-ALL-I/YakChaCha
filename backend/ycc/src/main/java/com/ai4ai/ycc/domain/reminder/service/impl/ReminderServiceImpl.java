@@ -1,6 +1,8 @@
 package com.ai4ai.ycc.domain.reminder.service.impl;
 
 import com.ai4ai.ycc.domain.profile.entity.Profile;
+import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
+import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.MedicineCountDto;
 import com.ai4ai.ycc.domain.reminder.dto.request.ModifyReminderRequestDto;
@@ -35,6 +37,7 @@ public class ReminderServiceImpl implements ReminderService {
     private final DateUtil dateUtil;
     private final ReminderRepository reminderRepository;
     private final ReminderMedicineRepository reminderMedicineRepository;
+    private final ProfileLinkRepository profileLinkRepository;
     private final TakenRecordRepository takenRecordRepository;
 
     @Override
@@ -282,6 +285,19 @@ public class ReminderServiceImpl implements ReminderService {
             reminder.reset();
         }
         log.info("[resetReminder] 리마인더 초기화 완료");
+    }
+
+    @Override
+    public List<ProfileLink> getProfileLinkListAtTime(String time) {
+        List<Reminder> reminderList = reminderRepository.findAllByTimeAndDelYn(time, "N");
+        List<ProfileLink> result = new ArrayList<>();
+
+        for (Reminder reminder : reminderList) {
+            Profile profile = reminder.getProfile();
+            result.addAll(profileLinkRepository.findAllByProfileAndDelYn(profile, "N"));
+        }
+
+        return result;
     }
 
 

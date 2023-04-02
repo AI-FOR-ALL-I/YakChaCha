@@ -1,10 +1,13 @@
 package com.ai4ai.ycc.util;
 
+import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
 import com.ai4ai.ycc.util.firebase.FcmUtil;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import java.time.LocalTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +21,7 @@ import java.time.LocalDateTime;
 public class Scheduler {
 
     private final FcmUtil fcmUtil;
+    private final DateUtil dateUtil;
     private final ReminderService reminderService;
     private final String token = "dl-SqL3hRoyun8rN3ro6CF:APA91bHvk7ZdsBD7hzQbqz7n2fTVrcn1522zUaoCawnds2Rr6-rREtgswHqUDCLV3pKbjywXIAJC-0HKoCot7ABnFUR8-e_wuLCKDMOKH3Z7mlwn_ra4ui_kI_LJ1mNhqvsO3wV_Gd-N";
     private final String jhToken = "du7kLIHQQZqA9SNZYzv5W9:APA91bG80ObTfm3UhKyrmmGrp-yDYzzAjWQPU-TjCcocp9zDIBqBQl-XmjntFAXn_irkUJUhaWQFQQhRn7lJ9iC-9OGVX-KmEHCxBv4gKs87XSl8jYhfuIsiA2tDyq9Fyw74LyaWuIfx";
@@ -32,7 +36,14 @@ public class Scheduler {
 
     @Scheduled(cron = "0 0/10 * * * *")
     public void test() throws Exception {
-        log.info("리마인더 알림 보내기 !!! {}", LocalDateTime.now());
+        LocalTime now = LocalTime.now();
+        String time = dateUtil.convertToStringType(now);
+        log.info("리마인더 알림 보내기 !!! {}", time);
+        List<ProfileLink> profileLinkList = reminderService.getProfileLinkListAtTime(time);
+
+        for (ProfileLink profileLink : profileLinkList) {
+            fcmUtil.sendReminder(profileLink);
+        }
     }
 
 }
