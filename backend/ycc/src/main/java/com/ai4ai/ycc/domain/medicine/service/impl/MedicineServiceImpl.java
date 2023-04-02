@@ -319,6 +319,17 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
+    public void takenMyMedicine() {
+        List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinish("N","N");
+        LocalDate now = LocalDate.now();
+        for(MyMedicine myMedicine : myMedicineList){
+            if(!now.isBefore(myMedicine.getEndDate())){
+                myMedicine.taken();
+            }
+        }
+    }
+
+    @Override
     public MedicineDetailDto showDetail(long itemSeq, Profile profile) {
         System.out.println(itemSeq+"의 itemSeq를 가진 약 검색");
         Medicine medicine = medicineRepository.findByItemSeq(itemSeq);
