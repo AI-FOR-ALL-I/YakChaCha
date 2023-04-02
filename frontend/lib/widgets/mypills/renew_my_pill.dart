@@ -6,30 +6,37 @@ import 'package:frontend/widgets/common/tag_widget.dart';
 
 class RenewMyPill extends StatelessWidget {
   final String itemName, img;
-  final int itemSeq;
+  final int itemSeq, dday;
   final List tag_list;
   final bool isTaken;
-  const RenewMyPill({
-    super.key,
-    required this.itemSeq,
-    required this.itemName,
-    required this.img,
-    required this.tag_list,
-    required this.isTaken,
-  });
+  final bool? isSelected;
+  const RenewMyPill(
+      {super.key,
+      required this.itemSeq,
+      required this.itemName,
+      required this.img,
+      required this.tag_list,
+      required this.dday,
+      required this.isTaken,
+      this.isSelected});
 
   @override
   Widget build(BuildContext context) {
-    List<List<Object>> tags = [
-      ['태그명1', 1],
-      ['태그명2', 2],
-    ];
+    var imgFlag = false;
+    if (img == "") {
+      imgFlag = true;
+    }
+    // List<List<Object>> tags = [
+    //   ['태그명1', 1],
+    //   ['태그명2', 2],
+    // ];
     return GestureDetector(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PillDetailsForApi(num: itemSeq.toString()),
+              builder: (context) =>
+                  PillDetailsForApi(turnOnPlus: false, num: itemSeq.toString()),
             ));
       },
       child: AspectRatio(
@@ -38,7 +45,12 @@ class RenewMyPill extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
           padding: const EdgeInsets.all(15),
           // height: 100,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: isSelected != null && isSelected == true
+                    ? Colors.green
+                    : Colors.transparent,
+                width: 2.0),
             boxShadow: [
               BoxShadow(
                   offset: Offset(1, 1), blurRadius: 2, color: Colors.black12)
@@ -53,12 +65,18 @@ class RenewMyPill extends StatelessWidget {
                 aspectRatio: 1.7 / 1,
                 child: Container(
                     clipBehavior: Clip.hardEdge,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    child: Image.network(
-                      img,
-                      fit: BoxFit.fill,
-                    )),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: imgFlag
+                        ? Image.asset(
+                            'assets/images/defaultPill1.png',
+                            fit: BoxFit.fill,
+                          )
+                        : Image.network(
+                            img,
+                            fit: BoxFit.fill,
+                          )),
               ), // 이미지
               Expanded(
                   child: Padding(
@@ -79,12 +97,19 @@ class RenewMyPill extends StatelessWidget {
                             )
                           ]),
                     ),
-                    Row(
-                      children: tags
-                          .map((tagInfo) => TagWidget(
-                              tagName: tagInfo[0] as String,
-                              colorIndex: tagInfo[1] as int))
-                          .toList(),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: tag_list
+                              .map((tagInfo) => TagWidget(
+                                  tagName: tagInfo[0],
+                                  colorIndex: int.parse(tagInfo[1])))
+                              .toList(),
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -94,7 +119,7 @@ class RenewMyPill extends StatelessWidget {
                       ? SizedBox()
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [Text('d-3')],
+                          children: [Text('d-$dday')],
                         )),
             ], // 여기가 Row
           ),

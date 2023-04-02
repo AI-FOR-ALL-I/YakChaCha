@@ -6,6 +6,7 @@ import 'package:frontend/screens/drug_history_page.dart';
 import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/register_page.dart';
 import 'package:frontend/widgets/common/custom_main_app_bar.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -18,9 +19,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
   static List<Widget> pages = <Widget>[
-    const HomePage(),
+    HomePage(),
     const AlarmPage(),
-    const RegisterPage(),
+    const RegisterPage(isCameraOCR: false, isAlbumOCR: false),
     const DrugHistoryPage(),
     const MapPage()
   ];
@@ -32,7 +33,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           context: context,
           builder: (BuildContext constext) {
             return Dialog(
-                child: Container(
+                child: SizedBox(
               height: 200.0,
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
@@ -45,7 +46,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                             context: context,
                             builder: (BuildContext constext) {
                               return Dialog(
-                                child: Container(
+                                child: SizedBox(
                                   height: 200.0,
                                   width:
                                       MediaQuery.of(context).size.width * 0.8,
@@ -53,26 +54,52 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text('사진 촬영'),
-                                      Text('앨범에서 가져오기')
+                                      GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RegisterPage(
+                                                          isCameraOCR: true,
+                                                          isAlbumOCR: false,
+                                                        )));
+                                          },
+                                          child: Text(
+                                              '사진 촬영')), // 등록화면으로 이동시키고 동시에 카메라 킨다.
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RegisterPage(
+                                                        isCameraOCR: false,
+                                                        isAlbumOCR: true,
+                                                      )));
+                                        },
+                                        child: Text('앨범에서 가져오기'),
+                                      ) // 등록화면으로 이동시키고 동시에 앨범 킨다.
                                     ],
                                   ),
                                 ),
                               );
                             });
                       },
-                      child: Text('알약 사진으로 등록')),
-                  Text('처방전 사진으로 등록'),
+                      child: const Text('처방전 사진으로 등록')),
                   GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RegisterPage()),
+                              builder: (context) => const RegisterPage(
+                                    isCameraOCR: false,
+                                    isAlbumOCR: false,
+                                  )),
                         );
                       },
-                      child: Text('텍스트 검색으로 등록'))
+                      child: const Text('텍스트 / 알약 사진 검색으로 등록'))
                 ],
               ),
             ));
@@ -98,15 +125,29 @@ class _BottomNavigationState extends State<BottomNavigation> {
           // ignore: prefer_const_literals_to_create_immutables
           items: [
             const BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard), label: 'home'),
+                icon: Icon(Icons.home_filled),
+                label: 'home',
+                activeIcon: Icon(Icons.home_filled, color: Color(0xFFBBE4CB))),
             const BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.gift), label: 'alarm'),
+                icon: Icon(Icons.access_time),
+                label: 'alarm',
+                activeIcon: Icon(Icons.access_time, color: Color(0xFFBBE4CB))),
             const BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.add_circled), label: 'register'),
+                icon: Icon(Icons.add_box_outlined),
+                label: 'register',
+                activeIcon:
+                    Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
             const BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.alarm), label: 'mydrugs'),
+                icon: Icon(MdiIcons.pill),
+                label: 'mydrugs',
+                activeIcon: Icon(
+                  MdiIcons.pillMultiple,
+                  color: Color(0xFFBBE4CB),
+                )),
             const BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.map_pin_ellipse), label: 'pharmacy'),
+                icon: Icon(CupertinoIcons.map_fill),
+                label: 'pharmacy',
+                activeIcon: Icon(Icons.map, color: Color(0xFFBBE4CB))),
           ],
         ));
   }

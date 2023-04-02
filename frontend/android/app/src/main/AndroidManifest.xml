@@ -1,17 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.frontend">
     <!-- 카카오맵 설정 -->
-    <uses-permission android:name="android.permission.INTERNET">
-    </uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION">
-    </uses-permission>
-    
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:label="frontend"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
-        
+        <service android:name="io.flutter.plugins.firebasemessaging.FirebaseMessagingBackgroundService" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -58,6 +56,7 @@
 
     <meta-data
         android:name="com.kakao.sdk.AppKey"
+        
         android:value="c940f1badb47a0c2cb210d71a84009fb"/>
     
     </application>

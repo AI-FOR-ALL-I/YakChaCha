@@ -1,9 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controller/auth_controller.dart';
+import 'package:frontend/controller/firebase_controller.dart';
+import 'package:frontend/controller/profile_controller.dart';
+import 'package:frontend/screens/login/social_login.dart';
+import 'package:frontend/screens/profile/receiver_profile_page.dart';
+import 'package:frontend/services/api_client.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/settings/setting_menu_item.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get/get.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
+
+  void logout(BuildContext context) async {
+    final authController = Get.find<AuthController>();
+    final firebaseController = Get.find<FirebaseController>();
+    final profileController = Get.find<ProfileController>();
+
+    try {
+      dio.Response response = await ApiClient.logout();
+      if (response.statusCode == 200) {
+        // 로그아웃 성공
+        authController.clearTokens();
+        //firebaseController.clearTokens();
+        profileController.clearProfile();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SocialLogin()));
+      }
+    } catch (error) {
+      print('사용자 정보 요청 실패 $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +83,9 @@ class SettingPage extends StatelessWidget {
             child: Row(
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      logout(context);
+                    },
                     child: const Text(
                       '로그아웃',
                       style: TextStyle(color: Colors.black54),
@@ -64,6 +94,18 @@ class SettingPage extends StatelessWidget {
                     onPressed: () {},
                     child: const Text(
                       '탈퇴하기',
+                      style: TextStyle(color: Colors.black54),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ReceiverProfilePage()));
+                    },
+                    child: const Text(
+                      '상대방 연동 화면으로 임시이동',
                       style: TextStyle(color: Colors.black54),
                     )),
               ],
