@@ -145,6 +145,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PillDetailsForApi(
+                                              turnOnPlus: true,
                                               num: searchResult[index]
                                                       ['itemSeq']
                                                   .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
@@ -189,6 +190,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PillDetailsForApi(
+                                              turnOnPlus: true,
                                               num: aiResultList[index + 1]
                                                       ['itemSeq']
                                                   .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기

@@ -22,8 +22,9 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  PillDetailsForApi(turnOnPlus:false,num: widget.data['medicineSeq'].toString()),
+              builder: (context) => PillDetailsForApi(
+                  turnOnPlus: false,
+                  num: widget.data['medicineSeq'].toString()),
             ));
       },
       child: AspectRatio(
@@ -41,7 +42,6 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.max,
             children: [
               Container(
                   clipBehavior: Clip.hardEdge,
@@ -49,7 +49,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   child: widget.data['img'] != ""
                       ? Image.network(widget.data['img'])
-                      : Image.asset('assets/images/pills.png')),
+                      : Image.asset('assets/images/defaultPill1.png')),
               Flexible(
                   flex: 1,
                   child: Column(
