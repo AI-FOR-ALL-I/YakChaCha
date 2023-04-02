@@ -19,7 +19,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
   static List<Widget> pages = <Widget>[
-    const HomePage(),
+    HomePage(),
     const AlarmPage(),
     const RegisterPage(isCameraOCR: false, isAlbumOCR: false),
     const DrugHistoryPage(),
@@ -33,7 +33,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           context: context,
           builder: (BuildContext constext) {
             return Dialog(
-                child: Container(
+                child: SizedBox(
               height: 200.0,
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
