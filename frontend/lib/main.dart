@@ -6,6 +6,48 @@ import 'package:frontend/screens/login/social_login.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin notiPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> cancelNotification() async {
+  await notiPlugin.cancelAll();
+}
+
+Future<void> requestPermissions() async {
+  await notiPlugin
+      .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(alert: true, badge: true, sound: true);
+}
+
+Future<void> showNotification({
+  required title,
+  required message,
+}) async {
+  notiPlugin.show(
+      11,
+      title,
+      message,
+      NotificationDetails(
+          android: AndroidNotificationDetails(
+              "channelId", "channelName", "channelDescription",
+              icon: "@mipmap/ic_launcher"),
+          iOS: const IOSNotificationDetails(
+              badgeNumber: 1,
+              subtitle: "the subtitle",
+              sound: "slow_spring_board.aiff")));
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  RemoteNotification? notification = message.notification;
+  print('noti-title : ${notification?.title}, body:${notification?.body}');
+  Map<String, dynamic> data = message.data;
+  await cancelNotification();
+  await requestPermissions();
+  await showNotification(title: data["title"], message: data["value"]);
+}
 
 Future<void> main() async {
   KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
@@ -15,15 +57,18 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  FirebaseMessaging.instance.getToken().then((String? token) {
+  var token = await FirebaseMessaging.instance.getToken().then((String? token) {
     if (token != null) {
       print('FCM Token: $token');
       firebaseController.saveTokens(token);
+      return token;
     } else {
       print('Failed to get FCM Token');
     }
   });
+
   runApp(const MyApp());
 }
 
