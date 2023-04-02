@@ -116,7 +116,8 @@ class SocialLogin extends StatelessWidget {
                         }
                       }
                     },
-                    child: Image.asset('assets/images/kakao_login_large.png'))
+                    child: Image.asset(
+                        'assets/images/kakao_login_medium_narrow.png'))
               ],
             )
             //TextButton(child: const Text("카카오 로그인"), onPressed: () async {})

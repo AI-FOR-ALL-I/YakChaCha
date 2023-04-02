@@ -39,6 +39,7 @@ class ProfileInfo extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // profileLinkSeq 연결하긔
+        print('profile$profileLinkSeq');
         updateProfile(profileLinkSeq);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const BottomNavigation()));
