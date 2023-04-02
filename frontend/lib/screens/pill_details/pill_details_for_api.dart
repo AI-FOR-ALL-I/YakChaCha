@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/pill_detail_model.dart';
 import 'package:frontend/screens/pill_details/pill_detail_line_state.dart';
+import 'package:frontend/screens/pill_details/pill_detail_line_state_hyo.dart';
+import 'package:frontend/screens/pill_details/pill_detail_line_state_method.dart';
+import 'package:frontend/screens/pill_details/pill_detail_line_state_warn.dart';
 import 'package:frontend/services/pill_detail_api.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/controller/pill_register_controller.dart';
@@ -169,12 +172,15 @@ class PillDetailsForApi extends StatelessWidget {
         // 상세 설명 부분
         Column(
           children: [
-            PillDetailLine(lineTitle: "성분", content: pillDetail.mainItemIngr),
-            PillDetailLine(lineTitle: "효능", content: pillDetail.eeDocData),
-            PillDetailLine(lineTitle: "복용 방법", content: pillDetail.udDocData),
+            PillDetailLine(
+                lineTitle: "성분", content: pillDetail.mainItemIngr),
+            PillDetailLineHyo(
+                lineTitle: "효능", content: pillDetail.eeDocData),
+            PillDetailLineMethod(
+                lineTitle: "복용 방법", content: pillDetail.udDocData),
             PillDetailLine(
                 lineTitle: "보관 방법", content: pillDetail.storageMethod),
-            PillDetailLine(
+            PillDetailLineWarn(
                 lineTitle: "복용 시 주의사항", content: pillDetail.nbDocData),
             PillDetailLine(
                 lineTitle: "함께 먹지 말아야 하는 성분", content: pillDetail.typeCode),
