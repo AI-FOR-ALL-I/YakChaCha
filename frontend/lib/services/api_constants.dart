@@ -10,6 +10,7 @@ class ApiConstants {
   // 계정
   static const String login = '$baseurl/accounts/sign-in';
   static const String logout = '$baseurl/accounts/sign-out';
+  static const String withdraw = '$baseurl/accounts/withdraw';
 
   // 프로필
   static const String profiles = 'profiles';
