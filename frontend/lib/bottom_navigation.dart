@@ -7,6 +7,7 @@ import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/register_page.dart';
 import 'package:frontend/widgets/common/custom_main_app_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -17,14 +18,34 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
+  double _latSmall = 0.0;
+  double _lngBig = 0.0;
 
-  static List<Widget> pages = <Widget>[
-    const HomePage(),
-    const AlarmPage(),
-    const RegisterPage(isCameraOCR: false, isAlbumOCR: false),
-    const DrugHistoryPage(),
-    const MapPage()
-  ];
+  List<Widget> pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    determinePosition();
+    setState(() {
+      pages = <Widget>[
+        const HomePage(),
+        const AlarmPage(),
+        const RegisterPage(isCameraOCR: false, isAlbumOCR: false),
+        const DrugHistoryPage(),
+        MapPage(latSmall: _latSmall, lngBig: _lngBig),
+      ];
+    });
+  }
+
+  determinePosition() async {
+    final info = await Geolocator.getCurrentPosition();
+    setState(() {
+      _latSmall = info.latitude;
+      _lngBig = info.longitude;
+      pages[4] = MapPage(latSmall: _latSmall, lngBig: _lngBig);
+    });
+  }
 
   void _onItemTapped(int index) {
     if (index == 2) {
@@ -33,7 +54,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           context: context,
           builder: (BuildContext constext) {
             return Dialog(
-                child: Container(
+                child: SizedBox(
               height: 200.0,
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
@@ -60,12 +81,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        RegisterPage(
+                                                        const RegisterPage(
                                                           isCameraOCR: true,
                                                           isAlbumOCR: false,
                                                         )));
                                           },
-                                          child: Text(
+                                          child: const Text(
                                               '사진 촬영')), // 등록화면으로 이동시키고 동시에 카메라 킨다.
                                       GestureDetector(
                                         onTap: () {
@@ -73,12 +94,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      RegisterPage(
+                                                      const RegisterPage(
                                                         isCameraOCR: false,
                                                         isAlbumOCR: true,
                                                       )));
                                         },
-                                        child: Text('앨범에서 가져오기'),
+                                        child: const Text('앨범에서 가져오기'),
                                       ) // 등록화면으로 이동시키고 동시에 앨범 킨다.
                                     ],
                                   ),
