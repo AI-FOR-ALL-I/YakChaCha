@@ -51,6 +51,7 @@ class _HomePage extends State<HomePage> {
             List<Map<String, dynamic>>.from(response.data['data']);
         setState(() {
           drugs = newData;
+          print('drugs$drugs');
         });
       } else {
         // 오류처리
@@ -147,7 +148,7 @@ class _HomePage extends State<HomePage> {
                         itemBuilder: (BuildContext context, int index) {
                           final item = drugs[index];
                           print('item$item');
-                          if (item.isEmpty) {
+                          if (drugs.isEmpty) {
                             return Container(child: const Text('비어있음....'));
                           } else {
                             return MyDrugItem(
