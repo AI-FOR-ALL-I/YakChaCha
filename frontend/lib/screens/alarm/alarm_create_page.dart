@@ -21,9 +21,8 @@ class AlarmCreatePage extends StatefulWidget {
 }
 
 class _AlarmCreatePageState extends State<AlarmCreatePage> {
-  var selectedPillsList = [1, 2, 3, 4, 5];
-
   AlarmPillController controller = Get.put(AlarmPillController());
+
   @override
   void dispose() {
     super.dispose();

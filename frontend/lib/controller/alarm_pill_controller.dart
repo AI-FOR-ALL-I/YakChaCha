@@ -162,10 +162,11 @@ class AlarmPillController extends GetxController {
       var response = await ApiTag.getTagList();
       tagList = response.data["data"];
       print(tagList);
+      update();
+      return tagList;
     } catch (e) {
       print(e);
     }
-    update();
   }
 
   // 태그로 약 검색 ["태그명", "태그명"]

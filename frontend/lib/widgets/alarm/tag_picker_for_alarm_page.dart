@@ -13,12 +13,6 @@ class TagPickerForAlarmPage extends StatefulWidget {
 
 class _TagPickerForAlarmPageState extends State<TagPickerForAlarmPage> {
   List<List<Object>> selectedTagList = [];
-  // List<List<Object>> tagList = [
-  //   ['태그명1', '1'],
-  //   ['태그명2', '2'],
-  //   ['태그명3', '3'],
-  //   ['태그명4', '4'],
-  // ]; // TODO: props 혹은 Dio로 태그 다 받아오기
 
   AlarmPillController controller = Get.find();
   @override
@@ -80,6 +74,7 @@ class _TagPickerForAlarmPageState extends State<TagPickerForAlarmPage> {
                             0.15 /
                             (MediaQuery.of(context).size.width * 0.0725)),
                     itemBuilder: (BuildContext context, int i) {
+                      print(controller.tagList[i]);
                       String tagName = controller.tagList[i]["name"] as String;
                       int colorIndex = controller.tagList[i]["color"] as int;
                       int tagSeq = controller.tagList[i]["tagSeq"] as int;
