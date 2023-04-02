@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/drug_store_detail/kakaomap_screen.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 
@@ -9,10 +8,14 @@ const String kakaoMapKey = '7456c753f359ee3f7137fc8dd3adfaf8';
 
 class DrugStoreDetail extends StatelessWidget {
   final double latSmall, lngBig;
+  final String here, addr, telno;
   const DrugStoreDetail({
     super.key,
     required this.latSmall,
     required this.lngBig,
+    required this.here,
+    required this.addr,
+    required this.telno,
   });
 
   @override
@@ -31,22 +34,57 @@ class DrugStoreDetail extends StatelessWidget {
               showMapTypeControl: true,
               showZoomControl: true,
               zoomLevel: 6,
+              customOverlayStyle:
+                  '''
+                  <style>
+                    .customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+                    .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+                    .customoverlay a {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+                    .customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
+                    .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+                  </style>
+                  ''',
+              customOverlay: '''
+                  var content =
+                      '<div class="customoverlay">' +
+                      '  <a href="https://www.google.com/maps/search/?api=1&query=$latSmall, $lngBig" target="_blank">' +
+                      '    <span class="title">$here</span>' +
+                      '  </a>' +
+                      '</div>';
+
+                  var position = new kakao.maps.LatLng($latSmall, $lngBig);
+
+                  var customOverlay = new kakao.maps.CustomOverlay({
+                      map: map,
+                      position: position,
+                      content: content,
+                      yAnchor: 1
+                  });
+                  ''',
               markerImageURL:
-                  'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-              onTapMarker: (message) async {
-                await _openKakaoMapScreen(context);
-              }),
+                  'https://file.notion.so/f/s/800f9740-abf9-45b9-82dd-ba3d7fbbd6f3/pillMarker.png?id=0fe7fb77-cb71-43ad-adde-8588fbac2209&table=block&spaceId=1b86ba39-dd32-4ba3-9a75-9d2fee15b543&expirationTimestamp=1680535155383&signature=d--01m9CIunB_B6Owy7EWFQtHdAcFaUespdJmQ33pk0&downloadName=pillMarker.png',
+          ),
+          Row(
+            children: [
+              const Icon(Icons.title_rounded),
+              Text(here)
+            ],
+          ),
+          Row(
+            children: [
+              const Icon(Icons.map_rounded),
+              Text(addr)
+            ],
+          ),
+          Row(
+            children: [
+              const Icon(Icons.phone),
+              Text(telno)
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Future<void> _openKakaoMapScreen(BuildContext context) async {
-    KakaoMapUtil util = KakaoMapUtil();
-    String url = await util.getMapScreenURL(latSmall, lngBig, name: '약국');
-    print('urlurlurlurlurlurlurlurlurlurlurlurlurlurlurl: $url');
-    print("@@@@@");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => KakaoMapScreen(url: url)));
-  }
 }

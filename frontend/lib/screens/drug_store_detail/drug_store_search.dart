@@ -12,7 +12,7 @@ class DrugStoreSearch extends StatelessWidget {
     final Future drugstores = ApiDrugStoreKeyword.getDrugStore(keyword);
 
     return Scaffold(
-        appBar: const SimpleAppBar(title: "약국 찾기"),
+        appBar: SimpleAppBar(title: "약국 찾기: $keyword"),
         body: FutureBuilder(
             future: drugstores,
             builder: (context, snapshot) {
@@ -30,13 +30,13 @@ class DrugStoreSearch extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Flexible(
-            flex: 2,
-            child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 10),
-                child: Text("총 ${snapshot.data!.length} 건의 검색결과가 있습니다."))),
-        Flexible(
-          flex: 25,
+        Container(
+            margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 10),
+            child: Text(
+              "총 ${snapshot.data!.length} 건의 검색결과가 있습니다.",
+              style: const TextStyle(fontSize: 20),
+            )),
+        Expanded(
           child: ListView.separated(
             itemCount: snapshot.data!.length,
             separatorBuilder: (context, index) => const SizedBox(
@@ -87,6 +87,9 @@ class DrugStoreSearch extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DrugStoreDetail(
+                                  addr: drugstores["addr"]["\$t"],
+                                  telno: drugstores["telno"]["\$t"],
+                                  here: drugstores["yadmNm"]["\$t"],
                                   lngBig:
                                       double.parse(drugstores["XPos"]["\$t"]),
                                   latSmall:
