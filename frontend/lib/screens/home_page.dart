@@ -7,7 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:frontend/main.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,19 +23,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  void initState() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      RemoteNotification? notification = message.notification;
-      Map<String, dynamic> data = message.data;
-      print('data - ${data["title"]} - ${data["value"]}');
-
-      await cancelNotification();
-      await requestPermissions();
-      await showNotification(title: data["title"], message: data["value"]);
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
