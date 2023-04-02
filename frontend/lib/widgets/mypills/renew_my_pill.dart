@@ -9,15 +9,16 @@ class RenewMyPill extends StatelessWidget {
   final int itemSeq, dday;
   final List tag_list;
   final bool isTaken;
-  const RenewMyPill({
-    super.key,
-    required this.itemSeq,
-    required this.itemName,
-    required this.img,
-    required this.tag_list,
-    required this.dday,
-    required this.isTaken,
-  });
+  final bool? isSelected;
+  const RenewMyPill(
+      {super.key,
+      required this.itemSeq,
+      required this.itemName,
+      required this.img,
+      required this.tag_list,
+      required this.dday,
+      required this.isTaken,
+      this.isSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,8 @@ class RenewMyPill extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PillDetailsForApi(num: itemSeq.toString()),
+              builder: (context) =>
+                  PillDetailsForApi(turnOnPlus: false, num: itemSeq.toString()),
             ));
       },
       child: AspectRatio(
@@ -43,7 +45,12 @@ class RenewMyPill extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
           padding: const EdgeInsets.all(15),
           // height: 100,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: isSelected != null && isSelected == true
+                    ? Colors.green
+                    : Colors.transparent,
+                width: 2.0),
             boxShadow: [
               BoxShadow(
                   offset: Offset(1, 1), blurRadius: 2, color: Colors.black12)
@@ -58,11 +65,12 @@ class RenewMyPill extends StatelessWidget {
                 aspectRatio: 1.7 / 1,
                 child: Container(
                     clipBehavior: Clip.hardEdge,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: imgFlag
                         ? Image.asset(
-                            'assets/images/defalutPill1.png',
+                            'assets/images/defaultPill1.png',
                             fit: BoxFit.fill,
                           )
                         : Image.network(

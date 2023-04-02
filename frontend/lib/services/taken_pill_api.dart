@@ -22,9 +22,6 @@ class TakenPillApi {
     final response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: token,
     });
-    print(response.statusCode);
-    print(response.body);
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     if (response.statusCode == 200) {
       final pills = jsonDecode(utf8.decode(response.bodyBytes));
       for (var pill in pills["data"]) {

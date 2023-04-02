@@ -44,6 +44,11 @@ class AlarmPillController extends GetxController {
     update();
   }
 
+  void setTempList() {
+    tempList = selectedList.map((pill) => pill["medicineSeq"]).toList();
+    update();
+  }
+
   // 내 약 선택 페이지용 선택 메서드
   void selectTemp(seq) {
     bool isInTempList = tempList.contains(seq);
@@ -60,6 +65,8 @@ class AlarmPillController extends GetxController {
   void add(seq, img, tagList, title) {
     selectedList.add({"medicineSeq": seq, "count": 1});
     displayList.add({
+      "itemName": title,
+      "itemSeq": seq,
       "medicineSeq": seq,
       "count": 1,
       "title": title,
@@ -130,47 +137,75 @@ class AlarmPillController extends GetxController {
   // .pop() 하면 다 초기화
   void clear() {
     Map registerMap = {"title": null, "time": null, "mdicineList": []};
-    List selectedList = [];
+    selectedList = [];
 
-    List displayList = [];
+    displayList = [];
 
-    List tempList = []; // [1, 2, 3,]
+    tempList = []; // [1, 2, 3,]
 
-    List myPillList = [];
+    myPillList = [];
+    tagList = []; // tag 목록 다 가져오기
+    selectedTagList = [];
+    update();
   }
 
   // 여기부터는 태그 picker 용
   // 태그를 선택하면, 태그 리스트를 묶어서 보낸다
   // 결과가 돌아오면, 해당 결과를 토대로 selectedList와 displayList에 추가
   // 태그 선택은 중복 안되도록 하기
-  List tagList = [];
-  List displayTagList = []; // tag 목록 다 가져오기
+  List tagList = []; // tag 목록 다 가져오기
+  List selectedTagList = [];
+
+  // tag목록 다 가져오기
   Future getTagList() async {
     try {
       var response = await ApiTag.getTagList();
       tagList = response.data["data"];
       print(tagList);
+      update();
+      return tagList;
     } catch (e) {
       print(e);
     }
-    update();
   }
 
+  // 태그로 약 검색 ["태그명", "태그명"]
   Future getPillsFromTag(data) async {
+    List tagNames = data.map((tag) => tag['name']).toList();
     try {
-      var response = await ApiTag.getPillsFromTag(data);
-      print(response);
+      var response = await ApiTag.getPillsFromTag(tagNames);
+      return response.data["data"];
     } catch (e) {
       print(e);
     }
     update();
   }
 
-  void updateTagList(tagSeq, name, color) {
-    if (tagList.any((tag) => tag["name"] == name)) {
-      tagList.removeWhere((tag) => tag["name"] == name);
+  // 태그명 display
+  void updateTagList(tagSeq, name, color) async {
+    if (selectedTagList.any((tag) => tag["name"] == name)) {
+      selectedTagList.removeWhere((tag) => tag["name"] == name);
     } else {
-      tagList.add({"tagSeq": tagSeq, "name": name, "color": color});
+      selectedTagList.add({"tagSeq": tagSeq, "name": name, "color": color});
     }
+    List resultList = await getPillsFromTag(selectedTagList);
+
+    //{"medicineSeq": seq, "count": 1}
+    // add(seq, img, tagList, title)
+    for (int i = 0; i < resultList.length; i++) {
+      if (!selectedList
+          .any((pill) => pill["medicineSeq"] == resultList[i]["itemSeq"])) {
+        add(
+          resultList[i]["itemSeq"],
+          resultList[i]["img"],
+          resultList[i]["tagList"],
+          resultList[i]["itemName"],
+        );
+        selectTemp(resultList[i]["itemSeq"]);
+        submitTemp();
+      }
+    }
+    print(displayList);
+    update();
   }
 }

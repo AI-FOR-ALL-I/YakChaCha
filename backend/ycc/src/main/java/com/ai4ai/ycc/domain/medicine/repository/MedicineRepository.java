@@ -13,7 +13,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     @EntityGraph(attributePaths = "detail")
     Medicine findByItemSeq(long itemSeq);
 
-    List<Medicine> findAllByEdiCodeLike(String s);
+    Medicine findTop1ByEdiCodeLike(String s);
 
     List<Medicine> findAllByItemSeqIn(List<Long> medicineList);
 }

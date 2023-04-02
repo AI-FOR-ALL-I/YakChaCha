@@ -23,7 +23,6 @@ class ApiSearch {
 
   // 여기가 사진으로 검색
   static Future<Response> imgSearch(data) async {
-    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     return dio.post(ApiConstants.imgSearch,
         data: data,
         options: Options(headers: {'Authorization': ApiConstants.TOKEN}));
@@ -31,17 +30,24 @@ class ApiSearch {
 
   // 여기가 사진으로 검색 후 약 디테일 받아오는 dio
   static Future<Response> imgSearchFinal(List data) async {
-    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     return dio.get(ApiConstants.search,
         queryParameters: {'type': 'img', 'query': data},
         options: Options(headers: {'Authorization': ApiConstants.TOKEN}));
   }
 
+  // 처방전으로 검색
+  static Future<Response> ocrSearch(data) async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    return dio.post(ApiConstants.ocrSearch,
+        data: data,
+        options: Options(headers: {'Authorization': ApiConstants.TOKEN}));
+  }
+
   // OCR 마지막
-  static Future<Response> paperSearchFinal(List data) async {
+  static Future<Response> ocrSearchFinal(List data) async {
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     return dio.get(ApiConstants.search,
-        queryParameters: {'type': 'papaer', 'query': data},
+        queryParameters: {'type': 'paper', 'query': data},
         options: Options(headers: {'Authorization': ApiConstants.TOKEN}));
   }
 }

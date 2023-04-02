@@ -877,6 +877,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.2"
+  xml2json:
+    dependency: "direct main"
+    description:
+      name: xml2json
+      sha256: c8cb35b83cce879c2ea86951fd257f4e765b0030a0298b35cf94f2b3d0f32095
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.6"
 sdks:
   dart: ">=2.19.3 <3.0.0"
   flutter: ">=3.3.0"

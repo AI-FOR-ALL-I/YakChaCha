@@ -21,14 +21,13 @@ class AlarmCreatePage extends StatefulWidget {
 }
 
 class _AlarmCreatePageState extends State<AlarmCreatePage> {
-  var selectedPillsList = [1, 2, 3, 4, 5];
-
   AlarmPillController controller = Get.put(AlarmPillController());
+
   @override
   void dispose() {
     super.dispose();
     controller.clear();
-    print('here');
+    print('here!!!!');
   }
 
   DateTime _time = DateTime.now();
@@ -70,6 +69,7 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                     aspectRatio: 296 / 101,
                     child: GestureDetector(
                       onTap: () {
+                        controller.setTempList();
                         Navigator.push(
                             context,
                             MaterialPageRoute(

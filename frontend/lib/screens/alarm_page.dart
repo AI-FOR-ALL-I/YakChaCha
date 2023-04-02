@@ -12,11 +12,16 @@ class AlarmPage extends StatefulWidget {
 }
 
 class _AlarmPageState extends State<AlarmPage> {
+  getAlarmList() async {
+    var controller = Get.put(AlarmController());
+    // List alarms = await controller.getAlarmList(); // 원래거
+    List alarms = await controller.getAlarmList() ?? [];
+  }
+
   @override // 알람 목록 받아오기
   void initState() {
     super.initState();
-    var controller = Get.put(AlarmController());
-    controller.getAlarmList();
+    getAlarmList();
   }
 
   @override
@@ -32,32 +37,34 @@ class _AlarmPageState extends State<AlarmPage> {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        body: Container(
-          child: Stack(
-            children: [
-              ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, i) {
-                    return CustomAlarmWidget(status: 3);
-                  }),
-              Positioned(
-                bottom: 40,
-                right: 40,
-                child: FloatingActionButton(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AlarmCreatePage(
-                                    isCreate: true,
-                                  )));
-                    },
-                    child: Text('+', style: TextStyle(color: Colors.white))),
-              )
-            ],
-          ),
-        ),
+        body: GetBuilder<AlarmController>(builder: (controller) {
+          return Container(
+            child: Stack(
+              children: [
+                ListView.builder(
+                    itemCount: controller.alarmList.length,
+                    itemBuilder: (context, i) {
+                      return CustomAlarmWidget(data: controller.alarmList[i]);
+                    }),
+                Positioned(
+                  bottom: 40,
+                  right: 40,
+                  child: FloatingActionButton(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AlarmCreatePage(
+                                      isCreate: true,
+                                    )));
+                      },
+                      child: Text('+', style: TextStyle(color: Colors.white))),
+                )
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:frontend/controller/alarm_pill_controller.dart';
+import 'package:frontend/controller/alarm_controller.dart';
 import 'package:frontend/screens/drug_history_page.dart';
 import 'dart:async';
 
-class BottomConfirmWidget extends StatelessWidget {
+class BottomConfirmWidget extends StatefulWidget {
   final bool isAlarm;
   final List? tempList;
   final Function? registerFinal;
@@ -22,8 +23,15 @@ class BottomConfirmWidget extends StatelessWidget {
   : super(key: key);
 
   @override
+  State<BottomConfirmWidget> createState() => _BottomConfirmWidgetState();
+}
+
+class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
+  @override
   Widget build(BuildContext context) {
     Get.put(AlarmPillController());
+    // Get.put(AlarmController());
+
     return GetBuilder<AlarmPillController>(builder: (controller) {
       return Container(
         height: MediaQuery.of(context).size.height * 0.15,
@@ -37,10 +45,13 @@ class BottomConfirmWidget extends StatelessWidget {
               Colors.white.withOpacity(0.75),
               Colors.white.withOpacity(1),
             ])),
-        child: isAlarm // 여기가 알람 등록 페이지
+        child: widget.isAlarm // 여기가 알람 등록 페이지
             ? GestureDetector(
                 onTap: () async {
                   bool result = await controller.dioRequest();
+                  AlarmController alarmController = Get.put(AlarmController());
+                  alarmController.getAlarmList();
+
                   if (result) {
                     showDialog(
                       context: context,
@@ -74,7 +85,7 @@ class BottomConfirmWidget extends StatelessWidget {
                   ],
                 ),
               )
-            : isAlarmMyPill // 여기가 복약 목록 선택
+            : widget.isAlarmMyPill // 여기가 복약 목록 선택
                 ? GestureDetector(
                     onTap: () {
                       controller.submitTemp();
@@ -97,9 +108,9 @@ class BottomConfirmWidget extends StatelessWidget {
                     children: [
                         GestureDetector(
                           onTap: () async {
-                            if (confirm != null) {
-                              var temp = await confirm!();
-                              if (temp) {
+                            if (widget.confirm != null) {
+                              var temp = await widget.confirm!();
+                              if (temp != null && temp) {
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,

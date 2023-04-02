@@ -11,7 +11,7 @@ class TagWidget extends StatelessWidget {
     1: Color(0xffb7d1e5),
     2: Color(0xffbbe4cb),
     3: Color(0xffffe6b2),
-    4: Color(0x00000000)
+    4: Color(0xff434E71)
   };
   @override
   Widget build(BuildContext context) {
