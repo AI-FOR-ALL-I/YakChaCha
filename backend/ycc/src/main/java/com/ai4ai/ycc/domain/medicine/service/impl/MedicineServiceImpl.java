@@ -119,7 +119,7 @@ public class MedicineServiceImpl implements MedicineService {
             case "paper":
                 for(String tempInput: input){
                     Medicine medicine = medicineRepository.findTop1ByEdiCodeLike("%"+tempInput+"%");
-                    medicineList.add(medicine);
+                    if(medicine !=null)              medicineList.add(medicine);
                 }
                 break;
             case "img":
