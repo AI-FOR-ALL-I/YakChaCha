@@ -2,12 +2,18 @@ package com.ai4ai.ycc.domain.account.service.impl;
 
 import com.ai4ai.ycc.config.security.JwtTokenProvider;
 import com.ai4ai.ycc.domain.account.dto.request.SignInRequestDto;
+import com.ai4ai.ycc.domain.account.dto.response.RefreshResponseDto;
 import com.ai4ai.ycc.domain.account.dto.response.SignInResponseDto;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
 import com.ai4ai.ycc.domain.account.service.AccountService;
 import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+
+import com.ai4ai.ycc.error.code.TokenErrorCode;
+import com.ai4ai.ycc.error.exception.ErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -82,5 +88,29 @@ public class AccountServiceImpl implements AccountService {
         account.withdraw();
         accountRepository.save(account);
         log.info("[Withdrawl] 회원탈퇴 완료");
+    }
+
+    @Override
+    public RefreshResponseDto refresh(Account account, HttpServletRequest request) {
+        String token = jwtTokenProvider.resolveToken(request);
+
+        if (!token.equals(account.getRefreshToken())) {
+            throw new ErrorException(TokenErrorCode.TOKEN_NOT_MATCH);
+        }
+
+        String id = account.getId();
+
+        log.info("[SignIn] 토큰 생성 시작");
+        String accessToken = jwtTokenProvider.createAccessToken(id);
+        String refreshToken = jwtTokenProvider.createRefreshToken(id);
+        log.info("[SignIn] 토큰 생성 완료");
+
+        account.refresh(refreshToken);
+        accountRepository.save(account);
+
+        return RefreshResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 }

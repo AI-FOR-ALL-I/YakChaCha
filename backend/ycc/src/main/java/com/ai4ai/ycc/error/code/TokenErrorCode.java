@@ -14,7 +14,7 @@ public enum TokenErrorCode implements ErrorCode {
     EXPIRED_TOKEN("TK_003", "만료된 토큰입니다.", HttpStatus.UNAUTHORIZED),
     UNSUPPORTED_TOKEN("TK_004", "지원하지 않는 토큰입니다.", HttpStatus.UNAUTHORIZED),
     ACCESS_DENIED("TK_005", "접근이 거부되었습니다.", HttpStatus.UNAUTHORIZED),
-    ;
+    TOKEN_NOT_MATCH("TK_006", "리프레시 토큰이 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final String message;
