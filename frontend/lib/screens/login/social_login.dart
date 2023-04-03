@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/bottom_navigation.dart';
 import 'package:frontend/controller/auth_controller.dart';
 import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/screens/profile/create_profile_page.dart';
@@ -71,21 +70,11 @@ class SocialLogin extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: GestureDetector(
-                      onTap: () async {
-                        // do something on
-                        // MARK: - 임시로 홈화면으로 이동해주는 버튼으로 설정
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BottomNavigation(where: 0,)),
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/sampletips.jpg',
-                        width: 100.0,
-                        height: 100.0,
-                      )),
+                  child: Image.asset(
+                    'assets/images/profile1.png',
+                    width: 100.0,
+                    height: 100.0,
+                  ),
                 ),
               ],
             ),

@@ -40,7 +40,8 @@ class ApiConstants {
   // R 요청확인 GET ???
   static const String getRequest = '$baseurl/$links/$sender/{senderAccountSeq}';
   // R 요청 수락 PUT
-  static const String acceptRequest = '$baseurl/$links/{senderAccountSeq}';
+  static const String acceptRequest =
+      '$baseurl/$links/$sender/{senderAccountSeq}';
   // R 인증번호 보기 GET
   static const String getAuthNumber =
       '$baseurl/$links/$sender/{senderAccountSeq}';
