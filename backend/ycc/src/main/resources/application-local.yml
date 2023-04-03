@@ -22,7 +22,7 @@ spring:
 
 logging:
   file:
-    name: log-local.log
+    name: logs/log-local.log
   level:
     org.hibernate:
       type.type.descriptor.sql: trace
