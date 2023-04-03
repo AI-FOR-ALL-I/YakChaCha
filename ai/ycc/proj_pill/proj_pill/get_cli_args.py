@@ -24,7 +24,7 @@ def get_cli_args(job='resnet152', run_phase = 'train', aug_level=0, dataclass='0
     if os.name == 'posix':
         dir_solution_home = r'./proj_pill'
         BATCH_SIZE = 2
-        num_workers = 2
+        num_workers = 4
         num_threads = 1
         dist_backend = 'gloo'
         if job == 'resnet152':

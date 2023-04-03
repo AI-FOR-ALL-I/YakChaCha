@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:frontend/controller/my_pill_controller.dart';
 import 'package:frontend/models/my_pill_model.dart';
 import 'package:frontend/screens/myPills/my_pill_delete.dart';
 import 'package:frontend/services/my_pill_api.dart';
 import 'package:frontend/services/taken_pill_api.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
+import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
 class DrugHistoryPage extends StatefulWidget {
   const DrugHistoryPage({Key? key}) : super(key: key);
@@ -16,7 +19,7 @@ class DrugHistoryPage extends StatefulWidget {
 
 class _DrugHistoryPageState extends State<DrugHistoryPage> {
   bool isClicked = true;
-
+  final MyPillController myPillController = Get.put(MyPillController());
   void onClickLeft() {
     setState(() {
       isClicked = true;
@@ -40,59 +43,66 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
         // 맨위 탭,  할것: 이너쉐도우 넣어야함 - 초고난이도
         Flexible(
           flex: 2,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
             children: [
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: onClickLeft,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: onClickLeft,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              color: isClicked
+                                  ? Color.fromARGB(255, 187, 228, 203)
+                                  : Color.fromARGB(255, 225, 225, 225)),
+                          child: Text(
+                            "복용중",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: isClicked ? Colors.black : Colors.white,
+                            ),
+                          ),
                         ),
-                        color: isClicked
-                            ? Color.fromARGB(255, 187, 228, 203)
-                            : Color.fromARGB(255, 225, 225, 225)),
-                    child: Text(
-                      "복용중",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: isClicked ? Colors.black : Colors.white,
                       ),
                     ),
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: onClickRight,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: onClickRight,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              ),
+                              color: !isClicked
+                                  ? Color.fromARGB(255, 187, 228, 203)
+                                  : Color.fromARGB(255, 225, 225, 225)),
+                          child: Text(
+                            "복용끝",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: !isClicked ? Colors.black : Colors.white,
+                            ),
+                          ),
                         ),
-                        color: !isClicked
-                            ? Color.fromARGB(255, 187, 228, 203)
-                            : Color.fromARGB(255, 225, 225, 225)),
-                    child: Text(
-                      "복용끝",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: !isClicked ? Colors.black : Colors.white,
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
+              
             ],
           ),
         ),
@@ -154,7 +164,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyPillDelete()));
+                              builder: (context) => MyPillDelete(myPillController: myPillController,)));
                     },
                     icon: Icon(Icons.settings))
               ],
@@ -247,7 +257,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyPillDelete()));
+                                    builder: (context) => MyPillDelete(myPillController: myPillController,)));
                           },
                           icon: Icon(Icons.settings))
                     ],

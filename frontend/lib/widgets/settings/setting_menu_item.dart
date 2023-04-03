@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/profile/connected_profile_page.dart';
+import 'package:frontend/screens/profile/modify_profile_page.dart';
 
 class SettingMenuItem extends StatelessWidget {
   final IconData iconName;
@@ -27,6 +28,13 @@ class SettingMenuItem extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            if (cases == 0) {
+              // TODO: 프로필 수정 페이지로 이동
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ModifyProfilePage()));
+            }
             if (cases == 2) {
               Navigator.push(
                   context,

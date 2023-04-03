@@ -27,16 +27,23 @@ class SocialLogin extends StatelessWidget {
         // 요청 성공!
         Map<String, dynamic> responseData = response.data;
         String accessToken = responseData['data']['accessToken'];
-        print('액세스토큰 로그인할때$accessToken');
         String refreshToken = responseData['data']['refreshToken'];
-        authController.saveTokens(accessToken, refreshToken);
+        // print('로그인결과$accessToken // $refreshToken');
+        // authController.saveTokens(accessToken, refreshToken);
         if (responseData['data']['profile'] == true) {
-          // navigate to ProfileSelectPage
+          authController.saveTokens(accessToken, refreshToken);
+          // String savedAccessToken = authController.accessToken;
+          // String savedRefreshToken = authController.refreshToken;
+          // print('저장된토큰재재확인$savedAccessToken // $savedRefreshToken');
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const SelectProfilePage()));
         } else {
+          authController.saveTokens(accessToken, refreshToken);
+          // String savedAccessToken = authController.accessToken;
+          // String savedRefreshToken = authController.refreshToken;
+          // print('저장된토큰재재확인$savedAccessToken // $savedRefreshToken');
           // navigate to CreateProfilePage
           Navigator.push(
               context,

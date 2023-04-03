@@ -74,4 +74,47 @@ class ApiProfiles {
           },
         ));
   }
+
+  // sender측 이메일 확인 post
+  static Future<Response> sendRequest(String? email) async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    final data = {'email': email};
+    return dio.post(ApiConstants.sendRequest,
+        data: data,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
+
+  // 프로필 수정 PUT
+  static Future<Response> modifyProfile(
+      int profileLinkSeq,
+      String name,
+      String gender,
+      bool pregnancy,
+      String birthDate,
+      String nickname,
+      int imgCode) async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    final data = {
+      'name': name,
+      'gender': gender,
+      'pregnancy': pregnancy,
+      'birthDate': birthDate,
+      'nickname': nickname,
+      'imgCode': imgCode,
+    };
+
+    final path = ApiConstants.modifyProfile
+        .replaceAll('{profileLinkSeq}', profileLinkSeq.toString());
+    return dio.put(path,
+        data: data,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
 }
