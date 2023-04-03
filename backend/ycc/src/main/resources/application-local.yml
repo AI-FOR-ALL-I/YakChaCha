@@ -21,9 +21,13 @@ spring:
         use_sql_comments: true
 
 logging:
+  file:
+    name: logs/log-local.log
   level:
     org.hibernate:
       type.type.descriptor.sql: trace
+    root: info
+
 
 jwt:
   header: Authorization
