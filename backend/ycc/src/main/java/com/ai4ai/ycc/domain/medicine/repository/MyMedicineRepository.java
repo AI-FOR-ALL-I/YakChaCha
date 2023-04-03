@@ -1,6 +1,9 @@
 package com.ai4ai.ycc.domain.medicine.repository;
 
 import java.util.List;
+import java.util.Optional;
+
+import com.ai4ai.ycc.domain.medicine.entity.Medicine;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
@@ -12,4 +15,6 @@ public interface MyMedicineRepository extends JpaRepository<MyMedicine, Long> {
     MyMedicine findByMyMedicineSeq(long myMedicineSeq);
 
 	List<MyMedicine> findAllByDelYnAndFinish(String deleted, String finish);
+
+    Optional<MyMedicine> findByMedicineAndDelYn(Medicine medicine, String delYn);
 }

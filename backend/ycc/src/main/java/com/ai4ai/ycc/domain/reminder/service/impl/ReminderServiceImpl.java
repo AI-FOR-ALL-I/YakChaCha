@@ -1,5 +1,13 @@
 package com.ai4ai.ycc.domain.reminder.service.impl;
 
+import com.ai4ai.ycc.domain.account.entity.Account;
+import com.ai4ai.ycc.domain.medicine.entity.Medicine;
+import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
+import com.ai4ai.ycc.domain.medicine.entity.MyMedicineHasTag;
+import com.ai4ai.ycc.domain.medicine.entity.Tag;
+import com.ai4ai.ycc.domain.medicine.repository.MedicineRepository;
+import com.ai4ai.ycc.domain.medicine.repository.MyMedicineHasTagRepository;
+import com.ai4ai.ycc.domain.medicine.repository.MyMedicineRepository;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
@@ -16,9 +24,11 @@ import com.ai4ai.ycc.domain.reminder.repository.ReminderMedicineRepository;
 import com.ai4ai.ycc.domain.reminder.repository.ReminderRepository;
 import com.ai4ai.ycc.domain.reminder.repository.TakenRecordRepository;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
+import com.ai4ai.ycc.error.code.ProfileLinkErrorCode;
 import com.ai4ai.ycc.error.code.ReminderErrorCode;
 import com.ai4ai.ycc.error.exception.ErrorException;
 import com.ai4ai.ycc.util.DateUtil;
+import com.ai4ai.ycc.util.FcmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +49,10 @@ public class ReminderServiceImpl implements ReminderService {
     private final ReminderMedicineRepository reminderMedicineRepository;
     private final ProfileLinkRepository profileLinkRepository;
     private final TakenRecordRepository takenRecordRepository;
+    private final MedicineRepository medicineRepository;
+    private final MyMedicineRepository myMedicineRepository;
+    private final MyMedicineHasTagRepository myMedicineHasTagRepository;
+    private final FcmUtil fcmUtil;
 
     @Override
     public void createReminder(Profile profile, CreateReminderRequestDto requestDto) {
@@ -136,11 +150,36 @@ public class ReminderServiceImpl implements ReminderService {
 
         for (ReminderMedicine reminderMedicine : reminderMedicineList) {
             long medicineSeq = reminderMedicine.getMedicineSeq();
-            String img = "";
-            String name = "";
+            Medicine medicine = medicineRepository.findByItemSeq(medicineSeq);
+
+            if (medicine == null) {
+                log.info("NOT FOUND MEDICINE");
+                continue;
+            }
+            String img = medicine.getImg() == null ? "" : medicine.getImg();
+            String name = medicine.getItemName();
             int count = reminderMedicine.getCount();
 
-            result.addMedicine(medicineSeq, img, name, count);
+            List<ReminderDetailResponseDto.Tag> tags = new ArrayList<>();
+
+            MyMedicine myMedicine = myMedicineRepository.findByMedicineAndDelYn(medicine, "N")
+                    .orElse(null);
+
+            if (myMedicine == null) {
+                log.info("NOT FOUND MY MEDICINE");
+                continue;
+            }
+
+            List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findAllByDelYnAndMyMedicine("N", myMedicine);
+            for (MyMedicineHasTag myMedicineHasTag : myMedicineHasTagList) {
+                Tag tag =myMedicineHasTag.getTag();
+                tags.add(ReminderDetailResponseDto.Tag.builder()
+                                .name(tag.getName())
+                                .color(tag.getColor())
+                        .build());
+            }
+
+            result.addMedicine(medicineSeq, img, name, tags, count);
         }
 
         return result;
@@ -293,6 +332,9 @@ public class ReminderServiceImpl implements ReminderService {
         List<ProfileLink> result = new ArrayList<>();
 
         for (Reminder reminder : reminderList) {
+            if (reminder.isTaken()) {
+                continue;
+            }
             Profile profile = reminder.getProfile();
             result.addAll(profileLinkRepository.findAllByProfileAndDelYn(profile, "N"));
         }
@@ -300,5 +342,15 @@ public class ReminderServiceImpl implements ReminderService {
         return result;
     }
 
+    @Override
+    public void test(Account account) {
+        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountAndDelYn(account, "N");
+        if (profileLinkList.isEmpty()) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK);
+        }
+
+        ProfileLink profileLink = profileLinkList.get(0);
+        fcmUtil.sendReminder(profileLink);
+    }
 
 }

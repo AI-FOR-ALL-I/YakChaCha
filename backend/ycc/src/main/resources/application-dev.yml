@@ -22,8 +22,16 @@ spring:
 
 logging:
   level:
+    root: info
     org.hibernate:
       type.type.descriptor.sql: trace
+  file:
+    name: logs/dev.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1MB
+      max-history: 30
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
 
 jwt:
   header: Authorization

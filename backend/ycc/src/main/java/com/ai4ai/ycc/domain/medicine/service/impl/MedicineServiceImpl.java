@@ -135,7 +135,7 @@ public class MedicineServiceImpl implements MedicineService {
             case "paper":
                 for(String tempInput: input){
                     Medicine medicine = medicineRepository.findTop1ByEdiCodeLike("%"+tempInput+"%");
-                    if(medicine !=null)              medicineList.add(medicine);
+                    if(medicine !=null) medicineList.add(medicine);
                 }
                 break;
             case "img":
@@ -227,16 +227,20 @@ public class MedicineServiceImpl implements MedicineService {
             boolean pregnantWarn = false;
             boolean youngWarn = false;
             boolean oldWarn = false;
-            long dDay = ChronoUnit.DAYS.between(now, myMedicine.getEndDate());
-
+            LocalDate startDate = myMedicine.getStartDate();
+            LocalDate endDate = myMedicine.getEndDate();
+            long dDay = ChronoUnit.DAYS.between(now, endDate);
+            List<String> takingPeriod = new ArrayList<>();
+            takingPeriod.add(startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            takingPeriod.add(endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             Medicine medicine = myMedicine.getMedicine();
             List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findByMyMedicineAndDelYn(myMedicine,"N");
-            List<List> tagList = new ArrayList<>();
+            List<TagDto> tagList = new ArrayList<>();
             for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
-                List<String> tag = new ArrayList<>();
-                tag.add(myMedicineHasTag.getTag().getName());
-                tag.add(Long.toString(myMedicineHasTag.getTag().getColor()));
-                tagList.add(tag);
+                tagList.add(TagDto.builder()
+                        .tagColor(myMedicineHasTag.getTag().getColor())
+                        .tagName(myMedicineHasTag.getTag().getName())
+                    .build());
             }
 
             if(pregnant && medicine.getTypeCode().contains("임")){
@@ -259,6 +263,7 @@ public class MedicineServiceImpl implements MedicineService {
                 .warnPregnant(pregnantWarn)
                 .dDay((int)dDay)
                 .tagList(tagList)
+                .period(takingPeriod)
                 .typeCode(medicine.getTypeCode())
                 .build());
         }
@@ -272,8 +277,8 @@ public class MedicineServiceImpl implements MedicineService {
         for(Tag tag: tags){
             output.add(TagDto.builder()
                     .tagSeq(tag.getTagSeq())
-                    .color(tag.getColor())
-                    .name(tag.getName())
+                    .tagColor(tag.getColor())
+                    .tagName(tag.getName())
                 .build());
         }
         return output;
@@ -283,19 +288,19 @@ public class MedicineServiceImpl implements MedicineService {
     public List<MedicineByTagDto> searchByTags(Profile profile, List<String> tagList) {
         List<MyMedicineHasTag> myMedicineHasTagList=myMedicineHasTagRepository.findAllByDelYnAndTag_NameIn(tagList,
             profile.getProfileSeq());
-        HashMap<MyMedicine, List<List<String>>> myMedicineListHashMap = new HashMap<>();
+        HashMap<MyMedicine, List<TagDto>> myMedicineListHashMap = new HashMap<>();
         for(MyMedicineHasTag myMedicineHasTag : myMedicineHasTagList){
             MyMedicine myMedicine =myMedicineHasTag.getMyMedicine();
             if(myMedicineListHashMap.containsKey(myMedicine)) {
                 continue;
             }
             List<MyMedicineHasTag> tempMyMedicineHasTags = myMedicineHasTagRepository.findAllByDelYnAndMyMedicine("N",myMedicine);
-            List<List<String>> tags = new ArrayList<>();
+            List<TagDto> tags = new ArrayList<>();
             for(MyMedicineHasTag tempMyMedicineHasTag: tempMyMedicineHasTags){
-                List<String> tag = new ArrayList<>();
-                tag.add(tempMyMedicineHasTag.getTag().getName());
-                tag.add(Integer.toString(tempMyMedicineHasTag.getTag().getColor()));
-                tags.add(tag);
+                tags.add(TagDto.builder()
+                        .tagColor(tempMyMedicineHasTag.getTag().getColor())
+                        .tagName(tempMyMedicineHasTag.getTag().getName())
+                    .build());
             }
 
             myMedicineListHashMap.put(myMedicine,tags);
@@ -377,7 +382,7 @@ public class MedicineServiceImpl implements MedicineService {
         List<String> collideList = new ArrayList<>();
         List<String> startDate=new ArrayList<>();
         List<String> endDate=new ArrayList<>();
-        List<List<String>> tagList = new ArrayList<>();
+        List<TagDto> tagList = new ArrayList<>();
 
 
         String edi = medicine.getEdiCode();
@@ -393,10 +398,10 @@ public class MedicineServiceImpl implements MedicineService {
                 List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findByMyMedicineAndDelYn(myMedicine,"N");
 
                 for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
-                    List<String> tag = new ArrayList<>();
-                    tag.add(myMedicineHasTag.getTag().getName());
-                    tag.add(Long.toString(myMedicineHasTag.getTag().getColor()));
-                    tagList.add(tag);
+                    tagList.add(TagDto.builder()
+                            .tagName(myMedicineHasTag.getTag().getName())
+                            .tagColor(myMedicineHasTag.getTag().getColor())
+                        .build());
                 }
             }
             if(edi.length()>8){

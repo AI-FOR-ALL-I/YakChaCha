@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends GetxController {
-  final _profileLinkSeq = 0.obs;
+  final RxInt _profileLinkSeq = 0.obs;
 
   int get profileLinkSeq => _profileLinkSeq.value;
 

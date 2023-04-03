@@ -143,7 +143,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                                 itemName: pill["name"],
                                 img: pill["img"],
                                 // tag_list: pill["tagList"],
-                                tag_list: const [],
+                                tag_list: pill["tags"],
                                 isTaken: false,
                                 // dday: pill.dday,
                                 dday: 3,

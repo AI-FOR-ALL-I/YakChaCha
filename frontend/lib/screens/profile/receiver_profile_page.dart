@@ -3,7 +3,9 @@ import 'package:frontend/screens/profile/receiver_number_page.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 
 class ReceiverProfilePage extends StatefulWidget {
-  const ReceiverProfilePage({super.key});
+  final int? senderAccountSeq; // 푸시알림에서 온 내용
+  const ReceiverProfilePage({Key? key, this.senderAccountSeq})
+      : super(key: key);
 
   @override
   State<ReceiverProfilePage> createState() => _ReceiverProfilePageState();

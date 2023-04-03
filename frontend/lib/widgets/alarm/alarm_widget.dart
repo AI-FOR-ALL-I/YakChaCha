@@ -50,7 +50,9 @@ class CustomAlarmWidget extends StatelessWidget {
                           Container(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10.0),
-                              child: Text(data["title"]),
+                              child: data["title"] != null
+                                  ? Text(data["title"])
+                                  : Text("약 먹을 시간!"),
                             ),
                           ),
                           Container(
