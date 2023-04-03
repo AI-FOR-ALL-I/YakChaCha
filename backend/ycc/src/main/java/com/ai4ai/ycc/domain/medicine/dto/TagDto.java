@@ -9,8 +9,8 @@ import lombok.Getter;
 public class TagDto {
 
     private long tagSeq;
-    private String name;
-    private int color;
+    private String tagName;
+    private int tagColor;
 
 
 }
