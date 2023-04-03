@@ -94,4 +94,11 @@ public class ReminderController {
                 .body(responseService.getSingleResult(result));
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<Result> test(@LoginUser Account account, @PathVariable long profileLinkSeq) {
+        reminderService.test(account);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
 }

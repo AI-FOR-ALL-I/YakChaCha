@@ -30,4 +30,6 @@ public interface ReminderService {
     void resetReminder();
 
     List<ProfileLink> getProfileLinkListAtTime(String time);
+
+    void test(Account account);
 }

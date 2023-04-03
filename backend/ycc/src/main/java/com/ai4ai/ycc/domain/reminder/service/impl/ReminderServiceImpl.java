@@ -1,5 +1,6 @@
 package com.ai4ai.ycc.domain.reminder.service.impl;
 
+import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import com.ai4ai.ycc.domain.profile.repository.ProfileLinkRepository;
@@ -16,9 +17,11 @@ import com.ai4ai.ycc.domain.reminder.repository.ReminderMedicineRepository;
 import com.ai4ai.ycc.domain.reminder.repository.ReminderRepository;
 import com.ai4ai.ycc.domain.reminder.repository.TakenRecordRepository;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
+import com.ai4ai.ycc.error.code.ProfileLinkErrorCode;
 import com.ai4ai.ycc.error.code.ReminderErrorCode;
 import com.ai4ai.ycc.error.exception.ErrorException;
 import com.ai4ai.ycc.util.DateUtil;
+import com.ai4ai.ycc.util.FcmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,7 @@ public class ReminderServiceImpl implements ReminderService {
     private final ReminderMedicineRepository reminderMedicineRepository;
     private final ProfileLinkRepository profileLinkRepository;
     private final TakenRecordRepository takenRecordRepository;
+    private final FcmUtil fcmUtil;
 
     @Override
     public void createReminder(Profile profile, CreateReminderRequestDto requestDto) {
@@ -300,5 +304,15 @@ public class ReminderServiceImpl implements ReminderService {
         return result;
     }
 
+    @Override
+    public void test(Account account) {
+        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountAndDelYn(account, "N");
+        if (profileLinkList.isEmpty()) {
+            throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK);
+        }
+
+        ProfileLink profileLink = profileLinkList.get(0);
+        fcmUtil.sendReminder(profileLink);
+    }
 
 }
