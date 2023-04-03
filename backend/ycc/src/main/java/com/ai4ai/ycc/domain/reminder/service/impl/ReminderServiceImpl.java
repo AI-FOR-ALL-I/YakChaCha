@@ -343,6 +343,31 @@ public class ReminderServiceImpl implements ReminderService {
     }
 
     @Override
+    public void removeByMyMedicine(MyMedicine myMedicine) {
+        Profile profile = myMedicine.getProfile();
+        List<Reminder> reminderList = reminderRepository.findAllByProfileAndDelYn(profile, "N");
+
+        for (Reminder reminder : reminderList) {
+            List<ReminderMedicine> reminderMedicineList = reminderMedicineRepository.findAllByReminderAndDelYn(reminder, "N");
+            int count = reminderMedicineList.size();
+
+            for (ReminderMedicine reminderMedicine : reminderMedicineList) {
+                if (reminderMedicine.getMedicineSeq() == myMedicine.getMedicine().getItemSeq()) {
+                    reminderMedicine.remove();
+                    count--;
+                    break;
+                }
+            }
+
+            if (count == 0) {
+                List<TakenRecord> takenRecords = takenRecordRepository.findAllByReminderAndDelYn(reminder, "N");
+                takenRecords.forEach(r -> r.remove());
+                reminder.remove();
+            }
+        }
+    }
+
+    @Override
     public void test(Account account) {
         List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountAndDelYn(account, "N");
         if (profileLinkList.isEmpty()) {

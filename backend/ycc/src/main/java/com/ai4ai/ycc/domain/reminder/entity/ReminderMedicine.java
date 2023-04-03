@@ -22,6 +22,7 @@ public class ReminderMedicine extends BaseEntity {
     @JoinColumn(name = "reminder_seq")
     private Reminder reminder;
 
+    // ITEM_SEQ
     @Column(nullable = false)
     private long medicineSeq;
 
