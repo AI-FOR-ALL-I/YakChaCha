@@ -6,20 +6,19 @@ import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/mypills/delete_my_pill.dart';
 import 'package:get/get.dart';
 
-
 class MyPillDelete extends StatefulWidget {
-  final MyPillController myPillController;
-  const MyPillDelete({super.key, required this.myPillController});
-
+  MyPillDelete({super.key});
   @override
   State<MyPillDelete> createState() => _MyPillDeleteState();
 }
 
 class _MyPillDeleteState extends State<MyPillDelete> {
+  final myPillController = Get.put(MyPillController());
   final Future<List<DeleteMyPillModel>> myPills = ApiAllMyPill.getMyAllPill();
-  
+  var isFlag = 0;
   @override
   Widget build(BuildContext context) {
+    int isOn = myPillController.isOn;
     return Scaffold(
       appBar: const SimpleAppBar(title: "약 삭제하기"),
       body: FutureBuilder(
@@ -28,8 +27,13 @@ class _MyPillDeleteState extends State<MyPillDelete> {
           if (snapshot.hasData) {
             return myPillList(snapshot);
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Column(
+                children: [
+                  const CircularProgressIndicator(),
+                  isOn > 0 ? const SizedBox() : const SizedBox()
+                ],
+              ),
             );
           }
         },
@@ -73,7 +77,6 @@ class _MyPillDeleteState extends State<MyPillDelete> {
         ? isEmptyPills()
         : Column(
             children: [
-              Obx(() => Text('isOn: ${widget.myPillController.isOn.value}')),
               Expanded(
                 child: ListView.separated(
                   itemCount: snapshot.data!.length,
@@ -86,7 +89,7 @@ class _MyPillDeleteState extends State<MyPillDelete> {
                       itemName: pill.itemName,
                       img: pill.img,
                       tag_list: pill.tagList,
-                      myPillController: widget.myPillController,
+                      myPillController: myPillController,
                     );
                   },
                 ),
@@ -94,5 +97,4 @@ class _MyPillDeleteState extends State<MyPillDelete> {
             ],
           );
   }
-
 }

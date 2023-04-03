@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:frontend/bottom_navigation.dart';
 import 'package:frontend/controller/my_pill_controller.dart';
 import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
 import 'package:frontend/services/api_delete_my_pill.dart';
 import 'package:frontend/widgets/common/tag_widget.dart';
-
 
 class DeleteMyPill extends StatefulWidget {
   final String itemName, img;
@@ -159,9 +159,16 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
                               ApiDeleteMyPill.getPillDetail(
                                   widget.myMedicineSeq);
 
-                              widget.myPillController.increment();
+                              widget.myPillController.increment(0);
 
                               Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                              // Navigator.of(context).popAndPushNamed(routeName);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BottomNavigation(where: 3)));
                             },
                             child: Text('삭제'),
                           ),
@@ -175,5 +182,4 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
       ),
     );
   }
-
 }

@@ -78,7 +78,7 @@ class SocialLogin extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const BottomNavigation()),
+                              builder: (context) => const BottomNavigation(where: 0,)),
                         );
                       },
                       child: Image.asset(

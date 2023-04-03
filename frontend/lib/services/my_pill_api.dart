@@ -16,21 +16,14 @@ class MyPillApi {
     // controller에 저장된 토큰 불러오는 코드
     final authController = Get.find<AuthController>();
     final token = authController.accessToken;
-    print("@@@@@@@@@@@@@@@@@@@@@@@@");
-    print('saved accessToken$token');
     final profileController = Get.find<ProfileController>();
     final queryParameters = profileController.profileLinkSeq;
-    print('queryParameters$queryParameters');
-    print("@@@@@@@@@@@@@@@@@@@@@@@@");
-
     List<MyPillModel> myPills = [];
     final url = Uri.parse("$baseUrl/$queryParameters/$taking");
     final response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
     });
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA${response.statusCode}");
     if (response.statusCode == 200) {
-      print(response.body);
       final pills = jsonDecode(utf8.decode(response.bodyBytes));
       for (var pill in pills["data"]) {
         final instance = MyPillModel.fromJson(pill);

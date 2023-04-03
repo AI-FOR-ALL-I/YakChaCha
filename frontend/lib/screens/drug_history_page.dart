@@ -8,7 +8,7 @@ import 'package:frontend/services/my_pill_api.dart';
 import 'package:frontend/services/taken_pill_api.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
+
 
 class DrugHistoryPage extends StatefulWidget {
   const DrugHistoryPage({Key? key}) : super(key: key);
@@ -19,7 +19,8 @@ class DrugHistoryPage extends StatefulWidget {
 
 class _DrugHistoryPageState extends State<DrugHistoryPage> {
   bool isClicked = true;
-  final MyPillController myPillController = Get.put(MyPillController());
+  final myPillController = Get.put(MyPillController());
+
   void onClickLeft() {
     setState(() {
       isClicked = true;
@@ -35,9 +36,9 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
   final Future<List<MyPillModel>> myPills = MyPillApi.getMyPill();
   final Future<List<MyPillModel>> takenPills = TakenPillApi.getTakenPill();
 
-  int howManyPills = 0;
   @override
   Widget build(BuildContext context) {
+    int isOn = myPillController.isOn;
     return Column(
       children: [
         // 맨위 탭,  할것: 이너쉐도우 넣어야함 - 초고난이도
@@ -102,6 +103,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                   ],
                 ),
               ),
+              isOn > 0 ? SizedBox() : SizedBox()
             ],
           ),
         ),
@@ -166,7 +168,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MyPillDelete(
-                                          myPillController: myPillController,
+                                          
                                         )));
                           },
                           icon: Icon(Icons.settings))
@@ -261,7 +263,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MyPillDelete(
-                                          myPillController: myPillController,
+                                         
                                         )));
                           },
                           icon: Icon(Icons.settings))
