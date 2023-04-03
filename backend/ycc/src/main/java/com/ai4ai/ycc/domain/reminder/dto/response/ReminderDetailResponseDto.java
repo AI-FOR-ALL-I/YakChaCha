@@ -15,7 +15,15 @@ public class ReminderDetailResponseDto {
         private long medicineSeq;
         private String img;
         private String name;
+        private List<Tag> tags;
         private int count;
+    }
+
+    @Getter
+    @Builder
+    public static class Tag {
+        private String name;
+        private int color;
     }
 
     private String title;
@@ -33,11 +41,12 @@ public class ReminderDetailResponseDto {
         this.medicineList = new ArrayList<>();
     }
 
-    public void addMedicine(long medicineSeq, String img, String name, int count) {
+    public void addMedicine(long medicineSeq, String img, String name, List<Tag> tags, int count) {
         Medicine medicine = Medicine.builder()
                 .medicineSeq(medicineSeq)
                 .img(img)
                 .name(name)
+                .tags(tags)
                 .count(count)
                 .build();
 
