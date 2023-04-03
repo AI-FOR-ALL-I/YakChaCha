@@ -84,62 +84,105 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                                   }
                                 : null,
                             child: Container(
-                              padding: const EdgeInsets.all(16.0),
-                              margin: const EdgeInsets.symmetric(vertical: 8.0),
                               decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 1,
-                                    blurRadius: 3,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        profile['nickname'],
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        child: Image.asset(
+                                          'assets/images/profile${profile['imgCode']}.png',
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.fill,
                                         ),
                                       ),
-                                      Text(
-                                        profile['status'].toString(),
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 16.0,
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                if (profile['status'] == 1)
+                                                  const Icon(
+                                                    Icons.auto_awesome,
+                                                  ),
+                                                Text(
+                                                  profile['nickname'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 5.0,
+                                                ),
+                                                Text(
+                                                  profile['name'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 4.0),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.calendar_month_rounded,
+                                                ),
+                                                const SizedBox(width: 4.0),
+                                                Text(
+                                                  profile['birthDate'],
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                if (profile['gender'] == 'M')
+                                                  const Icon(
+                                                    Icons.male_rounded,
+                                                  ),
+                                                if (profile['gender'] == 'M')
+                                                  const Text(
+                                                    '남성',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                if (profile['gender'] == 'F')
+                                                  const Icon(
+                                                      Icons.female_rounded),
+                                                if (profile['gender'] == 'F')
+                                                  const Text(
+                                                    '여성',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                              ],
+                                            )
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    profile['name'],
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.0,
                                     ),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    profile['gender'] +
-                                        ' ' +
-                                        profile['birthDate'],
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );
