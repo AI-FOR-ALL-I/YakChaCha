@@ -147,8 +147,8 @@ class PillDetailsForApi extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: pillDetail.tagList
                           .map((tagInfo) => TagWidget(
-                              tagName: tagInfo["tagName"],
-                              colorIndex: tagInfo["tagColor"]))
+                              tagName: tagInfo["name"],
+                              colorIndex: tagInfo["color"]))
                           .toList(),
                     ),
                     SizedBox(

@@ -69,10 +69,13 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                             ]),
                       ),
                       Row(
-                        children: List<Widget>.from(widget.data["tagList"].map(
-                            (tagInfo) => TagWidget(
-                                tagName: tagInfo[0] as String,
-                                colorIndex: int.parse(tagInfo[1])))),
+                        children: List<Widget>.from(
+                          widget.data["tagList"]
+                              .map((tagInfo) => TagWidget(
+                                  tagName: tagInfo["name"],
+                                  colorIndex: tagInfo["color"]))
+                              .toList(),
+                        ),
                       )
                     ],
                   )),

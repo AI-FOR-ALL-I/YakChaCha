@@ -105,8 +105,8 @@ class RenewMyPill extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: tag_list
                                     .map((tagInfo) => TagWidget(
-                                        tagName: tagInfo["tagName"],
-                                        colorIndex: tagInfo["tagColor"]))
+                                        tagName: tagInfo["name"],
+                                        colorIndex: tagInfo["color"]))
                                     .toList(),
                         ),
                       ),
