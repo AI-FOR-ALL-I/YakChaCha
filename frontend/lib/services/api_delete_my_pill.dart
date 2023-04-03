@@ -9,7 +9,7 @@ class ApiDeleteMyPill {
   static getPillDetail(myMedicineSeq) async {
     const profileNum = 5;
     const token = ApiConstants.TOKEN;
-    final url = Uri.parse("$baseUrl/$profileNum/$what/$myMedicineSeq");
+    final url = Uri.parse("$baseUrl/$profileNum/$what$myMedicineSeq");
     final response = await http.put(url, headers: {
       HttpHeaders.authorizationHeader: token,
     });
@@ -18,5 +18,5 @@ class ApiDeleteMyPill {
       return true;
     }
     throw Error();
-  }
+  } 
 }

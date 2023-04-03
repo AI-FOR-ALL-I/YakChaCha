@@ -52,6 +52,8 @@ dependencies:
     location: ^4.2.0
     material_design_icons_flutter: ^6.0.7096
     xml2json: ^5.3.6
+    rxdart: ^0.27.7
+
     
 dev_dependencies:
   flutter_lints: ^2.0.0
