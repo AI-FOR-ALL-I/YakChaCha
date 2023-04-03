@@ -297,6 +297,9 @@ public class ReminderServiceImpl implements ReminderService {
         List<ProfileLink> result = new ArrayList<>();
 
         for (Reminder reminder : reminderList) {
+            if (reminder.isTaken()) {
+                continue;
+            }
             Profile profile = reminder.getProfile();
             result.addAll(profileLinkRepository.findAllByProfileAndDelYn(profile, "N"));
         }
