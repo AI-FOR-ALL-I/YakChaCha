@@ -26,11 +26,11 @@ class ApiConstants {
       '$baseurl/$profiles/{profileLinkSeq}/medicine/my?now=true';
   // 검색
   static const String search =
-      '$baseurl/profiles/$profileLinkSeq/medicine/search';
+      '$baseurl/profiles/{profileLinkSeq}/medicine/search';
 
   // 약 등록
   static const String pillRegister =
-      '$baseurl/profiles/$profileLinkSeq/medicine/my';
+      '$baseurl/profiles/{profileLinkSeq}/medicine/my';
 
   // 프로필 연동 작업
   static const String links = 'links';
@@ -54,20 +54,20 @@ class ApiConstants {
 
   // 알람 등록
   static const String alarmRegister =
-      '$baseurl/profiles/$profileLinkSeq/reminders';
+      '$baseurl/profiles/{profileLinkSeq}/reminders';
 
   // 내 태그목록 조회
   static const String getTagList =
-      '$baseurl/profiles/$profileLinkSeq/medicine/tag';
+      '$baseurl/profiles/{profileLinkSeq}/medicine/tag';
   // 태그로 약 목록 조회
   static const String getPillsFromTag =
-      '$baseurl/profiles/$profileLinkSeq/medicine/tag/search';
+      '$baseurl/profiles/{profileLinkSeq}/medicine/tag/search';
 
   // 알람 목록 조회 + 알람 상세 조회(+ /알람 번호)
-  static const String getAlarm = '$baseurl/profiles/$profileLinkSeq/reminders';
+  static const String getAlarm = '$baseurl/profiles/{profileLinkSeq}/reminders';
 
   // 사진 검색
-  static const String imgSearch = 'https://j8a803.p.ssafy.io/run/predict';
+  static const String imgSearch = 'http://j8a803.p.ssafy.io:8090/run/predict';
   // 처방전 검색
   static const String ocrSearch =
       'http://j8a803.p.ssafy.io:8090/run/prescription';
