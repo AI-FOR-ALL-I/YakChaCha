@@ -44,6 +44,18 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
     }
   }
 
+  void sendToServer(List<int> profiles) async {
+    try {
+      dio.Response response = await ApiProfiles.selectProfileToConnect(
+          widget.senderAccountSeq!, profiles);
+      if (response.statusCode == 200) {
+        // TODO: move to 번호조회 페이지
+      }
+    } catch (e) {
+      e.printError(info: 'errors');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,6 +212,7 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                         // 서버통신진행
                         //sendDataToServer(context);
                         // 번호 확인하는 페이지로 이동
+                        sendToServer(selectedItems);
                         Navigator.push(
                             context,
                             MaterialPageRoute(

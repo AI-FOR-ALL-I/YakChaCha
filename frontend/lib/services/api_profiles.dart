@@ -103,6 +103,26 @@ class ApiProfiles {
         ));
   }
 
+  // receiver측 정보 확인 PUT
+  static Future<Response> selectProfileToConnect(
+      int senderAccountSeq, List<int> profiles) async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    final data = {
+      "profiles": profiles,
+    };
+    final path = ApiConstants.modifyProfile
+        .replaceAll('{senderAccountSeq}', senderAccountSeq.toString());
+    return dio.put(path,
+        data: data,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken'
+          },
+        ));
+  }
+
   // 프로필 수정 PUT
   static Future<Response> modifyProfile(
       int profileLinkSeq,
