@@ -74,4 +74,17 @@ class ApiProfiles {
           },
         ));
   }
+
+  // sender측 이메일 확인 post
+  static Future<Response> sendRequest(String? email) async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    final data = {'email': email};
+    return dio.post(ApiConstants.sendRequest,
+        data: data,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
 }
