@@ -14,7 +14,7 @@ class PillDetailApi {
   static Future<PillDetailModel> getPillDetail(pillNum) async {
     // controller에 저장된 토큰 불러오는 코드
     final authController = Get.find<AuthController>();
-    final token = authController.refreshToken;
+    final token = authController.accessToken;
     // print('saved accessToken$accessToken');
     final profileController = Get.find<ProfileController>();
     final queryParameters = profileController.profileLinkSeq;
@@ -24,7 +24,6 @@ class PillDetailApi {
     });
 
     if (response.statusCode == 200) {
-      print(response.body);
       final utfData = utf8.decode(response.bodyBytes);
 
       final jsonData = jsonDecode(utfData);

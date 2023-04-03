@@ -11,8 +11,7 @@ class ApiDeleteMyPill {
   static getPillDetail(myMedicineSeq) async {
     // controller에 저장된 토큰 불러오는 코드
     final authController = Get.find<AuthController>();
-    final token = authController.refreshToken;
-    // print('saved accessToken$accessToken');
+    final token = authController.accessToken;
     final profileController = Get.find<ProfileController>();
     final queryParameters = profileController.profileLinkSeq;
     final url = Uri.parse("$baseUrl/$queryParameters/$what$myMedicineSeq");

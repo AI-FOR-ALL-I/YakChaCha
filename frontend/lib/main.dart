@@ -113,7 +113,7 @@ class _MyAppState extends State<MyApp> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BottomNavigation()));
+                                  builder: (context) => BottomNavigation(where: 0,)));
                         },
                         child: Text("약 먹으러 가기"))
                   ],
@@ -137,7 +137,7 @@ class _MyAppState extends State<MyApp> {
     } else if (data["type"] == "reminder") {
       profileController.saveProfile(int.parse(data["profileLinkSeq"]));
       Navigator.push(navigatorKey.currentState!.context,
-          MaterialPageRoute(builder: (context) => BottomNavigation()));
+          MaterialPageRoute(builder: (context) => BottomNavigation(where: 0,)));
     }
   }
 
