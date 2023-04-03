@@ -27,7 +27,6 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
   void dispose() {
     super.dispose();
     controller.clear();
-    print('here!!!!');
   }
 
   DateTime _time = DateTime.now();

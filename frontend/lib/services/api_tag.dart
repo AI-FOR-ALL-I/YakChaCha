@@ -27,7 +27,7 @@ class ApiTag {
       path,
       options: Options(headers: {
         'Content-Type': 'application/json',
-        'Authorization': {'Authorization': 'Bearer $accessToken'}
+        'Authorization': 'Bearer $accessToken'
       }),
     );
   }
@@ -36,10 +36,10 @@ class ApiTag {
   static Future<Response> getPillsFromTag(List data) async {
     final path = ApiConstants.getPillsFromTag
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
-    return dio.post(ApiConstants.getPillsFromTag,
+    return dio.post(path,
         options: Options(headers: {
           'Content-Type': 'application/json',
-          'Authorization': {'Authorization': 'Bearer $accessToken'}
+          'Authorization': 'Bearer $accessToken'
         }),
         data: data);
   }

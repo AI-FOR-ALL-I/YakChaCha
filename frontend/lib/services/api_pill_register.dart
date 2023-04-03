@@ -20,12 +20,13 @@ final dio = Dio(
 
 class ApiPillRegister {
   static Future<Response> pillRegister(List data) async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     final path = ApiConstants.pillRegister
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.post(path,
         options: Options(headers: {
           'Content-Type': 'application/json',
-          'Authorization': {'Authorization': 'Bearer $accessToken'}
+          'Authorization': 'Bearer $accessToken'
         }),
         data: data);
   }

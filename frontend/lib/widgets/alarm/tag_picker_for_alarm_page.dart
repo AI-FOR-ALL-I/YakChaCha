@@ -74,7 +74,6 @@ class _TagPickerForAlarmPageState extends State<TagPickerForAlarmPage> {
                             0.15 /
                             (MediaQuery.of(context).size.width * 0.0725)),
                     itemBuilder: (BuildContext context, int i) {
-                      print(controller.tagList[i]);
                       String tagName = controller.tagList[i]["name"] as String;
                       int colorIndex = controller.tagList[i]["color"] as int;
                       int tagSeq = controller.tagList[i]["tagSeq"] as int;

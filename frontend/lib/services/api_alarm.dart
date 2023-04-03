@@ -26,7 +26,7 @@ class ApiAlarm {
       path,
       options: Options(headers: {
         'Content-Type': 'application/json',
-        'Authorization': {'Authorization': 'Bearer $accessToken'}
+        'Authorization': 'Bearer $accessToken'
       }),
     );
   }
@@ -38,7 +38,7 @@ class ApiAlarm {
       path + '/${alarmSeq}',
       options: Options(headers: {
         'Content-Type': 'application/json',
-        'Authorization': {'Authorization': 'Bearer $accessToken'}
+        'Authorization': 'Bearer $accessToken'
       }),
     );
   }
@@ -50,7 +50,7 @@ class ApiAlarm {
       ApiConstants.getAlarm + '/${alarmSeq}/take',
       options: Options(headers: {
         'Content-Type': 'application/json',
-        'Authorization': {'Authorization': 'Bearer $accessToken'}
+        'Authorization': 'Bearer $accessToken'
       }),
     );
   }
