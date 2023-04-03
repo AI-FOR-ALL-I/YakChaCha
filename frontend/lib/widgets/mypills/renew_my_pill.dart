@@ -35,8 +35,10 @@ class RenewMyPill extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  PillDetailsForApi(turnOnPlus: false, num: itemSeq.toString()),
+              builder: (context) => PillDetailsForApi(
+                  turnOnPlus: false,
+                  isRegister: false,
+                  num: itemSeq.toString()),
             ));
       },
       child: AspectRatio(
@@ -105,8 +107,8 @@ class RenewMyPill extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: tag_list
                                     .map((tagInfo) => TagWidget(
-                                        tagName: tagInfo["tagName"],
-                                        colorIndex: tagInfo["tagColor"]))
+                                        tagName: tagInfo["name"],
+                                        colorIndex: tagInfo["color"]))
                                     .toList(),
                         ),
                       ),

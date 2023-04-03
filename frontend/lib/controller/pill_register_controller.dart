@@ -20,12 +20,11 @@ class PillRegisterController extends GetxController {
 
   // 리스트에 없다면 등록
   void add(data) {
-    print('add할 데이터 : $data');
     bool isDisplayIList = displayList.any((pill) =>
         pill.containsKey('itemSeq') && pill['itemSeq'] == data['itemSeq']);
     if (!isDisplayIList) {
       displayList.add(data);
-      print('add한 직후의 리스트$displayList');
+
       // update();
     }
     bool isRegisterList = registerList.any((pill) =>
@@ -39,8 +38,7 @@ class PillRegisterController extends GetxController {
       };
       registerList.add(tempMap);
     }
-    // update();
-    print('최종 리스트 : $displayList');
+    update();
   }
 
   // 해당 약 삭제
@@ -129,8 +127,6 @@ class PillRegisterController extends GetxController {
 
   // 나갈때 기록 다 지우기
   void clear() {
-    print(
-        'clear!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     displayList.clear();
     registerList = [];
     tagList = [];
@@ -184,9 +180,7 @@ class PillRegisterController extends GetxController {
   ocrToList(ocrResultList) {
     print('ocrResultList에서 for문 돌리기 직전');
     for (int i = 0; i < ocrResultList.length; i++) {
-      print('${i} 번 째 for문 시작');
       add(ocrResultList[i]);
-      print('${i} 번 째 for문 끝');
     }
     update();
   }
@@ -199,7 +193,7 @@ class PillRegisterController extends GetxController {
       Get.put<AlarmPillController>(AlarmPillController());
 
   getTagList() async {
-    tagList = await alarmPillController.getTagList();
+    tagList = await alarmPillController.getTagList() ?? [];
     // print(tagList);
     update();
   }

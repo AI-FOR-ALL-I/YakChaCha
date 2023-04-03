@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/controller/auth_controller.dart';
+import 'package:frontend/controller/profile_controller.dart';
 import 'api_constants.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:get/get.dart' as getX;
@@ -10,35 +11,46 @@ final dio = Dio(
   ),
 );
 
+final controller = getX.Get.find<ProfileController>();
+final authController = getX.Get.find<AuthController>();
+final tempProfileLinkSeq = controller.profileLinkSeq;
+final accessToken = authController.accessToken;
+
 // 알약 등록
 
 class ApiAlarm {
   static Future<Response> getAlarmList() async {
+    final path = ApiConstants.getAlarm
+        .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(
-      ApiConstants.getAlarm,
+      path,
       options: Options(headers: {
         'Content-Type': 'application/json',
-        'Authorization': ApiConstants.TOKEN
+        'Authorization': 'Bearer $accessToken'
       }),
     );
   }
 
   static Future<Response> getAlarmDetail(int alarmSeq) async {
+    final path = ApiConstants.getAlarm
+        .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(
-      ApiConstants.getAlarm + '/${alarmSeq}',
+      path + '/${alarmSeq}',
       options: Options(headers: {
         'Content-Type': 'application/json',
-        'Authorization': ApiConstants.TOKEN
+        'Authorization': 'Bearer $accessToken'
       }),
     );
   }
 
   static Future<Response> takePills(int alarmSeq) async {
+    final path = ApiConstants.getAlarm
+        .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.put(
       ApiConstants.getAlarm + '/${alarmSeq}/take',
       options: Options(headers: {
         'Content-Type': 'application/json',
-        'Authorization': ApiConstants.TOKEN
+        'Authorization': 'Bearer $accessToken'
       }),
     );
   }
