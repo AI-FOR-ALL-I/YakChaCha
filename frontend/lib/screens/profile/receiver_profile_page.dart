@@ -50,6 +50,8 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
           widget.senderAccountSeq!, profiles);
       if (response.statusCode == 200) {
         // TODO: move to 번호조회 페이지
+        // senderAccoutSeq 값 함께 넘겨주어야함!!!
+        // {SERVER}/links/sender/{senderAccountSeq}/auth
       }
     } catch (e) {
       e.printError(info: 'errors');
