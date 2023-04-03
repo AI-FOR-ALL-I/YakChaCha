@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
-  final _accessToken = ''.obs;
-  final _refreshToken = ''.obs;
+  final RxString _accessToken = ''.obs;
+  final RxString _refreshToken = ''.obs;
 
   String get accessToken => _accessToken.value;
   String get refreshToken => _refreshToken.value;
