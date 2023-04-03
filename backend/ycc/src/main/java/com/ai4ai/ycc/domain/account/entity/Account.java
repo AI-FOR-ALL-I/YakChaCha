@@ -100,4 +100,7 @@ public class Account extends BaseAccountEntity implements UserDetails {
         return false;
     }
 
+    public void refresh(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
