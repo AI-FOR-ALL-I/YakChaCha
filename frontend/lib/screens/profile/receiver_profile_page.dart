@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/profile/receiver_number_page.dart';
+import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get/get.dart';
 
 class ReceiverProfilePage extends StatefulWidget {
   final int? senderAccountSeq; // 푸시알림에서 온 내용
@@ -12,8 +15,8 @@ class ReceiverProfilePage extends StatefulWidget {
 }
 
 class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
-  List<Map<String, dynamic>> data = [
-    {
+  /*
+  {
       "senderAccountSeq": 1,
       "senderAccountName": "삼성맨",
       "profiles": [
@@ -97,18 +100,36 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
           "status": 1,
           "pregnancy": false
         }
-      ]
-    }
-  ];
-  //final dio = Dio();
+  
+   */
+  List<Map<String, dynamic>> data = [];
 
+  List<Map<String, dynamic>> profileInfo = [];
+  //final dio = Dio();
   @override
   void initState() {
     super.initState();
     getData();
   }
 
-  void getData() async {}
+  void getData() async {
+    // senderAccountSeq를 활용해서 통신
+    // ApiProfiles.getReceiversInfo(${widget.senderAccountSeq});
+    try {
+      dio.Response response =
+          await ApiProfiles.getReceiversInfo(widget.senderAccountSeq!);
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> newData =
+            List<Map<String, dynamic>>.from(response.data);
+        setState(() {
+          data = newData;
+        });
+      }
+    } catch (e) {
+      e.printError(info: 'errors');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

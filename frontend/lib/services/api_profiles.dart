@@ -88,6 +88,21 @@ class ApiProfiles {
         }));
   }
 
+  // receiver측 정보 확인 get
+  static Future<Response> getReceiversInfo(int senderAccountSeq) async {
+    final path = ApiConstants.getMyDrugInfo
+        .replaceAll('{senderAccountSeq}', senderAccountSeq.toString());
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    return dio.get(path,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken'
+          },
+        ));
+  }
+
   // 프로필 수정 PUT
   static Future<Response> modifyProfile(
       int profileLinkSeq,
