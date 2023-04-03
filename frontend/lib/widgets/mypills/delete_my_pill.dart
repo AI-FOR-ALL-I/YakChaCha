@@ -46,7 +46,7 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
                     builder: (context) => PillDetailsForApi(
                         turnOnPlus: false,
                         isRegister: false,
-                        num: itemSeq.toString()),
+                        num: widget.itemSeq.toString()),
                   ));
             },
             child: AspectRatio(
