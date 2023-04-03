@@ -37,5 +37,5 @@ public class MedicineDetailDto {
     private List<String> startDate;
     private List<String> endDate;
     private List<String> collideList;
-    private List<List<String>> tagList;
+    private List<TagDto> tagList;
 }
