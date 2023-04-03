@@ -90,7 +90,7 @@ class ApiProfiles {
 
   // receiver측 정보 확인 get
   static Future<Response> getReceiversInfo(int senderAccountSeq) async {
-    final path = ApiConstants.getMyDrugInfo
+    final path = ApiConstants.getRequest
         .replaceAll('{senderAccountSeq}', senderAccountSeq.toString());
     final accessToken = authController.accessToken;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));

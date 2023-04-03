@@ -102,9 +102,9 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
         }
   
    */
-  List<Map<String, dynamic>> data = [];
+  Map<String, dynamic> data = {};
 
-  List<Map<String, dynamic>> profileInfo = [];
+  // List<Map<String, dynamic>> profileInfo = [];
   //final dio = Dio();
   @override
   void initState() {
@@ -119,10 +119,11 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
       dio.Response response =
           await ApiProfiles.getReceiversInfo(widget.senderAccountSeq!);
       if (response.statusCode == 200) {
-        final List<Map<String, dynamic>> newData =
-            List<Map<String, dynamic>>.from(response.data);
+        final Map<String, dynamic> newData =
+            Map<String, dynamic>.from(response.data);
         setState(() {
           data = newData;
+          print('에혀시발!!!!$data');
         });
       }
     } catch (e) {
@@ -143,25 +144,28 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                   style: TextStyle(fontSize: 20.0, color: Colors.black54)),
               const SizedBox(height: 16.0),
               Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
-                          children: List.generate(data.length, (index) {
-                final profiles = data[index]['profiles'];
-                return Column(
-                  children: List.generate(profiles.length, (index) {
-                    final profile = profiles[index];
-                    return ListTile(
-                      leading: Text(profile['imgCode'].toString()), // 프로필 이미지
-                      title: Text(profile['nickname']), // 닉네임
-                      subtitle: Text(profile['name']), // 이름
-                      trailing: Text(profile['status'].toString()), // 상태 메시지
-                      onTap: () {
-                        // 프로필 선택 이벤트 처리하기
-                      },
-                    );
-                  }),
-                );
-              })))),
+                child: SingleChildScrollView(
+                  child: data['data']['profiles'] == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : Column(
+                          children: List.generate(
+                              data['data']['profiles'].length, (index) {
+                            final profile = data['data']['profiles'][index];
+                            return ListTile(
+                              leading: Text(
+                                  profile['imgCode'].toString()), // 프로필 이미지
+                              title: Text(profile['nickname']), // 닉네임
+                              subtitle: Text(profile['name']), // 이름
+                              trailing:
+                                  Text(profile['status'].toString()), // 상태 메시지
+                              onTap: () {
+                                // 프로필 선택 이벤트 처리하기
+                              },
+                            );
+                          }),
+                        ),
+                ),
+              ),
               const SizedBox(height: 16.0),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
