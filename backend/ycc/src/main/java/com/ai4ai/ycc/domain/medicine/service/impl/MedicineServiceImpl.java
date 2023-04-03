@@ -238,8 +238,8 @@ public class MedicineServiceImpl implements MedicineService {
             List<TagDto> tagList = new ArrayList<>();
             for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
                 tagList.add(TagDto.builder()
-                        .tagColor(myMedicineHasTag.getTag().getColor())
-                        .tagName(myMedicineHasTag.getTag().getName())
+                        .color(myMedicineHasTag.getTag().getColor())
+                        .name(myMedicineHasTag.getTag().getName())
                     .build());
             }
 
@@ -277,8 +277,8 @@ public class MedicineServiceImpl implements MedicineService {
         for(Tag tag: tags){
             output.add(TagDto.builder()
                     .tagSeq(tag.getTagSeq())
-                    .tagColor(tag.getColor())
-                    .tagName(tag.getName())
+                    .color(tag.getColor())
+                    .name(tag.getName())
                 .build());
         }
         return output;
@@ -298,8 +298,8 @@ public class MedicineServiceImpl implements MedicineService {
             List<TagDto> tags = new ArrayList<>();
             for(MyMedicineHasTag tempMyMedicineHasTag: tempMyMedicineHasTags){
                 tags.add(TagDto.builder()
-                        .tagColor(tempMyMedicineHasTag.getTag().getColor())
-                        .tagName(tempMyMedicineHasTag.getTag().getName())
+                        .color(tempMyMedicineHasTag.getTag().getColor())
+                        .name(tempMyMedicineHasTag.getTag().getName())
                     .build());
             }
 
@@ -399,8 +399,8 @@ public class MedicineServiceImpl implements MedicineService {
 
                 for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
                     tagList.add(TagDto.builder()
-                            .tagName(myMedicineHasTag.getTag().getName())
-                            .tagColor(myMedicineHasTag.getTag().getColor())
+                            .name(myMedicineHasTag.getTag().getName())
+                            .color(myMedicineHasTag.getTag().getColor())
                         .build());
                 }
             }
