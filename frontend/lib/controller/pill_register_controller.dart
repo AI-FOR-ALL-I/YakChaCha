@@ -194,7 +194,7 @@ class PillRegisterController extends GetxController {
       Get.put<AlarmPillController>(AlarmPillController());
 
   getTagList() async {
-    tagList = await alarmPillController.getTagList();
+    tagList = await alarmPillController.getTagList() ?? [];
     // print(tagList);
     update();
   }
