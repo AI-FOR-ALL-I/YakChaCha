@@ -102,7 +102,6 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                   ],
                 ),
               ),
-              
             ],
           ),
         ),
@@ -142,63 +141,67 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     if (snapshot.data!.isEmpty) {
       isZero = true;
     }
-    return Column(
-      children: [
-        Flexible(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 25, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "총 ${snapshot.data!.length.toString()}건",
-                    style: TextStyle(fontSize: 16),
+    return isZero
+        ? isEmptyPills()
+        : Column(
+            children: [
+              Flexible(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 25, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "총 ${snapshot.data!.length.toString()}건",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyPillDelete(
+                                          myPillController: myPillController,
+                                        )));
+                          },
+                          icon: Icon(Icons.settings))
+                    ],
                   ),
                 ),
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyPillDelete(myPillController: myPillController,)));
-                    },
-                    icon: Icon(Icons.settings))
-              ],
-            ),
-          ),
-        ),
-        Flexible(
-          flex: 24,
-          child: ListView.separated(
-            itemCount: snapshot.data!.length,
-            separatorBuilder: (context, index) => SizedBox(),
-            itemBuilder: (context, index) {
-              var pill = snapshot.data![index];
-              return isZero
-                  ? isEmptyPills()
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text("복용 끝"),
-                        RenewMyPill(
-                          itemSeq: pill.itemSeq,
-                          itemName: pill.itemName,
-                          img: pill.img,
-                          tag_list: pill.tagList,
-                          isTaken: true,
-                          dday: pill.dday,
-                        ),
-                      ],
-                    );
-            },
-          ),
-        ),
-      ],
-    );
+              ),
+              Flexible(
+                flex: 24,
+                child: ListView.separated(
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (context, index) => SizedBox(),
+                  itemBuilder: (context, index) {
+                    var pill = snapshot.data![index];
+                    return isZero
+                        ? isEmptyPills()
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("복용 끝"),
+                              RenewMyPill(
+                                itemSeq: pill.itemSeq,
+                                itemName: pill.itemName,
+                                img: pill.img,
+                                tag_list: pill.tagList,
+                                isTaken: true,
+                                dday: pill.dday,
+                              ),
+                            ],
+                          );
+                  },
+                ),
+              ),
+            ],
+          );
   }
 
   Column isEmptyPills() {
@@ -257,7 +260,9 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyPillDelete(myPillController: myPillController,)));
+                                    builder: (context) => MyPillDelete(
+                                          myPillController: myPillController,
+                                        )));
                           },
                           icon: Icon(Icons.settings))
                     ],
