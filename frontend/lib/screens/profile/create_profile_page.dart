@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/bottom_navigation.dart';
 import 'package:frontend/screens/profile/select_profile_image_page.dart';
+import 'package:frontend/screens/profile/select_profile_page.dart';
 import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/text_field.dart';
 import 'package:frontend/widgets/profile/birth_date_widget.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 
 class CreateProfilePage extends StatefulWidget {
   const CreateProfilePage({super.key});
@@ -49,13 +49,16 @@ class _CreateProfilePage extends State<CreateProfilePage> {
       } else {
         gender = 'M';
       }
-      Response response = await ApiProfiles.createProfile(
+      dio.Response response = await ApiProfiles.createProfile(
           name, gender, isPregnant, initBirthDate, nickname, 1);
       // 이미지 코드는 지금 임의로 1로 보내는중입니다.
       // TODO: - 이미지 코드 설정
+
       if (response.statusCode == 200) {
+        // 프로필아이디값 설정
+        // final profileController = Get.find<ProfileController>();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const BottomNavigation()));
+            MaterialPageRoute(builder: (context) => const SelectProfilePage()));
       }
     } catch (error) {
       print('사용자 정보 요청 실패 $error');

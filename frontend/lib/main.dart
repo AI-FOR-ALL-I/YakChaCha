@@ -11,7 +11,8 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   RemoteNotification? notification = message.notification;
   if (notification != null) {
-    print('noti-title : ${notification?.title}, body:${notification?.body}');
+    // print('noti-title : ${notification?.title}, body:${notification?.body}');
+    print('noti-title : ${notification.title}, body:${notification.body}');
   }
   Map<String, dynamic> data = message.data;
   print(data);
