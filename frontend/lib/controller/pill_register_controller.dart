@@ -38,8 +38,7 @@ class PillRegisterController extends GetxController {
       };
       registerList.add(tempMap);
     }
-    // update();
-    print('최종 리스트 : $displayList');
+    update();
   }
 
   // 해당 약 삭제

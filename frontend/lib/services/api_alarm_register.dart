@@ -25,7 +25,7 @@ class ApiAlarmRegister {
     return dio.post(path,
         options: Options(headers: {
           'Content-Type': 'application/json',
-          'Authorization': {'Authorization': 'Bearer $accessToken'}
+          'Authorization': 'Bearer $accessToken'
         }),
         data: data);
   }

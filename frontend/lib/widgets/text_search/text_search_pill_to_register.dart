@@ -115,7 +115,7 @@ class Before extends StatelessWidget {
                   Flexible(
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: data?['img'] != null || data?['img'] != ''
+                          child: data?['img'] == null || data?['img'] == ''
                               ? Image.asset('assets/images/defaultPill1.png',
                                   fit: BoxFit.cover)
                               : Image.network('${data?['img']}',
