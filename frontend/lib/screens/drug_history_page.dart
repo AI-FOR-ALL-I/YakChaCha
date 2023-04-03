@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/models/my_pill_model.dart';
+import 'package:frontend/screens/myPills/my_pill_delete.dart';
 import 'package:frontend/services/my_pill_api.dart';
 import 'package:frontend/services/taken_pill_api.dart';
-import 'package:frontend/widgets/mypills/my_pill_for_alarm_register.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 
 class DrugHistoryPage extends StatefulWidget {
@@ -127,66 +127,100 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     );
   }
 
-  ListView takenPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+  Column takenPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
     var isZero = false;
-    if (snapshot.data!.length == 0) {
+    if (snapshot.data!.isEmpty) {
       isZero = true;
     }
-    return ListView.separated(
-      itemCount: snapshot.data!.length,
-      separatorBuilder: (context, index) => SizedBox(),
-      itemBuilder: (context, index) {
-        var pill = snapshot.data![index];
-        return isZero
-            ? isEmptyPills()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("복용 끝"),
-                  RenewMyPill(
-                    itemSeq: pill.itemSeq,
-                    itemName: pill.itemName,
-                    img: pill.img,
-                    tag_list: pill.tagList,
-                    isTaken: true,
-                    dday: pill.dday,
+    return Column(
+      children: [
+        Flexible(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "총 ${snapshot.data!.length.toString()}건",
+                    style: TextStyle(fontSize: 16),
                   ),
-                ],
-              );
-      },
+                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyPillDelete()));
+                    },
+                    icon: Icon(Icons.settings))
+              ],
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 24,
+          child: ListView.separated(
+            itemCount: snapshot.data!.length,
+            separatorBuilder: (context, index) => SizedBox(),
+            itemBuilder: (context, index) {
+              var pill = snapshot.data![index];
+              return isZero
+                  ? isEmptyPills()
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text("복용 끝"),
+                        RenewMyPill(
+                          itemSeq: pill.itemSeq,
+                          itemName: pill.itemName,
+                          img: pill.img,
+                          tag_list: pill.tagList,
+                          isTaken: true,
+                          dday: pill.dday,
+                        ),
+                      ],
+                    );
+            },
+          ),
+        ),
+      ],
     );
   }
 
   Column isEmptyPills() {
     return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.medication,
-                        size: 58,
-                      ),
-                      Text(
-                        "복용한 내역이 없습니다.",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.medication,
+                size: 58,
+              ),
+              Text(
+                "복용한 내역이 없습니다.",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w600,
                 ),
-              ],
-            );
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
     var isZero = false;
-    if (snapshot.data!.length == 0) {
+    if (snapshot.data!.isEmpty) {
       isZero = true;
     }
     return isZero
@@ -194,16 +228,29 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
         : Column(
             children: [
               Flexible(
-                flex: 1,
+                flex: 2,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "총 ${snapshot.data!.length.toString()}건",
-                      style: TextStyle(fontSize: 16),
-                    ),
+                  padding: const EdgeInsets.only(left: 25, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "총 ${snapshot.data!.length.toString()}건",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyPillDelete()));
+                          },
+                          icon: Icon(Icons.settings))
+                    ],
                   ),
                 ),
               ),
