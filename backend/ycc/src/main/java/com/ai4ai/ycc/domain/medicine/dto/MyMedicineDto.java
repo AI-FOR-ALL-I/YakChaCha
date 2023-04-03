@@ -19,5 +19,6 @@ public class MyMedicineDto {
     private boolean warnPregnant;
     private boolean warnOld;
     private boolean warnAge;
+    private List period;
 
 }

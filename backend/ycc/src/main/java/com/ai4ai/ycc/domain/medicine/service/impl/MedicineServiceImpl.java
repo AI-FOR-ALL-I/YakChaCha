@@ -227,8 +227,12 @@ public class MedicineServiceImpl implements MedicineService {
             boolean pregnantWarn = false;
             boolean youngWarn = false;
             boolean oldWarn = false;
-            long dDay = ChronoUnit.DAYS.between(now, myMedicine.getEndDate());
-
+            LocalDate startDate = myMedicine.getStartDate();
+            LocalDate endDate = myMedicine.getEndDate();
+            long dDay = ChronoUnit.DAYS.between(now, endDate);
+            List<String> takingPeriod = new ArrayList<>();
+            takingPeriod.add(startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            takingPeriod.add(endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             Medicine medicine = myMedicine.getMedicine();
             List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findByMyMedicineAndDelYn(myMedicine,"N");
             List<List> tagList = new ArrayList<>();
@@ -259,6 +263,7 @@ public class MedicineServiceImpl implements MedicineService {
                 .warnPregnant(pregnantWarn)
                 .dDay((int)dDay)
                 .tagList(tagList)
+                .period(takingPeriod)
                 .typeCode(medicine.getTypeCode())
                 .build());
         }
