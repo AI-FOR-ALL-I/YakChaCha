@@ -15,95 +15,8 @@ class ReceiverProfilePage extends StatefulWidget {
 }
 
 class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
-  /*
-  {
-      "senderAccountSeq": 1,
-      "senderAccountName": "삼성맨",
-      "profiles": [
-        {
-          "profileLinkSeq": 1,
-          "imgCode": 1,
-          "nickname": "닉네임2",
-          "name": "사용자12",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 2,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        }
-  
-   */
-  Map<String, dynamic> data = {};
-
+  Map<String, dynamic>? data;
+  List<int> selectedItems = [];
   // List<Map<String, dynamic>> profileInfo = [];
   //final dio = Dio();
   @override
@@ -123,7 +36,7 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
             Map<String, dynamic>.from(response.data);
         setState(() {
           data = newData;
-          print('에혀시발!!!!$data');
+          print('whyrano$data');
         });
       }
     } catch (e) {
@@ -144,27 +57,94 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                   style: TextStyle(fontSize: 20.0, color: Colors.black54)),
               const SizedBox(height: 16.0),
               Expanded(
-                child: SingleChildScrollView(
-                  child: data['data']['profiles'] == null
-                      ? const Center(child: CircularProgressIndicator())
-                      : Column(
-                          children: List.generate(
-                              data['data']['profiles'].length, (index) {
-                            final profile = data['data']['profiles'][index];
-                            return ListTile(
-                              leading: Text(
-                                  profile['imgCode'].toString()), // 프로필 이미지
-                              title: Text(profile['nickname']), // 닉네임
-                              subtitle: Text(profile['name']), // 이름
-                              trailing:
-                                  Text(profile['status'].toString()), // 상태 메시지
-                              onTap: () {
-                                // 프로필 선택 이벤트 처리하기
-                              },
-                            );
-                          }),
-                        ),
-                ),
+                child: data == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: data!['data']['profiles'].length,
+                        itemBuilder: (context, index) {
+                          final profile = data!['data']['profiles'][index];
+                          bool isSelected =
+                              selectedItems.contains(profile['profileLinkSeq']);
+                          bool isSelectable = profile['status'] == 1;
+                          return InkWell(
+                            onTap: isSelectable
+                                ? () {
+                                    // 프로필 선택 이벤트 처리하기
+                                    setState(() {
+                                      if (isSelected) {
+                                        selectedItems.removeWhere((item) =>
+                                            item == profile['profileLinkSeq']);
+                                        print('selected$selectedItems');
+                                      } else {
+                                        selectedItems
+                                            .add(profile['profileLinkSeq']);
+                                        print('selected$selectedItems');
+                                      }
+                                    });
+                                  }
+                                : null,
+                            child: Container(
+                              padding: const EdgeInsets.all(16.0),
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        profile['nickname'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        profile['status'].toString(),
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Text(
+                                    profile['name'],
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Text(
+                                    profile['gender'] +
+                                        ' ' +
+                                        profile['birthDate'],
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
               ),
               const SizedBox(height: 16.0),
               Padding(

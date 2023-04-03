@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/delete_my_pill_model.dart';
-import 'package:frontend/models/my_pill_model.dart';
 import 'package:frontend/services/api_all_my_pill.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/mypills/delete_my_pill.dart';
-import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 
 class MyPillDelete extends StatelessWidget {
   MyPillDelete({super.key});
@@ -31,13 +29,13 @@ class MyPillDelete extends StatelessWidget {
   }
 
   Column isEmptyPills() {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.medication,
                 size: 58,
@@ -74,10 +72,11 @@ class MyPillDelete extends StatelessWidget {
                     var pill = snapshot.data![index];
                     return DeleteMyPill(
                       myMedicineSeq: pill.myMedicineSeq,
-                        itemSeq: pill.itemSeq,
-                        itemName: pill.itemName,
-                        img: pill.img,
-                        tag_list: pill.tagList,);
+                      itemSeq: pill.itemSeq,
+                      itemName: pill.itemName,
+                      img: pill.img,
+                      tag_list: pill.tagList,
+                    );
                   },
                 ),
               ),
