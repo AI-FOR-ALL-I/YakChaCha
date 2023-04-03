@@ -137,6 +137,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                             itemBuilder: ((context, i) {
                               var pill =
                                   controller.alarmDetail["medicineList"][i];
+                              print(pill);
                               return RenewMyPill(
                                 // TODO: 여기 response 생기면 수정하기
                                 itemSeq: pill["medicineSeq"],

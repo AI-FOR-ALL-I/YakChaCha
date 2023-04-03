@@ -15,8 +15,13 @@ import 'package:get/get.dart';
 class PillDetailsForApi extends StatelessWidget {
   final String num;
   final bool turnOnPlus;
+  final bool isRegister;
+
   const PillDetailsForApi(
-      {super.key, required this.num, required this.turnOnPlus});
+      {super.key,
+      required this.num,
+      required this.turnOnPlus,
+      required this.isRegister});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,7 @@ class PillDetailsForApi extends StatelessWidget {
     return ListView(
       children: [
         // 약 등록, turnOnPlus:true 켜짐
-        turnOnPlus
+        turnOnPlus && isRegister
             ? Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 2, horizontal: 30),

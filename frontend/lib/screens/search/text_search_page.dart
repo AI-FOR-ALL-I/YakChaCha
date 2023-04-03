@@ -11,7 +11,8 @@ import 'package:frontend/controller/pill_register_controller.dart';
 import 'package:get/get.dart' as getX;
 
 class TextSearchPage extends StatefulWidget {
-  const TextSearchPage({super.key});
+  final bool isRegister;
+  const TextSearchPage({super.key, required this.isRegister});
 
   @override
   State<TextSearchPage> createState() => _TextSearchPageState();
@@ -37,6 +38,8 @@ class _TextSearchPageState extends State<TextSearchPage> {
       setState(() {
         aiResultList = response2;
       });
+      Navigator.pop(context);
+      Navigator.pop(context);
     } catch (e) {
       print(e);
     }
@@ -68,11 +71,13 @@ class _TextSearchPageState extends State<TextSearchPage> {
                   children: [
                     GestureDetector(
                         onTap: () {
+                          Navigator.pop(context);
                           getCameraImage(true);
                         },
                         child: Text('사진 촬영')),
                     GestureDetector(
                         onTap: () {
+                          Navigator.pop(context);
                           getCameraImage(false);
                         },
                         child: Text('앨범에서 선택'))
@@ -96,6 +101,26 @@ class _TextSearchPageState extends State<TextSearchPage> {
       image = await ImagePicker()
           .pickImage(source: ImageSource.gallery); // XFile 타입
     }
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () async => false,
+              child: Dialog(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Loading..."),
+                      Image.asset("assets/images/walking.gif"),
+                    ],
+                  ),
+                ),
+              ));
+        });
     if (image != null) {
       FormData formData = FormData.fromMap({
         'image': await MultipartFile.fromFile(
@@ -146,6 +171,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
                                       MaterialPageRoute(
                                           builder: (context) => PillDetailsForApi(
                                               turnOnPlus: true,
+                                              isRegister: widget.isRegister,
                                               num: searchResult[index]
                                                       ['itemSeq']
                                                   .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
@@ -169,7 +195,21 @@ class _TextSearchPageState extends State<TextSearchPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            TextSearchPillComponent(data: aiResultList[0]),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PillDetailsForApi(
+                                                  turnOnPlus: true,
+                                                  isRegister: true,
+                                                  num: aiResultList[0]
+                                                          ['itemSeq']
+                                                      .toString())));
+                                },
+                                child: TextSearchPillComponent(
+                                    data: aiResultList[0])),
                           ],
                         ),
                       ),
@@ -191,6 +231,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
                                       MaterialPageRoute(
                                           builder: (context) => PillDetailsForApi(
                                               turnOnPlus: true,
+                                              isRegister: widget.isRegister,
                                               num: aiResultList[index + 1]
                                                       ['itemSeq']
                                                   .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기

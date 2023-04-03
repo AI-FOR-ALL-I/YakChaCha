@@ -3,13 +3,15 @@ import 'package:frontend/widgets/text_search/text_search_pill_to_register.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/screens/search/text_search_page.dart';
 import 'package:frontend/screens/drug_history_page.dart';
-import 'package:frontend/screens/loading_page.dart';
+
 import 'package:frontend/widgets/common/bottom_confirm_widget.dart';
 import 'package:frontend/services/api_search.dart';
 import 'package:dio/dio.dart';
 import 'package:frontend/controller/pill_register_controller.dart';
 import 'package:get/get.dart' as getX;
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:image/image.dart' as img;
 
 class RegisterPage extends StatefulWidget {
   final bool isCameraOCR;
@@ -38,16 +40,55 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  // Future<File> compressImage(XFile file) async {
+  //   final bytes = await file.readAsBytes();
+  //   final image = img.decodeImage(bytes)!;
+  //   final compressedImage = img.encodeJpg(image,
+  //       quality: 70); // quality 값은 0 ~ 100 사이의 값으로 설정 가능합니다.
+  //   if (compressedImage.length > 1000000) {
+  //     // 1MB
+  //     return compressImage(XFile.fromData(compressedImage));
+  //   } else {
+  //     print(compressedImage.length);
+  //     return File(file.path).writeAsBytes(compressedImage);
+  //   }
+  // }
+
   getCameraImage(camera) async {
     var image;
     if (camera) {
+      // var temp =
       image =
           await ImagePicker().pickImage(source: ImageSource.camera); // XFile 타입
+      // image = await compressImage(temp!);
     } else {
+      // var temp =
       image = await ImagePicker()
           .pickImage(source: ImageSource.gallery); // XFile 타입
+      // image = await compressImage(temp!);
     }
     if (image != null) {
+      // 여기서 로딩 시작?
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+                onWillPop: () async => false,
+                child: Dialog(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("Loading..."),
+                        Image.asset("assets/images/walking.gif"),
+                      ],
+                    ),
+                  ),
+                ));
+          });
       FormData formData = FormData.fromMap({
         'image': await MultipartFile.fromFile(
           image.path,
@@ -58,8 +99,10 @@ class _RegisterPageState extends State<RegisterPage> {
       // getX.Get.put(controller);
       var ocrResultList = await ocrSearch(formData);
       if (ocrResultList != null) {
-        controller.ocrToList(ocrResultList);
+        await controller.ocrToList(ocrResultList);
+        Navigator.pop(context);
       } else {
+        Navigator.pop(context);
         showDialog(
             context: context,
             builder: (BuildContext constext) {
@@ -84,10 +127,10 @@ class _RegisterPageState extends State<RegisterPage> {
     getX.Get.put(controller); // 수정
     if (widget.isCameraOCR) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoadingPage()),
-        ).then((value) {});
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => LoadingPage()),
+        // ).then((value) {});
       });
       getCameraImage(true);
     } else if (widget.isAlbumOCR) {
@@ -147,7 +190,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => TextSearchPage()));
+                                builder: (context) =>
+                                    TextSearchPage(isRegister: true)));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.8,

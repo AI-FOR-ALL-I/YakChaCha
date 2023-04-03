@@ -24,6 +24,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
             MaterialPageRoute(
               builder: (context) => PillDetailsForApi(
                   turnOnPlus: false,
+                  isRegister: false,
                   num: widget.data['medicineSeq'].toString()),
             ));
       },
@@ -69,13 +70,10 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                             ]),
                       ),
                       Row(
-                        children: List<Widget>.from(
-                          widget.data["tagList"]
-                              .map((tagInfo) => TagWidget(
-                                  tagName: tagInfo["name"],
-                                  colorIndex: tagInfo["color"]))
-                              .toList(),
-                        ),
+                        children: List<Widget>.from(widget.data["tagList"].map(
+                            (tagInfo) => TagWidget(
+                                tagName: tagInfo["name"] as String,
+                                colorIndex: tagInfo["color"]))),
                       )
                     ],
                   )),

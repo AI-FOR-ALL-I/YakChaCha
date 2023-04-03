@@ -44,7 +44,9 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PillDetailsForApi(
-                        turnOnPlus: false, num: widget.itemSeq.toString()),
+                        turnOnPlus: false,
+                        isRegister: false,
+                        num: itemSeq.toString()),
                   ));
             },
             child: AspectRatio(
