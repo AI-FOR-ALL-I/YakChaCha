@@ -36,4 +36,6 @@ public class MyMedicineHasTag extends BaseEntity {
 	@JoinColumn(name = "tagSeq")
 	private Tag tag;
 
+
+
 }

@@ -228,20 +228,33 @@ public class MedicineServiceImpl implements MedicineService {
             Medicine medicine = medicineRepository.findByItemSeq(registRequestDto.getItemSeq());
             List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
 
+            MyMedicine myMedicine = new MyMedicine();
+            boolean exist = false;
             for(MyMedicine temp_Medicine: myMedicineList){
                 if(temp_Medicine.getMedicine()==medicine){
-                    deleteMyMedicine(profile, temp_Medicine.getMyMedicineSeq());
+                    myMedicine = temp_Medicine;
+                    exist=true;
                     break;
                 }
             }
-            MyMedicine myMedicine = MyMedicine.builder()
-                .endDate(endDate)
-                .finish(finish? "Y":"N")
-                .medicine(medicine)
-                .profile(profile)
-                .startDate(startDate)
-                .build();
-            myMedicineRepository.save(myMedicine);
+            if(exist){
+                List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findAllByDelYnAndMyMedicine("N",myMedicine);
+                for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
+                    myMedicineHasTag.remove();
+                }
+                myMedicine.modify(startDate,endDate,finish? "Y":"N");
+                myMedicineRepository.save(myMedicine);
+            }else{
+                myMedicine = MyMedicine.builder()
+                    .endDate(endDate)
+                    .finish(finish? "Y":"N")
+                    .medicine(medicine)
+                    .profile(profile)
+                    .startDate(startDate)
+                    .build();
+                myMedicineRepository.save(myMedicine);
+            }
+
             loop:
             for(List<String> tag: registRequestDto.getTagList()){
                 for(Tag mytag : tagList) {
