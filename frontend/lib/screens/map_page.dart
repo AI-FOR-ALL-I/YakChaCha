@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/drug_store_detail/drug_store_detail.dart';
 import 'package:frontend/screens/drug_store_detail/drug_store_search.dart';
-import 'package:frontend/screens/drug_store_detail/kakaomap_screen.dart';
 import 'package:frontend/services/api_drug_store_pos.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 
@@ -104,10 +103,15 @@ class _MapPageState extends State<MapPage> {
             child: KakaoMapView(
                 customScript: '''
                 var markers = [];
-                
+                var imageSrc = "https://cdn-icons-png.flaticon.com/512/8059/8059164.png";
+                var imageSize = new kakao.maps.Size(40, 40);
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
                 function addMarker(position) {
                 
-                  var marker = new kakao.maps.Marker({position: position});
+                  var marker = new kakao.maps.Marker({
+                    position: position,
+                    image : markerImage
+                  });
                 
                   marker.setMap(map);
                 
@@ -125,14 +129,10 @@ class _MapPageState extends State<MapPage> {
                 lng: widget.lngBig,
                 showMapTypeControl: true,
                 showZoomControl: true,
-                zoomLevel: 6,
+                zoomLevel: 5,
                 markerImageURL:
-                    'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-                onTapMarker: (message) async {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(message.message)));
-                  await _openKakaoMapScreen(context);
-                }),
+                    'https://cdn-icons-png.flaticon.com/512/8059/8059164.png',
+                ),
           ),
           Expanded(
             child: ListView.separated(
@@ -206,15 +206,5 @@ class _MapPageState extends State<MapPage> {
         ],
       ),
     );
-  }
-
-  Future<void> _openKakaoMapScreen(BuildContext context) async {
-    KakaoMapUtil util = KakaoMapUtil();
-    String url = await util.getMapScreenURL(widget.latSmall, widget.lngBig,
-        name: '현 위치');
-    print('urlurlurlurlurlurlurlurlurlurlurlurlurlurlurl: $url');
-    print("@@@@@");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => KakaoMapScreen(url: url)));
   }
 }

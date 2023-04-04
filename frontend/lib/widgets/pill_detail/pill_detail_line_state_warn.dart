@@ -76,16 +76,18 @@ class PillDetailLineWarnState extends State<PillDetailLineWarn> {
           ),
           triClicked
               ? Container(
-                  width: size.width - 50,
                   margin: const EdgeInsets.only(bottom: 5),
                   alignment: Alignment.centerLeft,
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: dataList.length,
-                    itemBuilder: (context, index) {
-                      return Text(dataList[index].trim());
-                    },
+                  child: SizedBox(
+                    width: size.width - 50,
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: dataList.length,
+                      itemBuilder: (context, index) {
+                        return Text(dataList[index].trim());
+                      },
+                    ),
                   ),
                 )
               : SizedBox()

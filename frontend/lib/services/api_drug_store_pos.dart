@@ -9,7 +9,7 @@ class ApiDrugStorePos {
     const apiKey =
         "BBtfzEnVsjUygaxKqTzhATnIw3PR2uIILBMWGcxzsspr40fZVpVAe%2Bdw%2F41lxNAUehr9AcxSZetOeqTQw2ZMjg%3D%3D";
     String baseUrl =
-        "http://apis.data.go.kr/B551182/pharmacyInfoService/getParmacyBasisList?serviceKey=$apiKey&pageNo=1&numOfRows=10&xPos=$xPos&yPos=$yPos&radius=1500";
+        "http://apis.data.go.kr/B551182/pharmacyInfoService/getParmacyBasisList?serviceKey=$apiKey&pageNo=1&numOfRows=10&xPos=$xPos&yPos=$yPos&radius=500";
 
     final url = Uri.parse(baseUrl);
     final response = await http.get(url);

@@ -68,19 +68,20 @@ class _TextSearchPageState extends State<TextSearchPage> {
                 height: 200.0,
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
                           getCameraImage(true);
                         },
-                        child: Text('사진 촬영')),
+                        child: Text('사진 촬영', style: TextStyle(fontSize: 20),)),
                     GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
                           getCameraImage(false);
                         },
-                        child: Text('앨범에서 선택'))
+                        child: Text('앨범에서 선택', style: TextStyle(fontSize: 20),))
                   ],
                 )),
           );
@@ -150,35 +151,41 @@ class _TextSearchPageState extends State<TextSearchPage> {
                   child: Column(
                     children: [
                       Container(
-                        child: Text('${searchResult.length} 건의 검색결과'),
+                        child: Text('${searchResult.length} 건의 검색결과', style: TextStyle(fontSize: 16),),
                         alignment: Alignment.bottomLeft,
-                        margin: EdgeInsets.only(left: 20),
+                        margin: EdgeInsets.only(left: 20, bottom: 3),
                       ),
                       Flexible(
-                        child: GridView.builder(
-                          // 여기가 Text로 검색
-                          itemCount: searchResult.length,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                                onTap: () {
-                                  // Navigator.pop(context);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PillDetailsForApi(
-                                              turnOnPlus: true,
-                                              isRegister: widget.isRegister,
-                                              num: searchResult[index]
-                                                      ['itemSeq']
-                                                  .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
-                                },
-                                child: TextSearchPillComponent(
-                                    data: searchResult[index]));
-                          },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: GridView.builder(
+                            // 여기가 Text로 검색
+                            itemCount: searchResult.length,
+                            shrinkWrap: true,
+                            
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 1.2
+                                    ),
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                  onTap: () {
+                                    // Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PillDetailsForApi(
+                                                turnOnPlus: true,
+                                                isRegister: widget.isRegister,
+                                                num: searchResult[index]
+                                                        ['itemSeq']
+                                                    .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
+                                  },
+                                  child: TextSearchPillComponent(
+                                      data: searchResult[index]));
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -190,7 +197,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
               ? Expanded(
                   child: Column(
                     children: [
-                      Text("알약 사진 분석 결과"),
+                      Text("알약 사진 AI 분석 결과",  style: TextStyle(fontSize: 20),),
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -213,32 +220,42 @@ class _TextSearchPageState extends State<TextSearchPage> {
                           ],
                         ),
                       ),
-                      Text("혹시 이 약들 중에 있나요?"),
+                      SizedBox(height: 14,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.lightbulb_outline, color: Colors.amber),
+                          Text("혹시 이 약들 중에 있나요?", style: TextStyle(fontSize: 18),),
+                        ],
+                      ),
                       Flexible(
-                        child: GridView.builder(
-                          // 여기가 Text로 검색
-                          itemCount: 4,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                                onTap: () {
-                                  // Navigator.pop(context);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PillDetailsForApi(
-                                              turnOnPlus: true,
-                                              isRegister: widget.isRegister,
-                                              num: aiResultList[index + 1]
-                                                      ['itemSeq']
-                                                  .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
-                                },
-                                child: TextSearchPillComponent(
-                                    data: aiResultList[index + 1]));
-                          },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                          child: GridView.builder(
+                            // 여기가 Text로 검색
+                            itemCount: 4,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                  onTap: () {
+                                    // Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PillDetailsForApi(
+                                                turnOnPlus: true,
+                                                isRegister: widget.isRegister,
+                                                num: aiResultList[index + 1]
+                                                        ['itemSeq']
+                                                    .toString()))); //TODO:  상세페이지에서  pop 2번으로 나가게 하기 가능, 대신 데이터를 가지고 나올 수 있도록 하기
+                                  },
+                                  child: TextSearchPillComponent(
+                                      data: aiResultList[index + 1]));
+                            },
+                          ),
                         ),
                       ),
                     ],

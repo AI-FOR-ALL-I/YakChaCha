@@ -80,13 +80,13 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.all(20.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(15)),
                 child: AspectRatio(
-                  aspectRatio: 311 / 118,
+                  aspectRatio: 3/1,
                   child: Stack(
                     children: [
                       Container(
@@ -152,14 +152,14 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                 child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
                   color: Theme.of(context).colorScheme.primary),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(controller.alarmDetail != null
                         ? '총 ${controller.alarmDetail['totalCount']}정 | ${controller.alarmDetail['typeCount']} 종류'
                         : '로딩중'),
@@ -191,7 +191,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                         : SizedBox(),
                   ),
                   Flexible(
-                    flex: 3,
+                    flex: 4,
                     child: TableCalendar(
                         firstDay: DateTime.utc(2010, 10, 16),
                         lastDay: DateTime.utc(2030, 3, 14),

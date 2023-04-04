@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/models/pill_detail_model.dart';
-import 'package:frontend/screens/pill_details/pill_detail_line_state.dart';
-import 'package:frontend/screens/pill_details/pill_detail_line_state_hyo.dart';
-import 'package:frontend/screens/pill_details/pill_detail_line_state_method.dart';
-import 'package:frontend/screens/pill_details/pill_detail_line_state_warn.dart';
+import 'package:frontend/widgets/pill_detail/pill_detail_line_state.dart';
+import 'package:frontend/widgets/pill_detail/pill_detail_line_state_hyo.dart';
+import 'package:frontend/widgets/pill_detail/pill_detail_line_state_method.dart';
+import 'package:frontend/widgets/pill_detail/pill_detail_line_state_warn.dart';
 import 'package:frontend/services/pill_detail_api.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/controller/pill_register_controller.dart';

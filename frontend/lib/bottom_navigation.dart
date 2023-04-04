@@ -88,8 +88,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                                           isAlbumOCR: false,
                                                         )));
                                           },
-                                          child: const Text(
-                                              '사진 촬영')), // 등록화면으로 이동시키고 동시에 카메라 킨다.
+                                          child: const Text('사진 촬영',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      20))), // 등록화면으로 이동시키고 동시에 카메라 킨다.
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -101,7 +103,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                                         isAlbumOCR: true,
                                                       )));
                                         },
-                                        child: const Text('앨범에서 가져오기'),
+                                        child: const Text('앨범에서 가져오기',
+                                            style: TextStyle(fontSize: 20)),
                                       ) // 등록화면으로 이동시키고 동시에 앨범 킨다.
                                     ],
                                   ),
@@ -109,7 +112,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                               );
                             });
                       },
-                      child: const Text('처방전 사진으로 등록')),
+                      child: const Text('처방전 사진으로 등록',
+                          style: TextStyle(fontSize: 20))),
                   GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -122,7 +126,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                   )),
                         );
                       },
-                      child: const Text('텍스트 / 알약 사진 검색으로 등록'))
+                      child: const Text('텍스트 / 알약 사진 검색으로 등록',
+                          style: TextStyle(fontSize: 20)))
                 ],
               ),
             ));
@@ -137,41 +142,46 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomMainAppBar(isMain: _selectedIndex == 0 ? true : false),
-        extendBodyBehindAppBar:
-            _selectedIndex == 0 ? true : false, // main에서는 앱바가 바디에 올라가게끔
-        body: pages[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          selectedItemColor: Colors.grey,
-          // ignore: prefer_const_literals_to_create_immutables
-          items: [
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled),
-                label: 'home',
-                activeIcon: Icon(Icons.home_filled, color: Color(0xFFBBE4CB))),
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.access_time),
-                label: 'alarm',
-                activeIcon: Icon(Icons.access_time, color: Color(0xFFBBE4CB))),
-            const BottomNavigationBarItem(
-                icon: Icon(Icons.add_box_outlined),
-                label: 'register',
-                activeIcon:
-                    Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
-            const BottomNavigationBarItem(
-                icon: Icon(MdiIcons.pill),
-                label: 'mydrugs',
-                activeIcon: Icon(
-                  MdiIcons.pillMultiple,
-                  color: Color(0xFFBBE4CB),
-                )),
-            const BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.map_fill),
-                label: 'pharmacy',
-                activeIcon: Icon(Icons.map, color: Color(0xFFBBE4CB))),
-          ],
-        ));
+      appBar: CustomMainAppBar(isMain: _selectedIndex == 0 ? true : false),
+      extendBodyBehindAppBar:
+          _selectedIndex == 0 ? true : false, // main에서는 앱바가 바디에 올라가게끔
+      body: pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        iconSize: 27,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Colors.grey,
+        // ignore: prefer_const_literals_to_create_immutables
+        items: [
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              label: 'Home',
+              activeIcon: Icon(Icons.home_filled, color: Color(0xFFBBE4CB))),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.access_time),
+              label: 'Alarm',
+              activeIcon: Icon(Icons.access_time, color: Color(0xFFBBE4CB))),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.add_box_outlined),
+              label: 'Register',
+              activeIcon:
+                  Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
+          const BottomNavigationBarItem(
+              icon: Icon(MdiIcons.pill),
+              label: 'MyDrugs',
+              activeIcon: Icon(
+                MdiIcons.pillMultiple,
+                color: Color(0xFFBBE4CB),
+              )),
+          const BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.map_fill),
+              label: 'Pharmacy',
+              activeIcon: Icon(Icons.map, color: Color(0xFFBBE4CB))),
+        ],
+      ),
+    );
   }
 }
