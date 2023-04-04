@@ -286,7 +286,7 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public List<MedicineByTagDto> searchByTags(Profile profile, List<String> tagList) {
-        List<MyMedicineHasTag> myMedicineHasTagList=myMedicineHasTagRepository.findAllByDelYnAndTag_NameIn(tagList,
+        List<MyMedicineHasTag> myMedicineHasTagList=myMedicineHasTagRepository.findAllByDelYnAndMyMedicine_FinishAndTag_NameIn(tagList,
             profile.getProfileSeq());
         HashMap<MyMedicine, List<TagDto>> myMedicineListHashMap = new HashMap<>();
         for(MyMedicineHasTag myMedicineHasTag : myMedicineHasTagList){
