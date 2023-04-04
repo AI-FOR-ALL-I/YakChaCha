@@ -55,7 +55,7 @@ dependencies:
   xml2json: ^5.3.6
   image: ^4.0.15
   rxdart: ^0.27.7
-
+  flutter_launcher_icons: ^0.12.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
