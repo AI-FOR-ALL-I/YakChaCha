@@ -142,6 +142,7 @@ public class ReminderServiceImpl implements ReminderService {
                 .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
 
         ReminderDetailResponseDto result = ReminderDetailResponseDto.builder()
+                .reminderSeq(reminderSeq)
                 .title(reminder.getTitle())
                 .time(reminder.getTime())
                 .build();
