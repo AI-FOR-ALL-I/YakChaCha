@@ -38,4 +38,6 @@ public interface ProfileLinkService {
     void linkProfiles(Account account, List<LinkProfileRequestDto> requestDto);
 
     List<AccountResponseDto> getLinkedAccount(Profile profile);
+
+    void unlink(Account account, long profileLinkSeq);
 }

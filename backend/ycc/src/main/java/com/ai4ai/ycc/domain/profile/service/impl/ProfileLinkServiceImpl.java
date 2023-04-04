@@ -456,6 +456,18 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         return result;
     }
 
+    @Override
+    public void unlink(Account account, long profileLinkSeq) {
+        ProfileLink profileLink = profileLinkRepository.findByProfileLinkSeqAndDelYn(profileLinkSeq, "N")
+                .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
+
+        if (profileLink.getOwner().getAccountSeq() != account.getAccountSeq()) {
+            throw new ErrorException(ProfileLinkErrorCode.BAD_REQUEST);
+        }
+
+        profileLink.remove();
+    }
+
 
     public String generateAuthNumber() {
         log.info("[generateAuthNumber] 인증번호 생성 시작");
