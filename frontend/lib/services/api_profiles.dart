@@ -111,7 +111,7 @@ class ApiProfiles {
     final data = {
       "profiles": profiles,
     };
-    final path = ApiConstants.modifyProfile
+    final path = ApiConstants.acceptRequest
         .replaceAll('{senderAccountSeq}', senderAccountSeq.toString());
     return dio.put(path,
         data: data,
@@ -121,6 +121,61 @@ class ApiProfiles {
             'Authorization': 'Bearer $accessToken'
           },
         ));
+  }
+
+  // receiver 측 인증번호 확인하기
+  static Future<Response> getNumber(int senderAccountSeq) async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+
+    final path = ApiConstants.getAuthNumber
+        .replaceAll('{senderAccountSeq}', senderAccountSeq.toString());
+    return dio.get(path,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken'
+          },
+        ));
+  }
+
+  // sender 인증번호 PUT
+  static Future<Response> putNumber(String number) {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    final data = {"authNumber": number};
+    const path = ApiConstants.sendAuthNumber;
+    return dio.put(path,
+        data: data,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
+
+  // sender 연동된 프로필 정보들 GET
+  static Future<Response> getList() {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    const path = ApiConstants.getProfileList;
+    return dio.get(path,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
+
+  // sender 프로필 정보 POST
+  static Future<Response> postInfos(List<Map<String, dynamic>> datas) {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    const path = ApiConstants.postSelectedProfile;
+    return dio.post(path,
+        data: datas,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
   }
 
   // 프로필 수정 PUT
