@@ -146,6 +146,32 @@ class ApiProfiles {
     final data = {"authNumber": number};
     const path = ApiConstants.sendAuthNumber;
     return dio.put(path,
+        data: data,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
+
+  // sender 연동된 프로필 정보들 GET
+  static Future<Response> getList() {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    const path = ApiConstants.getProfileList;
+    return dio.get(path,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
+
+  // sender 프로필 정보 POST
+  static Future<Response> postInfos(List<Map<String, dynamic>> datas) {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    const path = ApiConstants.postSelectedProfile;
+    return dio.post(path,
+        data: datas,
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken'
