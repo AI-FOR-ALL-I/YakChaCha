@@ -6,6 +6,8 @@ import 'package:frontend/screens/alarm/alarm_create_page.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 import 'package:frontend/controller/alarm_controller.dart';
 import 'package:get/get.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 class AlarmDetailPage extends StatefulWidget {
   final int seq;
@@ -26,10 +28,48 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
     });
   }
 
+  List _highlightedDate = [];
+  var newDateTime = DateTime.now();
+
+  getAlarmCalendar(String year, String month) async {
+    List tempList = [];
+    List temp = [];
+    var controller = Get.put(AlarmController());
+
+    temp = await controller.getAlarmCalendar(widget.seq, '$year-$month');
+    // for (int i = 0; i < temp.length; i++) {
+    //   tempList.add(DateTime(int.parse(year), int.parse(month), temp[i]));
+    // }
+    setState(() {
+      _highlightedDate = temp;
+    });
+  }
+
+  void _onPageChanged(DateTime focusedDay) {
+    String year = DateFormat('yyyy').format(focusedDay);
+    String month = DateFormat('MM').format(focusedDay);
+    getAlarmCalendar(year, month);
+
+    setState(() {
+      newDateTime = DateTime(int.parse(year), int.parse(month), 1);
+    });
+  }
+
+  Future<void> _goToUpdate() async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                AlarmCreatePage(isCreate: false, alarmDetail: alarmDetail)));
+    getAlarmDetail();
+  }
+
   @override // 알람 디테일 받아오기
   void initState() {
     super.initState();
     getAlarmDetail();
+    getAlarmCalendar(DateFormat('yyyy').format(DateTime.now()),
+        DateFormat('MM').format(DateTime.now()));
   }
 
   @override
@@ -98,11 +138,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                             child: IconButton(
                               padding: EdgeInsets.zero,
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            AlarmCreatePage(isCreate: false)));
+                                _goToUpdate();
                               },
                               icon: Icon(Icons.settings_outlined),
                             ),
@@ -128,16 +164,18 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                         ? '총 ${controller.alarmDetail['totalCount']}정 | ${controller.alarmDetail['typeCount']} 종류'
                         : '로딩중'),
                   ),
-                  Expanded(
+                  Flexible(
+                    flex: 1,
                     child: controller.alarmDetail["medicineList"] != null
                         ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
                             itemCount:
                                 controller.alarmDetail['medicineList'].length,
                             // shrinkWrap: true,
                             itemBuilder: ((context, i) {
                               var pill =
                                   controller.alarmDetail["medicineList"][i];
-                              print(pill);
+
                               return RenewMyPill(
                                 // TODO: 여기 response 생기면 수정하기
                                 itemSeq: pill["medicineSeq"],
@@ -151,6 +189,22 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                               );
                             }))
                         : SizedBox(),
+                  ),
+                  Flexible(
+                    flex: 3,
+                    child: TableCalendar(
+                        firstDay: DateTime.utc(2010, 10, 16),
+                        lastDay: DateTime.utc(2030, 3, 14),
+                        focusedDay: newDateTime,
+                        onPageChanged: (focusedDay) =>
+                            _onPageChanged(focusedDay),
+                        eventLoader: (day) {
+                          if (_highlightedDate.contains(day.day) &&
+                              day.month == newDateTime.month) {
+                            return ['hi'];
+                          }
+                          return [];
+                        }),
                   )
                 ],
               ),

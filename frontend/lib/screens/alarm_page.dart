@@ -18,6 +18,16 @@ class _AlarmPageState extends State<AlarmPage> {
     List alarms = await controller.getAlarmList() ?? [];
   }
 
+  Future<void> _goToUpdate() async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AlarmCreatePage(
+                  isCreate: true,
+                )));
+    await getAlarmList();
+  }
+
   @override // 알람 목록 받아오기
   void initState() {
     super.initState();
@@ -44,7 +54,9 @@ class _AlarmPageState extends State<AlarmPage> {
                 ListView.builder(
                     itemCount: controller.alarmList.length,
                     itemBuilder: (context, i) {
-                      return CustomAlarmWidget(data: controller.alarmList[i]);
+                      return CustomAlarmWidget(
+                        data: controller.alarmList[i],
+                      );
                     }),
                 Positioned(
                   bottom: 40,
@@ -52,12 +64,7 @@ class _AlarmPageState extends State<AlarmPage> {
                   child: FloatingActionButton(
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AlarmCreatePage(
-                                      isCreate: true,
-                                    )));
+                        _goToUpdate();
                       },
                       child: Text('+', style: TextStyle(color: Colors.white))),
                 )

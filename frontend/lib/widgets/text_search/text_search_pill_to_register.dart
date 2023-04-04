@@ -102,7 +102,7 @@ class Before extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var flagImg = true;
-    if (data["img"] == 'assets/images/defaultPill1.png') {
+    if (data["img"] == 'assets/images/defaultPill1.png' || data["img"] == "") {
       flagImg = false;
     }
 

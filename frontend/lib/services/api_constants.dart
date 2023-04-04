@@ -67,7 +67,8 @@ class ApiConstants {
   static const String getAlarm = '$baseurl/profiles/{profileLinkSeq}/reminders';
 
   // 사진 검색
-  static const String imgSearch = 'http://j8a803.p.ssafy.io:8090/run/predict';
+  static const String imgSearch =
+      'http://j8a803.p.ssafy.io:8090/run/new_predict';
   // 처방전 검색
   static const String ocrSearch =
       'http://j8a803.p.ssafy.io:8090/run/prescription';

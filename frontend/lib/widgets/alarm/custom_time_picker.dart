@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:intl/intl.dart';
 
 class CustomTimePicker extends StatefulWidget {
-  const CustomTimePicker({Key? key, required this.setTime, required this.time})
+  const CustomTimePicker(
+      {Key? key,
+      required this.setTime,
+      required this.time,
+      required this.isCreate,
+      this.originalTime})
       : super(key: key);
   final Function(DateTime) setTime;
   final DateTime time;
+  final bool isCreate;
+  final String? originalTime;
   @override
   State<CustomTimePicker> createState() => _CustomTimePickerState();
 }
@@ -15,7 +23,16 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
   @override
   void initState() {
     super.initState();
-    _dateTime = widget.time;
+    if (widget.originalTime != null) {
+      String timeString = widget.originalTime!;
+      DateFormat format = DateFormat("hh:mm:a");
+      DateTime parsedTime = format.parse(timeString);
+      _dateTime = parsedTime;
+      print(_dateTime);
+    } else {
+      _dateTime = widget.time;
+      print(_dateTime); // null 일 경우에는 현재 시간 사용
+    }
   }
 
   @override

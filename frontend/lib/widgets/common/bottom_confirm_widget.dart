@@ -7,20 +7,23 @@ import 'dart:async';
 
 class BottomConfirmWidget extends StatefulWidget {
   final bool isAlarm;
+  final bool? isAlarmUpdate;
   final List? tempList;
   final Function? registerFinal;
   final Function? confirm;
   final bool isAlarmMyPill;
+  final int? reminderSeq;
 
-  const BottomConfirmWidget({
-    Key? key,
-    required this.isAlarm,
-    this.tempList,
-    this.registerFinal,
-    this.confirm,
-    required this.isAlarmMyPill,
-  }) // Alarm 생성/수정 페이지면 true, 약 선택 화면이면 false
-  : super(key: key);
+  const BottomConfirmWidget(
+      {Key? key,
+      required this.isAlarm,
+      this.tempList,
+      this.registerFinal,
+      this.confirm,
+      this.isAlarmUpdate,
+      required this.isAlarmMyPill,
+      this.reminderSeq}) // Alarm 생성/수정 페이지면 true, 약 선택 화면이면 false
+      : super(key: key);
 
   @override
   State<BottomConfirmWidget> createState() => _BottomConfirmWidgetState();
@@ -48,11 +51,17 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
         child: widget.isAlarm // 여기가 알람 등록 페이지
             ? GestureDetector(
                 onTap: () async {
-                  bool result = await controller.dioRequest();
+                  bool? result;
+                  if (widget.isAlarmUpdate == null) {
+                    result = await controller.dioRequest("create", 0);
+                  } else {
+                    result = await controller.dioRequest(
+                        "update", widget.reminderSeq!);
+                  }
                   AlarmController alarmController = Get.put(AlarmController());
                   alarmController.getAlarmList();
-
-                  if (result) {
+                  print(result);
+                  if (result != null && result) {
                     showDialog(
                       context: context,
                       barrierDismissible: false,

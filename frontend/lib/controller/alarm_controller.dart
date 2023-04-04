@@ -32,6 +32,19 @@ class AlarmController extends GetxController {
     update();
   }
 
+  Future getAlarmCalendar(int alarmSeq, String yyyyMM) async {
+    try {
+      var response = await ApiAlarm.getAlarmCalendar(alarmSeq, yyyyMM);
+      // {"success":true,"message":"요청에 성공하셨습니다.","data":[4]}
+      List data = response.data["data"];
+      print(data);
+      return data;
+    } catch (e) {
+      print(e);
+    }
+    update();
+  }
+
   Future takePill(int alarmSeq) async {
     try {
       var response = await ApiAlarm.takePills(alarmSeq);

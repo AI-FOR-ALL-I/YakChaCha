@@ -3,17 +3,31 @@ import 'package:frontend/screens/alarm/alarm_detail_page.dart';
 import 'package:frontend/controller/alarm_controller.dart';
 import 'package:get/get.dart';
 
-class CustomAlarmWidget extends StatelessWidget {
+class CustomAlarmWidget extends StatefulWidget {
   const CustomAlarmWidget({Key? key, required this.data}) : super(key: key);
   final Map data;
+
+  @override
+  State<CustomAlarmWidget> createState() => _CustomAlarmWidgetState();
+}
+
+class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
+  Future<void> _goToDetail() async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                AlarmDetailPage(seq: widget.data["reminderSeq"])));
+  }
+
   // {"reminderSeq":7,"title":"new Alarm","time":"01:00:PM","taken":false,"status":4}
   @override
   Widget build(BuildContext context) {
     Color statusColor = Colors.white;
 
-    if (data["status"] == 1) {
+    if (widget.data["status"] == 1) {
       statusColor = Theme.of(context).colorScheme.error;
-    } else if (data["status"] == 2) {
+    } else if (widget.data["status"] == 2) {
       statusColor = Theme.of(context).colorScheme.primary;
     }
     Color statusBorderColor = Colors.transparent;
@@ -24,11 +38,7 @@ class CustomAlarmWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    AlarmDetailPage(seq: data["reminderSeq"])));
+        _goToDetail();
       },
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -50,8 +60,8 @@ class CustomAlarmWidget extends StatelessWidget {
                           Container(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10.0),
-                              child: data["title"] != null
-                                  ? Text(data["title"])
+                              child: widget.data["title"] != null
+                                  ? Text(widget.data["title"])
                                   : Text("약 먹을 시간!"),
                             ),
                           ),
@@ -59,11 +69,11 @@ class CustomAlarmWidget extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                data["time"].split(':')[0] +
+                                widget.data["time"].split(':')[0] +
                                     ":" +
-                                    data["time"].split(':')[1] +
+                                    widget.data["time"].split(':')[1] +
                                     " " +
-                                    data["time"].split(':')[2],
+                                    widget.data["time"].split(':')[2],
                                 style: TextStyle(fontSize: 40),
                               ),
                             ),
@@ -74,9 +84,15 @@ class CustomAlarmWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0),
                       child: Container(
-                          child: (data["status"] == 1)
-                              ? Icon(Icons.error_outline_outlined)
-                              : (data["status"] == 2)
+                          child: (widget.data["status"] == 1)
+                              ? GestureDetector(
+                                  child: Icon(Icons.error_outline_outlined),
+                                  onTap: () {
+                                    var controller = Get.put(AlarmController());
+                                    controller
+                                        .takePill(widget.data["reminderSeq"]);
+                                  })
+                              : (widget.data["status"] == 2)
                                   ? Icon(Icons.check_circle_outlined)
                                   : GestureDetector(
                                       child: Icon(Icons
@@ -84,8 +100,8 @@ class CustomAlarmWidget extends StatelessWidget {
                                       onTap: () {
                                         var controller =
                                             Get.put(AlarmController());
-                                        controller
-                                            .takePill(data["reminderSeq"]);
+                                        controller.takePill(
+                                            widget.data["reminderSeq"]);
                                       })
 
                           // child: Icon(Icons.check_circle_outlined),

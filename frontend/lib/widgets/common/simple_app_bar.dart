@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/alarm_page.dart';
 import 'package:frontend/screens/settings/setting_bottom_sheet.dart';
+import 'package:frontend/services/api_alarm_register.dart';
+import 'package:get/get.dart';
+import 'package:frontend/controller/alarm_controller.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final int? reminderSeq;
 
-  const SimpleAppBar({Key? key, required this.title}) : super(key: key);
+  const SimpleAppBar({Key? key, required this.title, this.reminderSeq})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    AlarmController alarmController = Get.put(AlarmController());
+    Future<void> updateAlarmList() async {
+      await ApiAlarmRegister.alarmDelete(reminderSeq);
+      alarmController.getAlarmList();
+    }
+
     return AppBar(
       backgroundColor: Colors.white,
       leading: IconButton(
@@ -24,8 +35,9 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
           TextButton(
               onPressed: () {
                 // TODO: 만약에 알람을 삭제하고 알람 메인 페이지로 이동하면, 뒤로가기 눌렀을 때 어떻게 되는 거지..?
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AlarmPage()));
+                updateAlarmList();
+                Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: const Text(
                 '삭제',

@@ -28,7 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-
   cupertino_icons: ^1.0.2
   curl_logger_dio_interceptor: ^0.0.3
   dio: ^4.0.6
@@ -55,6 +54,7 @@ dependencies:
   xml2json: ^5.3.6
   image: ^4.0.15
   rxdart: ^0.27.7
+  table_calendar: ^3.0.9
   flutter_launcher_icons: ^0.12.0
 
 dev_dependencies:

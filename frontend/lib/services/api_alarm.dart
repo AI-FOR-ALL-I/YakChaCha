@@ -32,10 +32,25 @@ class ApiAlarm {
   }
 
   static Future<Response> getAlarmDetail(int alarmSeq) async {
+    print('시작!');
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     final path = ApiConstants.getAlarm
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(
       path + '/${alarmSeq}',
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken'
+      }),
+    );
+    print('끝');
+  }
+
+  static Future<Response> getAlarmCalendar(int alarmSeq, String yyyyMM) async {
+    final path = ApiConstants.getAlarm
+        .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
+    return dio.get(
+      path + '/${alarmSeq}/records/$yyyyMM',
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken'
@@ -47,7 +62,7 @@ class ApiAlarm {
     final path = ApiConstants.getAlarm
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.put(
-      ApiConstants.getAlarm + '/${alarmSeq}/take',
+      path + '/${alarmSeq}/take',
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken'

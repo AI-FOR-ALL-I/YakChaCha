@@ -62,8 +62,8 @@ class AlarmPillController extends GetxController {
   }
 
   // 알람에 등록할 약 추가
-  void add(seq, img, tagList, title) {
-    selectedList.add({"medicineSeq": seq, "count": 1});
+  void add(seq, img, tagList, title, count) {
+    selectedList.add({"medicineSeq": seq, "count": count});
     displayList.add({
       "itemName": title,
       "itemSeq": seq,
@@ -91,7 +91,7 @@ class AlarmPillController extends GetxController {
           !selectedList.any((pill) => pill['medicineSeq'] == index)) {
         MyPillModel target =
             myPillList.firstWhere((pill) => pill.itemSeq == index);
-        add(index, target.img, target.tagList, target.itemName);
+        add(index, target.img, target.tagList, target.itemName, 1);
       } else if (!tempList.contains(index) &&
           selectedList.any((pill) => pill['medicineSeq'] == index)) {
         delete(index);
@@ -123,11 +123,13 @@ class AlarmPillController extends GetxController {
     update;
   }
 
-  Future dioRequest() async {
+  Future dioRequest(String type, int reminderSeq) async {
     registerMap["medicineList"] = selectedList;
     try {
-      dio.Response response = await ApiAlarmRegister.alarmRegister(registerMap);
+      dio.Response response =
+          await ApiAlarmRegister.alarmRegister(registerMap, type, reminderSeq);
       Map<String, dynamic> data = response.data;
+      print(data);
       return data['success'];
     } catch (e) {
       print(e);
@@ -201,6 +203,7 @@ class AlarmPillController extends GetxController {
           resultList[i]["img"],
           resultList[i]["tagList"],
           resultList[i]["itemName"],
+          1,
         );
         selectTemp(resultList[i]["itemSeq"]);
         submitTemp();
@@ -208,5 +211,16 @@ class AlarmPillController extends GetxController {
     }
     print(displayList);
     update();
+  }
+
+//seq, img, tagList, title
+  // 수정용 displayList 업데이트
+  void displayListToupdate(List list) {
+    for (int i = 0; i < list.length; i++) {
+      add(list[i]["medicineSeq"], list[i]["img"], list[i]["tags"],
+          list[i]["name"], list[i]["count"]);
+    }
+    update();
+    print(displayList);
   }
 }

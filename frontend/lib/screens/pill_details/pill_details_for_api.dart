@@ -78,7 +78,7 @@ class PillDetailsForApi extends StatelessWidget {
                               // 필요한 자료
                               var tempData = {
                                 'itemSeq': pillDetail.itemSeq,
-                                'img': img,
+                                'img': pillDetail.img,
                                 'itemName': pillDetail.itemName,
                                 'warnPregnant':
                                     false, // TODO: 위험여부 받아서 여기다 넣어줘야 함...
