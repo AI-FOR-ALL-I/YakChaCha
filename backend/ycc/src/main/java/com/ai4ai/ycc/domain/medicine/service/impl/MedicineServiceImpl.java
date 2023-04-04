@@ -86,6 +86,13 @@ public class MedicineServiceImpl implements MedicineService {
                     tempList.add(Long.parseLong(medicine));
                 }
                 medicineList = medicineRepository.findAllByItemSeqIn(tempList);
+                Collections.sort(medicineList, new Comparator<Medicine>() {
+                    @Override
+                    public int compare(Medicine o1, Medicine o2) {
+                        return tempList.indexOf(o1.getItemSeq()) - tempList.indexOf(o2.getItemSeq());
+                    }
+                });
+
                 break;
             default:
                 break;
@@ -348,6 +355,10 @@ public class MedicineServiceImpl implements MedicineService {
         List<MyMedicineHasTag> myMedicineHasTags = myMedicineHasTagRepository.findByMyMedicineAndDelYn(myMedicine,"N");
         for (MyMedicineHasTag myMedicineHasTag : myMedicineHasTags){
             myMedicineHasTag.remove();
+            if(!myMedicineHasTagRepository.existsByTag_NameAndAndDelYnAndTag_ProfileSeq(myMedicineHasTag.getTag().getName(),"N",
+                profile.getProfileSeq())){
+                myMedicineHasTag.getTag().remove();
+            }
         }
         myMedicine.remove();
         return myMedicine;
