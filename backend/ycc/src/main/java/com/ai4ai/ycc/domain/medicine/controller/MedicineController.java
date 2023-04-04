@@ -2,6 +2,9 @@ package com.ai4ai.ycc.domain.medicine.controller;
 
 import java.util.List;
 
+import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
+import com.ai4ai.ycc.domain.reminder.entity.ReminderMedicine;
+import com.ai4ai.ycc.domain.reminder.service.ReminderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +41,7 @@ public class MedicineController {
     private final ResponseService responseService;
     private final MedicineService medicineService;
     private final ProfileService profileService;
+    private final ReminderService reminderService;
 
     // 약 검색
     @GetMapping("/search")
@@ -84,7 +88,8 @@ public class MedicineController {
     @PutMapping("/my")
     public ResponseEntity<Result> deleteMyMedicine(@PathVariable long profileLinkSeq, @LoginUser Account account, @RequestParam long myMedicineSeq) {
         Profile profile=profileService.getProfile(account, profileLinkSeq);
-        medicineService.deleteMyMedicine(profile,myMedicineSeq);
+        MyMedicine myMedicine = medicineService.deleteMyMedicine(profile,myMedicineSeq);
+        reminderService.removeByMyMedicine(myMedicine);
         return ResponseEntity.ok()
             .body(responseService.getSuccessResult());
     }

@@ -8,6 +8,7 @@ import com.ai4ai.ycc.domain.medicine.dto.MedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.MyMedicineDto;
 import com.ai4ai.ycc.domain.medicine.dto.RegistRequestDto;
 import com.ai4ai.ycc.domain.medicine.dto.TagDto;
+import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 
 public interface MedicineService {
@@ -25,7 +26,7 @@ public interface MedicineService {
 
 	void deleteTags(Profile profile, String tagName);
 
-	void deleteMyMedicine(Profile profile, long myMedicineSeq);
+	MyMedicine deleteMyMedicine(Profile profile, long myMedicineSeq);
 
-	void takenMyMedicine();
+	List<MyMedicine> takenMyMedicine();
 }
