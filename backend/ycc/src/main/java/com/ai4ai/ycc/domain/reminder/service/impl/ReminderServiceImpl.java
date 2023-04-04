@@ -157,13 +157,14 @@ public class ReminderServiceImpl implements ReminderService {
                 log.info("NOT FOUND MEDICINE");
                 continue;
             }
+
             String img = medicine.getImg() == null ? "" : medicine.getImg();
             String name = medicine.getItemName();
             int count = reminderMedicine.getCount();
 
             List<ReminderDetailResponseDto.Tag> tags = new ArrayList<>();
 
-            MyMedicine myMedicine = myMedicineRepository.findByMedicineAndDelYn(medicine, "N")
+            MyMedicine myMedicine = myMedicineRepository.findByProfileAndMedicineAndDelYn(profile, medicine, "N")
                     .orElse(null);
 
             if (myMedicine == null) {
