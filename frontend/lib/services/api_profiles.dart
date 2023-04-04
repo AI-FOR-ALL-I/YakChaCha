@@ -139,6 +139,19 @@ class ApiProfiles {
         ));
   }
 
+  // sender 인증번호 PUT
+  static Future<Response> putNumber(String number) {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    final data = {"authNumber": number};
+    const path = ApiConstants.sendAuthNumber;
+    return dio.put(path,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
+
   // 프로필 수정 PUT
   static Future<Response> modifyProfile(
       int profileLinkSeq,
