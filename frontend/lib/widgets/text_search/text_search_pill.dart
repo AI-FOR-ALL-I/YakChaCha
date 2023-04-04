@@ -17,12 +17,12 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
     print(widget.data);
     bool isWarning = true;
     return Padding(
-      padding: const EdgeInsets.all(12),
-      child: AspectRatio(
-        aspectRatio: 1.2 / 1,
-        child: Material(
-          elevation: 5,
-          borderRadius: BorderRadius.circular(15),
+      padding: const EdgeInsets.all(10),
+      child: Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(15),
+        child: AspectRatio(
+          aspectRatio: 1.2/1,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Stack(
@@ -31,18 +31,22 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Flexible(
-                      flex: 2,
+                      flex: 4,
                       child: Stack(
                         children: [
-                          widget.data?['img'] == ''
-                              ? Image.asset(
-                                  'assets/images/defaultPill1.png',
-                                  fit: BoxFit.fill,
-                                )
-                              : Image.network(
-                                  '${widget.data?['img']}',
-                                  fit: BoxFit.fill,
-                                ),
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: widget.data?['img'] == ''
+                                ? Image.asset(
+                                    'assets/images/defaultPill1.png',
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.network(
+                                    '${widget.data?['img']}',
+                                    fit: BoxFit.fill,
+                                  ),
+                          ),
                           if (widget.data?['collide'] ||
                               widget.data?['warnPregnant'] ||
                               widget.data?['warnOld'] ||
@@ -65,13 +69,23 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                         ],
                       ),
                     ),
-                    Expanded(
+                    Flexible(
+                      flex: 2,
                       child: Container(
-                        constraints: BoxConstraints(
-                          minHeight: 0,
-                          maxHeight: double.infinity,
+                        padding: EdgeInsets.all(10),
+                        // constraints: BoxConstraints(
+                        //   minHeight: 0,
+                        //   maxHeight: double.infinity,
+                        // ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${widget.data?['itemName']}',
+                          softWrap: true,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        child: Text('${widget.data?['itemName']}'),
                       ),
                     ),
                   ],
@@ -98,7 +112,8 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                             Text(
                                               '임산부 주의',
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Colors.white,
+                                                  fontSize: 19),
                                             )
                                           ])
                                         : Container(),
@@ -107,7 +122,8 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                             Text(
                                               '노약자 주의',
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Colors.white,
+                                                  fontSize: 19),
                                             ),
                                           ])
                                         : Container(),
@@ -116,7 +132,8 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                             Text(
                                               '어린이 주의',
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Colors.white,
+                                                  fontSize: 19),
                                             )
                                           ])
                                         : Container(),
@@ -125,7 +142,8 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                             Text(
                                               '충돌 약물 주의',
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                  color: Colors.white,
+                                                  fontSize: 19),
                                             )
                                           ])
                                         : Container(), // TODO: 여기다가 클릭하면 팝업 같은 걸로 충돌 약물 뜨도록!

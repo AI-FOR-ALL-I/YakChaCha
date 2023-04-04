@@ -42,13 +42,13 @@ class _MyPillDeleteState extends State<MyPillDelete> {
   }
 
   Column isEmptyPills() {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Icon(
                 Icons.medication,
                 size: 58,

@@ -29,7 +29,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
             ));
       },
       child: AspectRatio(
-        aspectRatio: 3 / 1,
+        aspectRatio: 3.5 / 1,
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
           padding: const EdgeInsets.all(15),
@@ -45,6 +45,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
           child: Row(
             children: [
               Container(
+                  margin: const EdgeInsets.only(right: 7),
                   clipBehavior: Clip.hardEdge,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
@@ -65,7 +66,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                                 child: Text(widget.data["itemName"],
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(fontSize: 15)),
+                                    style: const TextStyle(fontSize: 15)),
                               )
                             ]),
                       ),
@@ -78,36 +79,40 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                     ],
                   )),
               GetBuilder<AlarmPillController>(builder: (controller) {
-                return Container(
-                    child: Column(
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Builder(builder: (context) {
                       return GestureDetector(
                         onTap: () {
-                          print(widget.data);
+                          // print(widget.data);
                           controller.changeCount(widget.data["medicineSeq"], 1);
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_drop_up_outlined,
+                          size: 30,
                         ),
                       );
                     }),
-                    Text(controller.selectedList
-                        .firstWhere((pill) =>
-                            pill["medicineSeq"] ==
-                            widget.data["medicineSeq"])["count"]
-                        .toString()),
+                    Text(
+                      controller.selectedList
+                          .firstWhere((pill) =>
+                              pill["medicineSeq"] ==
+                              widget.data["medicineSeq"])["count"]
+                          .toString(),
+                      style: const TextStyle(fontSize: 15),
+                    ),
                     GestureDetector(
                       onTap: () {
                         controller.changeCount(widget.data["medicineSeq"], -1);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.arrow_drop_down_outlined,
+                        size: 30,
                       ),
                     ),
                   ],
-                ));
+                );
               }),
             ], // 여기가 Row
           ),

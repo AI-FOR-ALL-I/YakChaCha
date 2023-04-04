@@ -48,28 +48,27 @@ class _AlarmPageState extends State<AlarmPage> {
           elevation: 0,
         ),
         body: GetBuilder<AlarmController>(builder: (controller) {
-          return Container(
-            child: Stack(
-              children: [
-                ListView.builder(
-                    itemCount: controller.alarmList.length,
-                    itemBuilder: (context, i) {
-                      return CustomAlarmWidget(
-                        data: controller.alarmList[i],
-                      );
-                    }),
-                Positioned(
-                  bottom: 40,
-                  right: 40,
-                  child: FloatingActionButton(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      onPressed: () {
-                        _goToUpdate();
-                      },
-                      child: Text('+', style: TextStyle(color: Colors.white))),
-                )
-              ],
-            ),
+          return Stack(
+            children: [
+              ListView.builder(
+                  itemCount: controller.alarmList.length,
+                  itemBuilder: (context, i) {
+                    return CustomAlarmWidget(
+                      data: controller.alarmList[i],
+                    );
+                  }),
+              Positioned(
+                bottom: 25,
+                right: 20,
+                child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    onPressed: () {
+                      _goToUpdate();
+                    },
+                    child: Text('+',
+                        style: TextStyle(color: Colors.white, fontSize: 36))),
+              )
+            ],
           );
         }),
       ),

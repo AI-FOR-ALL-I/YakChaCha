@@ -130,6 +130,7 @@ class PillDetailLineHyoState extends State<PillDetailLineHyo> {
           ),
           triClicked
               ? Container(
+                
                   margin: EdgeInsets.only(bottom: 5),
                   alignment: Alignment.centerLeft,
                   child: _parsedContent != null

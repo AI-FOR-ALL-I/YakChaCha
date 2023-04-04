@@ -121,7 +121,9 @@ class RenewMyPill extends StatelessWidget {
                       ? SizedBox()
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [Text('d-$dday')],
+                          children: [
+                            dday == 0 ? Text('D - day') : Text('D - $dday')
+                          ],
                         )),
             ], // 여기가 Row
           ),

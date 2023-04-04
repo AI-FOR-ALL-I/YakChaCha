@@ -24,11 +24,12 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
   @override
   Widget build(BuildContext context) {
     Color statusColor = Colors.white;
-
+    Color textColor = Color.fromARGB(255, 78, 78, 78);
     if (widget.data["status"] == 1) {
-      statusColor = Theme.of(context).colorScheme.error;
+      statusColor = Color(0xFFFF9292);
+      textColor = Color.fromARGB(255, 243, 243, 243);
     } else if (widget.data["status"] == 2) {
-      statusColor = Theme.of(context).colorScheme.primary;
+      statusColor = Color(0xFFBBE4CB);
     }
     Color statusBorderColor = Colors.transparent;
 
@@ -47,7 +48,7 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
           borderRadius: BorderRadius.circular(20),
           color: statusColor,
           child: AspectRatio(
-            aspectRatio: 319 / 144,
+            aspectRatio: 320 / 120,
             child: Center(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,14 +59,19 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
+                            margin: EdgeInsets.only(left: 20),
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10.0),
                               child: widget.data["title"] != null
                                   ? Text(widget.data["title"])
-                                  : Text("약 먹을 시간!"),
+                                  : Text(
+                                      "약 먹을 시간이에요!",
+                                      style: TextStyle(fontSize: 16, color: textColor),
+                                    ),
                             ),
                           ),
                           Container(
+                            margin: EdgeInsets.only(left: 20),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
@@ -74,7 +80,8 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                                     widget.data["time"].split(':')[1] +
                                     " " +
                                     widget.data["time"].split(':')[2],
-                                style: TextStyle(fontSize: 40),
+                                style: TextStyle(
+                                    fontSize: 42, fontWeight: FontWeight.w500, color: textColor),
                               ),
                             ),
                           ),
@@ -86,7 +93,11 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                       child: Container(
                           child: (widget.data["status"] == 1)
                               ? GestureDetector(
-                                  child: Icon(Icons.error_outline_outlined),
+                                  child: Icon(
+                                    Icons.error_outline_outlined,
+                                    size: 35,
+                                    color: textColor,
+                                  ),
                                   onTap: () {
                                     var controller = Get.put(AlarmController());
                                     controller
@@ -95,8 +106,10 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                               : (widget.data["status"] == 2)
                                   ? Icon(Icons.check_circle_outlined)
                                   : GestureDetector(
-                                      child: Icon(Icons
-                                          .radio_button_unchecked_outlined),
+                                      child: Icon(
+                                        Icons.radio_button_unchecked_outlined,
+                                        size: 35,
+                                      ),
                                       onTap: () {
                                         var controller =
                                             Get.put(AlarmController());

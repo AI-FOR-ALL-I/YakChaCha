@@ -36,11 +36,11 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
                           const TextSearchPage(isRegister: false)));
             },
           ),
-          IconButton(
-            icon: Icon(Icons.notifications_outlined,
-                color: isMain ? Colors.white : Colors.grey),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.notifications_outlined,
+          //       color: isMain ? Colors.white : Colors.grey),
+          //   onPressed: () {},
+          // ),
           IconButton(
             icon: Icon(Icons.person_outlined,
                 color: isMain ? Colors.white : Colors.grey),

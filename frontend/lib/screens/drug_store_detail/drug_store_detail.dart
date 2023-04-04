@@ -26,16 +26,15 @@ class DrugStoreDetail extends StatelessWidget {
       body: Column(
         children: [
           KakaoMapView(
-              width: size.width,
-              height: 400,
-              kakaoMapKey: kakaoMapKey,
-              lat: latSmall,
-              lng: lngBig,
-              showMapTypeControl: true,
-              showZoomControl: true,
-              zoomLevel: 6,
-              customOverlayStyle:
-                  '''
+            width: size.width,
+            height: 400,
+            kakaoMapKey: kakaoMapKey,
+            lat: latSmall,
+            lng: lngBig,
+            showMapTypeControl: true,
+            showZoomControl: true,
+            zoomLevel: 6,
+            customOverlayStyle: '''
                   <style>
                     .customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
                     .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
@@ -44,7 +43,7 @@ class DrugStoreDetail extends StatelessWidget {
                     .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
                   </style>
                   ''',
-              customOverlay: '''
+            customOverlay: '''
                   var content =
                       '<div class="customoverlay">' +
                       '  <a href="https://www.google.com/maps/search/?api=1&query=$latSmall, $lngBig" target="_blank">' +
@@ -61,30 +60,80 @@ class DrugStoreDetail extends StatelessWidget {
                       yAnchor: 1
                   });
                   ''',
-              markerImageURL:
-                  'https://cdn-icons-png.flaticon.com/512/8059/8059164.png',
+            markerImageURL:
+                'https://cdn-icons-png.flaticon.com/512/8059/8059164.png',
           ),
-          Row(
-            children: [
-              const Icon(Icons.title_rounded),
-              Text(here)
-            ],
-          ),
-          Row(
-            children: [
-              const Icon(Icons.map_rounded),
-              Text(addr)
-            ],
-          ),
-          Row(
-            children: [
-              const Icon(Icons.phone),
-              Text(telno)
-            ],
+          Container(
+            width: size.width - 50,
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.home,
+                        size: 30,
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          here,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.map_rounded,
+                        size: 30,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            addr,
+                            style: const TextStyle(fontSize: 20),
+                            softWrap: true,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.phone,
+                        size: 30,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          telno,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
-
 }
