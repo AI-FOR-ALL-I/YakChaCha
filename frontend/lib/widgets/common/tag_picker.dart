@@ -87,12 +87,14 @@ class _TagPickerState extends State<TagPicker> {
                                       });
                                     },
                                     onSubmitted: (value) {
-                                      controller.addNewTag(widget.seq, newTag,
-                                          controller.tagList.length % 4);
-                                      setState(() {
-                                        newTag = '';
-                                      });
-                                      Navigator.pop(context);
+                                      if (value != '' && value != null) {
+                                        controller.addNewTag(widget.seq, newTag,
+                                            controller.tagList.length % 4);
+                                        setState(() {
+                                          newTag = '';
+                                        });
+                                        Navigator.pop(context);
+                                      }
                                     },
                                   ),
                                 ),
