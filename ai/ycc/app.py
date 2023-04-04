@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from proj_pill.proj_pill.main_cls01_dir import *
 from proj_pill.proj_pill.ocr_prescription import *
+from proj_pill.proj_pill.new_prediction import *
 from PIL import Image
 import os
 
@@ -29,6 +30,16 @@ def predict_images():
 
     print(prediction)
     return jsonify(prediction)
+
+@app.route('/run/new_predict', methods=['POST'])
+def new_predict_image():
+    image = request.files['image']
+    image = Image.open(image)
+
+    ocr_result = run_predict_model(image)
+
+    print(ocr_result)
+    return jsonify(ocr_result)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',
