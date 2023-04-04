@@ -92,6 +92,8 @@ class _SenderSelectedProfilesPageState
               child: Row(
                 children: [
                   ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      shrinkWrap: true,
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int index) {
                         final item = data[index];
@@ -188,34 +190,37 @@ class _SenderSelectedProfilesPageState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            // 서버통신진행
-                            //sendDataToServer(context);
-                            // 번호 확인하는 페이지로 이동
-                            sendToServer(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 32,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: InkWell(
+                            onTap: () {
+                              // 서버통신진행
+                              //sendDataToServer(context);
+                              // 번호 확인하는 페이지로 이동
+                              sendToServer(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 32,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: const Color(0xFFBBe4CB),
+                                  width: 2,
+                                ),
                                 color: const Color(0xFFBBe4CB),
-                                width: 2,
                               ),
-                              color: const Color(0xFFBBe4CB),
-                            ),
-                            child: const Text(
-                              '등록하기',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                              child: const Text(
+                                '등록하기',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
