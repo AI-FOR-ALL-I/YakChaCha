@@ -1,6 +1,7 @@
 package com.ai4ai.ycc.domain.reminder.service;
 
 import com.ai4ai.ycc.domain.account.entity.Account;
+import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import com.ai4ai.ycc.domain.reminder.dto.request.CreateReminderRequestDto;
@@ -30,6 +31,8 @@ public interface ReminderService {
     void resetReminder();
 
     List<ProfileLink> getProfileLinkListAtTime(String time);
+
+    void removeByMyMedicine(MyMedicine myMedicine);
 
     void test(Account account);
 }
