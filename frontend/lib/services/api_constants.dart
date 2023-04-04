@@ -44,10 +44,9 @@ class ApiConstants {
       '$baseurl/$links/$sender/{senderAccountSeq}';
   // R 인증번호 보기 GET
   static const String getAuthNumber =
-      '$baseurl/$links/$sender/{senderAccountSeq}';
+      '$baseurl/$links/$sender/{senderAccountSeq}/auth';
   // S 인증번호 확인 PUT
-  static const String sendAuthNumber =
-      '$baseurl/$links/$sender/{senderAccountSeq}';
+  static const String sendAuthNumber = '$baseurl/$links/auth';
   // S 목록 조회 GET
   static const String getProfileList = '$baseurl/$links/$profiles';
   // S 등록 POST
