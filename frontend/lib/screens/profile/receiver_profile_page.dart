@@ -53,7 +53,9 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const ReceiverNumberPage()));
+                builder: (context) => ReceiverNumberPage(
+                      senderAccountSeq: widget.senderAccountSeq!,
+                    )));
         // senderAccoutSeq 값 함께 넘겨주어야함!!!
         // {SERVER}/links/sender/{senderAccountSeq}/auth
       }

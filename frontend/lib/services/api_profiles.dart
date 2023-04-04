@@ -123,6 +123,22 @@ class ApiProfiles {
         ));
   }
 
+  // receiver 측 인증번호 확인하기
+  static Future<Response> getNumber(int senderAccountSeq) async {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+
+    final path = ApiConstants.getAuthNumber
+        .replaceAll('{senderAccountSeq}', senderAccountSeq.toString());
+    return dio.get(path,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken'
+          },
+        ));
+  }
+
   // 프로필 수정 PUT
   static Future<Response> modifyProfile(
       int profileLinkSeq,

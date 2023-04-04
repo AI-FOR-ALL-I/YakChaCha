@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/api_profiles.dart';
 import 'dart:async';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/bottom_navigation.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get/get.dart';
 
 class ReceiverNumberPage extends StatefulWidget {
-  const ReceiverNumberPage({super.key});
+  final int? senderAccountSeq;
+
+  const ReceiverNumberPage({super.key, this.senderAccountSeq});
 
   @override
   State<ReceiverNumberPage> createState() => _ReceiverNumberPageState();
 }
 
 class _ReceiverNumberPageState extends State<ReceiverNumberPage> {
+  Map<String, dynamic>? data;
+
   int remainingTime = 180;
   late Timer timer;
   @override
   void initState() {
     super.initState();
+    getData();
     startTimer();
   }
 
@@ -23,6 +31,23 @@ class _ReceiverNumberPageState extends State<ReceiverNumberPage> {
   void dispose() {
     timer.cancel();
     super.dispose();
+  }
+
+  void getData() async {
+    try {
+      dio.Response response =
+          await ApiProfiles.getNumber(widget.senderAccountSeq!);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> newData =
+            Map<String, dynamic>.from(response.data);
+        setState(() {
+          data = newData;
+          print('whyrano$data');
+        });
+      }
+    } catch (e) {
+      e.printError(info: 'errors');
+    }
   }
 
   void _showDialog() {
@@ -82,10 +107,10 @@ class _ReceiverNumberPageState extends State<ReceiverNumberPage> {
                 borderRadius: BorderRadius.circular(6.0),
                 color: const Color(0xFFE2E8E4),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(20.0),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Text(
-                  '번호6자리들어갈자리',
+                  data!['data']['authNumber'],
                   textAlign: TextAlign.center,
                 ),
               ),
