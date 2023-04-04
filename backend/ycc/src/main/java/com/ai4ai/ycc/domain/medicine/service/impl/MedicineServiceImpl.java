@@ -330,24 +330,28 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public void deleteMyMedicine(Profile profile, long myMedicineSeq) {
+    public MyMedicine deleteMyMedicine(Profile profile, long myMedicineSeq) {
         MyMedicine myMedicine = myMedicineRepository.findByMyMedicineSeq(myMedicineSeq);
         List<MyMedicineHasTag> myMedicineHasTags = myMedicineHasTagRepository.findByMyMedicineAndDelYn(myMedicine,"N");
         for (MyMedicineHasTag myMedicineHasTag : myMedicineHasTags){
             myMedicineHasTag.remove();
         }
         myMedicine.remove();
+        return myMedicine;
     }
 
     @Override
-    public void takenMyMedicine() {
+    public List<MyMedicine> takenMyMedicine() {
         List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinish("N","N");
         LocalDate now = LocalDate.now();
+        List<MyMedicine> takenMyMedicineList = new ArrayList<>();
         for(MyMedicine myMedicine : myMedicineList){
-            if(!now.isBefore(myMedicine.getEndDate())){
+            if(!now.isBefore(myMedicine.getEndDate().plusDays(1))){
                 myMedicine.taken();
+                takenMyMedicineList.add(myMedicine);
             }
         }
+        return takenMyMedicineList;
     }
 
     @Override

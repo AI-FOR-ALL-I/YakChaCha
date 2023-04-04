@@ -1,5 +1,6 @@
 package com.ai4ai.ycc.util;
 
+import com.ai4ai.ycc.domain.medicine.entity.MyMedicine;
 import com.ai4ai.ycc.domain.medicine.service.MedicineService;
 import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 import com.ai4ai.ycc.domain.reminder.service.ReminderService;
@@ -31,7 +32,10 @@ public class Scheduler {
     }
 
     @Scheduled(cron = "1 0 0 * * *")
-    public void myMedicineTaken() { medicineService.takenMyMedicine();}
+    public void myMedicineTaken() {
+        List<MyMedicine> myMedicineList = medicineService.takenMyMedicine();
+        myMedicineList.forEach(m -> reminderService.removeByMyMedicine(m));
+    }
 
 
     @Scheduled(cron = "0 0/10 * * * *")
