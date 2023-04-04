@@ -32,7 +32,8 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const TextSearchPage()));
+                      builder: (context) =>
+                          const TextSearchPage(isRegister: false)));
             },
           ),
           IconButton(

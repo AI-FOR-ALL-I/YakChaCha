@@ -59,6 +59,7 @@ class _TextSearchBarState extends State<TextSearchBar> {
                 IconButton(
                     onPressed: () {
                       searchText(inputData.text);
+                      FocusScope.of(context).unfocus();
                     },
                     icon: Icon(Icons.search_outlined)),
               ])),

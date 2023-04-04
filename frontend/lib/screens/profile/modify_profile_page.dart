@@ -6,15 +6,59 @@ import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/text_field.dart';
 import 'package:frontend/widgets/profile/birth_date_widget.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:get/get.dart';
+import 'package:frontend/controller/profile_controller.dart';
 
-class CreateProfilePage extends StatefulWidget {
-  const CreateProfilePage({super.key});
+class ModifyProfilePage extends StatefulWidget {
+  const ModifyProfilePage({super.key});
 
   @override
-  _CreateProfilePage createState() => _CreateProfilePage();
+  _ModifyProfilePage createState() => _ModifyProfilePage();
 }
 
-class _CreateProfilePage extends State<CreateProfilePage> {
+class _ModifyProfilePage extends State<ModifyProfilePage> {
+  Map<String, dynamic> profileInfo = {};
+  @override
+  void initState() {
+    super.initState();
+    getSelectedProfileInfo();
+    // 프로필 정보 전달받기
+  }
+
+  // 프로필 정보 받기
+  void getSelectedProfileInfo() async {
+    final profileController = Get.find<ProfileController>();
+    final profileLinkSeq = profileController.profileLinkSeq;
+    try {
+      dio.Response response = await ApiProfiles.getProfileInfo(profileLinkSeq);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> newData =
+            Map<String, dynamic>.from(response.data['data']);
+        setState(() {
+          profileInfo = newData;
+          name = profileInfo['name'];
+          nickname = profileInfo['nickname'];
+          gender = profileInfo['gender'];
+          initBirthDate = profileInfo['birthDate'];
+          isPregnant = profileInfo['pregnancy'];
+          imgCode = profileInfo['imgCode'];
+          print('$name+$nickname+$gender+$initBirthDate+$isPregnant+$imgCode');
+          if (gender == 'M') {
+            isMale = true;
+            isFemale = false;
+          } else {
+            isMale = false;
+            isFemale = true;
+          }
+        });
+      } else {
+        // 오류처리
+      }
+    } catch (e) {
+      e.printError(info: 'errors');
+    }
+  }
+
   // 프로필 생성 시 전달될 변수.
   String name = '';
   String nickname = '';
@@ -23,6 +67,13 @@ class _CreateProfilePage extends State<CreateProfilePage> {
   bool isFemale = false;
   bool isPregnant = false;
   String initBirthDate = '';
+  int imgCode = 1;
+
+  void changeProfileImage(int index) {
+    setState(() {
+      imgCode = index; // 선택한 이미지로 변경.
+    });
+  }
 
   void onBirthDateSelected(String birthDate) {
     // 생년월일 값 처리
@@ -49,8 +100,10 @@ class _CreateProfilePage extends State<CreateProfilePage> {
       } else {
         gender = 'M';
       }
-      dio.Response response = await ApiProfiles.createProfile(
-          name, gender, isPregnant, initBirthDate, nickname, 1);
+      final profileController = Get.find<ProfileController>();
+      final profileLinkSeq = profileController.profileLinkSeq;
+      dio.Response response = await ApiProfiles.modifyProfile(profileLinkSeq,
+          name, gender, isPregnant, initBirthDate, nickname, imgCode);
       // 이미지 코드는 지금 임의로 1로 보내는중입니다.
       // TODO: - 이미지 코드 설정
 
@@ -88,7 +141,7 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                                   const SelectProfileImagePage()),
                         );
                       },
-                      child: Image.asset('assets/images/sampletips.jpg',
+                      child: Image.asset('assets/images/profile$imgCode.png',
                           width: 100.0, height: 100.0)),
                 ]),
                 const SizedBox(
@@ -100,14 +153,15 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                     '이름',
                   ),
                 ),
-                TextFieldComponent(hintText: '이름', onChanged: updateName),
+                TextFieldComponent(hintText: name, onChanged: updateName),
                 const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
                     '닉네임',
                   ),
                 ),
-                TextFieldComponent(hintText: '닉네임', onChanged: updateNickname),
+                TextFieldComponent(
+                    hintText: nickname, onChanged: updateNickname),
                 const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(

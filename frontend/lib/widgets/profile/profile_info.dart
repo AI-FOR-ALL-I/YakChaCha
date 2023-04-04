@@ -42,7 +42,7 @@ class ProfileInfo extends StatelessWidget {
         print('profile$profileLinkSeq');
         updateProfile(profileLinkSeq);
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const BottomNavigation()));
+            MaterialPageRoute(builder: (context) => const BottomNavigation(where: 0,)));
       },
       child: Container(
         decoration: BoxDecoration(

@@ -64,7 +64,7 @@ class SettingPage extends StatelessWidget {
               )),
           const SettingMenuItem(
             iconName: Icons.person,
-            menuTitle: '사용자 설정',
+            menuTitle: '프로필 편집',
             cases: 0,
           ),
           const SettingMenuItem(

@@ -1,112 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/profile/receiver_number_page.dart';
+import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get/get.dart';
 
 class ReceiverProfilePage extends StatefulWidget {
-  const ReceiverProfilePage({super.key});
+  final int? senderAccountSeq; // 푸시알림에서 온 내용
+  const ReceiverProfilePage({Key? key, this.senderAccountSeq})
+      : super(key: key);
 
   @override
   State<ReceiverProfilePage> createState() => _ReceiverProfilePageState();
 }
 
 class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
-  List<Map<String, dynamic>> data = [
-    {
-      "senderAccountSeq": 1,
-      "senderAccountName": "삼성맨",
-      "profiles": [
-        {
-          "profileLinkSeq": 1,
-          "imgCode": 1,
-          "nickname": "닉네임2",
-          "name": "사용자12",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 2,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        },
-        {
-          "profileLinkSeq": 2,
-          "imgCode": 1,
-          "nickname": "닉네임1",
-          "name": "사용자1",
-          "gender": "M",
-          "birthDate": "1999-01-01",
-          "status": 1,
-          "pregnancy": false
-        }
-      ]
-    }
-  ];
+  Map<String, dynamic>? data;
+  List<int> selectedItems = [];
+  // List<Map<String, dynamic>> profileInfo = [];
   //final dio = Dio();
-
   @override
   void initState() {
     super.initState();
     getData();
   }
 
-  void getData() async {}
+  void getData() async {
+    // senderAccountSeq를 활용해서 통신
+    // ApiProfiles.getReceiversInfo(${widget.senderAccountSeq});
+    try {
+      dio.Response response =
+          await ApiProfiles.getReceiversInfo(widget.senderAccountSeq!);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> newData =
+            Map<String, dynamic>.from(response.data);
+        setState(() {
+          data = newData;
+          print('whyrano$data');
+        });
+      }
+    } catch (e) {
+      e.printError(info: 'errors');
+    }
+  }
+
+  void sendToServer(List<int> profiles) async {
+    try {
+      dio.Response response = await ApiProfiles.selectProfileToConnect(
+          widget.senderAccountSeq!, profiles);
+      if (response.statusCode == 200) {
+        // TODO: move to 번호조회 페이지
+        // senderAccoutSeq 값 함께 넘겨주어야함!!!
+        // {SERVER}/links/sender/{senderAccountSeq}/auth
+      }
+    } catch (e) {
+      e.printError(info: 'errors');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,25 +71,138 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                   style: TextStyle(fontSize: 20.0, color: Colors.black54)),
               const SizedBox(height: 16.0),
               Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
-                          children: List.generate(data.length, (index) {
-                final profiles = data[index]['profiles'];
-                return Column(
-                  children: List.generate(profiles.length, (index) {
-                    final profile = profiles[index];
-                    return ListTile(
-                      leading: Text(profile['imgCode'].toString()), // 프로필 이미지
-                      title: Text(profile['nickname']), // 닉네임
-                      subtitle: Text(profile['name']), // 이름
-                      trailing: Text(profile['status'].toString()), // 상태 메시지
-                      onTap: () {
-                        // 프로필 선택 이벤트 처리하기
-                      },
-                    );
-                  }),
-                );
-              })))),
+                child: data == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: data!['data']['profiles'].length,
+                        itemBuilder: (context, index) {
+                          final profile = data!['data']['profiles'][index];
+                          bool isSelected =
+                              selectedItems.contains(profile['profileLinkSeq']);
+                          bool isSelectable = profile['status'] == 1;
+                          return InkWell(
+                            onTap: isSelectable
+                                ? () {
+                                    // 프로필 선택 이벤트 처리하기
+                                    setState(() {
+                                      if (isSelected) {
+                                        selectedItems.removeWhere((item) =>
+                                            item == profile['profileLinkSeq']);
+                                        print('selected$selectedItems');
+                                      } else {
+                                        selectedItems
+                                            .add(profile['profileLinkSeq']);
+                                        print('selected$selectedItems');
+                                      }
+                                    });
+                                  }
+                                : null,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        child: Image.asset(
+                                          'assets/images/profile${profile['imgCode']}.png',
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                if (profile['status'] == 1)
+                                                  const Icon(
+                                                    Icons.auto_awesome,
+                                                  ),
+                                                Text(
+                                                  profile['nickname'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 5.0,
+                                                ),
+                                                Text(
+                                                  profile['name'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 4.0),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.calendar_month_rounded,
+                                                ),
+                                                const SizedBox(width: 4.0),
+                                                Text(
+                                                  profile['birthDate'],
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                if (profile['gender'] == 'M')
+                                                  const Icon(
+                                                    Icons.male_rounded,
+                                                  ),
+                                                if (profile['gender'] == 'M')
+                                                  const Text(
+                                                    '남성',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                if (profile['gender'] == 'F')
+                                                  const Icon(
+                                                      Icons.female_rounded),
+                                                if (profile['gender'] == 'F')
+                                                  const Text(
+                                                    '여성',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
               const SizedBox(height: 16.0),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -150,6 +214,7 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                         // 서버통신진행
                         //sendDataToServer(context);
                         // 번호 확인하는 페이지로 이동
+                        sendToServer(selectedItems);
                         Navigator.push(
                             context,
                             MaterialPageRoute(

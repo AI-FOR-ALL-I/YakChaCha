@@ -15,8 +15,13 @@ import 'package:get/get.dart';
 class PillDetailsForApi extends StatelessWidget {
   final String num;
   final bool turnOnPlus;
+  final bool isRegister;
+
   const PillDetailsForApi(
-      {super.key, required this.num, required this.turnOnPlus});
+      {super.key,
+      required this.num,
+      required this.turnOnPlus,
+      required this.isRegister});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,7 @@ class PillDetailsForApi extends StatelessWidget {
     return ListView(
       children: [
         // 약 등록, turnOnPlus:true 켜짐
-        turnOnPlus
+        turnOnPlus && isRegister
             ? Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 2, horizontal: 30),
@@ -147,8 +152,8 @@ class PillDetailsForApi extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: pillDetail.tagList
                           .map((tagInfo) => TagWidget(
-                              tagName: tagInfo[0],
-                              colorIndex: int.parse(tagInfo[1])))
+                              tagName: tagInfo["name"],
+                              colorIndex: tagInfo["color"]))
                           .toList(),
                     ),
                     SizedBox(
@@ -174,10 +179,8 @@ class PillDetailsForApi extends StatelessWidget {
         // 상세 설명 부분
         Column(
           children: [
-            PillDetailLine(
-                lineTitle: "성분", content: pillDetail.mainItemIngr),
-            PillDetailLineHyo(
-                lineTitle: "효능", content: pillDetail.eeDocData),
+            PillDetailLine(lineTitle: "성분", content: pillDetail.mainItemIngr),
+            PillDetailLineHyo(lineTitle: "효능", content: pillDetail.eeDocData),
             PillDetailLineMethod(
                 lineTitle: "복용 방법", content: pillDetail.udDocData),
             PillDetailLine(

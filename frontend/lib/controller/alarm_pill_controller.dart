@@ -174,6 +174,7 @@ class AlarmPillController extends GetxController {
     List tagNames = data.map((tag) => tag['name']).toList();
     try {
       var response = await ApiTag.getPillsFromTag(tagNames);
+      print(response.data["data"]);
       return response.data["data"];
     } catch (e) {
       print(e);

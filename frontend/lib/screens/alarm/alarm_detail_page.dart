@@ -137,13 +137,14 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                             itemBuilder: ((context, i) {
                               var pill =
                                   controller.alarmDetail["medicineList"][i];
+                              print(pill);
                               return RenewMyPill(
                                 // TODO: 여기 response 생기면 수정하기
                                 itemSeq: pill["medicineSeq"],
                                 itemName: pill["name"],
                                 img: pill["img"],
                                 // tag_list: pill["tagList"],
-                                tag_list: const [],
+                                tag_list: pill["tags"],
                                 isTaken: false,
                                 // dday: pill.dday,
                                 dday: 3,

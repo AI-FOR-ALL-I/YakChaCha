@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/bottom_navigation.dart';
 import 'package:frontend/controller/auth_controller.dart';
 import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/screens/profile/create_profile_page.dart';
@@ -27,16 +26,23 @@ class SocialLogin extends StatelessWidget {
         // 요청 성공!
         Map<String, dynamic> responseData = response.data;
         String accessToken = responseData['data']['accessToken'];
-        print('액세스토큰 로그인할때$accessToken');
         String refreshToken = responseData['data']['refreshToken'];
-        authController.saveTokens(accessToken, refreshToken);
+        // print('로그인결과$accessToken // $refreshToken');
+        // authController.saveTokens(accessToken, refreshToken);
         if (responseData['data']['profile'] == true) {
-          // navigate to ProfileSelectPage
+          authController.saveTokens(accessToken, refreshToken);
+          // String savedAccessToken = authController.accessToken;
+          // String savedRefreshToken = authController.refreshToken;
+          // print('저장된토큰재재확인$savedAccessToken // $savedRefreshToken');
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const SelectProfilePage()));
         } else {
+          authController.saveTokens(accessToken, refreshToken);
+          // String savedAccessToken = authController.accessToken;
+          // String savedRefreshToken = authController.refreshToken;
+          // print('저장된토큰재재확인$savedAccessToken // $savedRefreshToken');
           // navigate to CreateProfilePage
           Navigator.push(
               context,
@@ -64,21 +70,11 @@ class SocialLogin extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: GestureDetector(
-                      onTap: () async {
-                        // do something on
-                        // MARK: - 임시로 홈화면으로 이동해주는 버튼으로 설정
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BottomNavigation()),
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/sampletips.jpg',
-                        width: 100.0,
-                        height: 100.0,
-                      )),
+                  child: Image.asset(
+                    'assets/images/profile1.png',
+                    width: 100.0,
+                    height: 100.0,
+                  ),
                 ),
               ],
             ),

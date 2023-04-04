@@ -10,7 +10,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:geolocator/geolocator.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+  final int where;
+  const BottomNavigation({super.key, required this.where});
 
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
@@ -28,6 +29,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     super.initState();
     determinePosition();
     setState(() {
+      _selectedIndex = widget.where;
       pages = <Widget>[
         const HomePage(),
         const AlarmPage(),

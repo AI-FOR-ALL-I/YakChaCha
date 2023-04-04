@@ -28,31 +28,35 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-    cupertino_icons: ^1.0.2
-    curl_logger_dio_interceptor: ^0.0.3
-    dio: ^4.0.6
-    firebase_analytics: ^10.1.6
-    firebase_core: ^2.8.0
-    firebase_messaging: ^14.3.0
-    flutter:
-        sdk: flutter
-    flutter_local_notifications: ^8.2.0
-    flutter_time_picker_spinner: ^2.0.0
-    get: ^4.6.5
-    http: ^0.13.5
-    image_picker: ^0.8.7
-    intl: ^0.18.0
-    kakao_flutter_sdk: ^1.4.1
-    shared_preferences: ^2.0.20
-    kakaomap_webview: ^0.6.2
-    webview_flutter: ^3.0.2
-    geolocator: ^7.6.2
-    xml: ^6.2.2
-    url_launcher: ^6.1.10
-    location: ^4.2.0
-    material_design_icons_flutter: ^6.0.7096
-    xml2json: ^5.3.6
-    
+
+  cupertino_icons: ^1.0.2
+  curl_logger_dio_interceptor: ^0.0.3
+  dio: ^4.0.6
+  firebase_analytics: ^10.1.6
+  firebase_core: ^2.8.0
+  firebase_messaging: ^14.3.0
+  flutter:
+    sdk: flutter
+  flutter_local_notifications: ^8.2.0
+  flutter_time_picker_spinner: ^2.0.0
+  get: ^4.6.5
+  http: ^0.13.5
+  image_picker: ^0.8.7
+  intl: ^0.18.0
+  kakao_flutter_sdk: ^1.4.1
+  shared_preferences: ^2.0.20
+  kakaomap_webview: ^0.6.2
+  webview_flutter: ^3.0.2
+  geolocator: ^7.6.2
+  xml: ^6.2.2
+  url_launcher: ^6.1.10
+  location: ^4.2.0
+  material_design_icons_flutter: ^6.0.7096
+  xml2json: ^5.3.6
+  image: ^4.0.15
+  rxdart: ^0.27.7
+
+
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:

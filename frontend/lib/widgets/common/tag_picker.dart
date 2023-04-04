@@ -79,28 +79,21 @@ class _TagPickerState extends State<TagPicker> {
                                 child: Container(
                                   // height: 200.0,
                                   // width: MediaQuery.of(context).size.width * 0.8,
-                                  //여기는 엔터로 입력하게 하는 코드
-                                  child: RawKeyboardListener(
-                                    focusNode: FocusNode(),
-                                    onKey: (RawKeyEvent event) {
-                                      if (event.logicalKey ==
-                                          LogicalKeyboardKey.enter) {
-                                        controller.addNewTag(widget.seq, newTag,
-                                            controller.tagList.length % 4);
-                                        setState(() {
-                                          newTag = '';
-                                        });
-                                        Navigator.pop(context);
-                                      }
+                                  child: TextField(
+                                    controller: tagController,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        newTag = value;
+                                      });
                                     },
-                                    child: TextField(
-                                      controller: tagController,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          newTag = value;
-                                        });
-                                      },
-                                    ),
+                                    onSubmitted: (value) {
+                                      controller.addNewTag(widget.seq, newTag,
+                                          controller.tagList.length % 4);
+                                      setState(() {
+                                        newTag = '';
+                                      });
+                                      Navigator.pop(context);
+                                    },
                                   ),
                                 ),
                               );
