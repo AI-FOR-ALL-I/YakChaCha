@@ -114,7 +114,7 @@ class PillRegisterController extends GetxController {
     for (Map tag in tagList) {
       // 이미 태그 리스트에 있으면
       if (tag["name"] == tagName) {
-        addTag(seq, tagName, int.parse(tag[1]));
+        addTag(seq, tagName, tag["color"]);
         found = true;
         break;
       }

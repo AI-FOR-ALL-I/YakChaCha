@@ -62,7 +62,7 @@ class DrugStoreDetail extends StatelessWidget {
                   });
                   ''',
               markerImageURL:
-                  'https://file.notion.so/f/s/800f9740-abf9-45b9-82dd-ba3d7fbbd6f3/pillMarker.png?id=0fe7fb77-cb71-43ad-adde-8588fbac2209&table=block&spaceId=1b86ba39-dd32-4ba3-9a75-9d2fee15b543&expirationTimestamp=1680535155383&signature=d--01m9CIunB_B6Owy7EWFQtHdAcFaUespdJmQ33pk0&downloadName=pillMarker.png',
+                  'https://cdn-icons-png.flaticon.com/512/8059/8059164.png',
           ),
           Row(
             children: [

@@ -9,7 +9,6 @@ import 'package:frontend/services/taken_pill_api.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 import 'package:get/get.dart';
 
-
 class DrugHistoryPage extends StatefulWidget {
   const DrugHistoryPage({Key? key}) : super(key: key);
 
@@ -33,8 +32,8 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     });
   }
 
-  final Future<List<MyPillModel>> myPills = MyPillApi.getMyPill();
-  final Future<List<MyPillModel>> takenPills = TakenPillApi.getTakenPill();
+  final Future<List> myPills = MyPillApi.getMyPill();
+  final Future<List> takenPills = TakenPillApi.getTakenPill();
 
   @override
   Widget build(BuildContext context) {
@@ -138,72 +137,111 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     );
   }
 
-  Column takenPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
-    var isZero = false;
-    if (snapshot.data!.isEmpty) {
-      isZero = true;
+  Column takenPillList(AsyncSnapshot<List> snapshot) {
+    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      return isEmptyPills();
     }
-    return isZero
-        ? isEmptyPills()
-        : Column(
-            children: [
-              Flexible(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "총 ${snapshot.data!.length.toString()}건",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyPillDelete(
-                                          
-                                        )));
-                          },
-                          icon: Icon(Icons.settings))
-                    ],
+
+    List data = snapshot.data!;
+    data.sort((a, b) {
+      int aPeriodEnd =
+          int.parse(a.period[1].replaceAll('-', '').substring(0, 6));
+      int bPeriodEnd =
+          int.parse(b.period[1].replaceAll('-', '').substring(0, 6));
+      return bPeriodEnd - aPeriodEnd;
+    });
+    List<Map<String, dynamic>> sortedData = [];
+
+    for (var item in data) {
+      int periodEnd =
+          int.parse(item.period[1].replaceAll('-', '').substring(0, 6));
+      String periodEndStr = periodEnd.toString().padLeft(6, '0');
+      int year = int.parse(periodEndStr.substring(0, 2)) + 2000;
+      int month = int.parse(periodEndStr.substring(2, 4));
+      int day = int.parse(periodEndStr.substring(4, 6));
+      DateTime periodEndDate = DateTime(year, month, day);
+      int periodEndDateInt = int.parse(
+          "${periodEndDate.year.toString().substring(2)}${periodEndDate.month.toString().padLeft(2, '0')}${periodEndDate.day.toString().padLeft(2, '0')}");
+
+      sortedData.add({"key": periodEndDateInt, "data": item});
+    }
+
+    sortedData.sort((a, b) => a["key"].compareTo(b["key"]));
+
+    List sortedList = sortedData.map((item) => item["data"]).toList();
+    List check = [];
+    return Column(
+      children: [
+        Flexible(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "총 ${snapshot.data!.length.toString()}건",
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
-              ),
-              Flexible(
-                flex: 24,
-                child: ListView.separated(
-                  itemCount: snapshot.data!.length,
-                  separatorBuilder: (context, index) => SizedBox(),
-                  itemBuilder: (context, index) {
-                    var pill = snapshot.data![index];
-                    return isZero
-                        ? isEmptyPills()
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("복용 끝"),
-                              RenewMyPill(
-                                itemSeq: pill.itemSeq,
-                                itemName: pill.itemName,
-                                img: pill.img,
-                                tag_list: pill.tagList,
-                                isTaken: true,
-                                dday: pill.dday,
-                              ),
-                            ],
-                          );
-                  },
-                ),
-              ),
-            ],
-          );
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyPillDelete()));
+                    },
+                    icon: Icon(Icons.settings))
+              ],
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 24,
+          child: ListView.separated(
+            itemCount: sortedList.length,
+            separatorBuilder: (context, index) => SizedBox(
+              height: 10,
+            ),
+            itemBuilder: (context, index) {
+              var pill = sortedList[index];
+              var peri = pill.period[1].substring(0, 7);
+              var flag = false;
+              if (!check.contains(peri)) {
+                check.add(peri);
+                flag = true;
+              }
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  flag
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            "${peri.substring(0, 4)}년 ${peri.substring(5, 7)}월 복용",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        )
+                      : SizedBox(),
+                  RenewMyPill(
+                    itemSeq: pill.itemSeq,
+                    itemName: pill.itemName,
+                    img: pill.img,
+                    tag_list: pill.tagList,
+                    isTaken: true,
+                    dday: pill.dday,
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   Column isEmptyPills() {
@@ -233,10 +271,12 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     );
   }
 
-  Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+  Column myPillList(AsyncSnapshot<List> snapshot) {
     var isZero = false;
     if (snapshot.data!.isEmpty) {
       isZero = true;
+    } else {
+      snapshot.data!.sort((a, b) => a.dday.compareTo(b.dday));
     }
     return isZero
         ? isEmptyPills()
@@ -262,9 +302,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyPillDelete(
-                                         
-                                        )));
+                                    builder: (context) => MyPillDelete()));
                           },
                           icon: Icon(Icons.settings))
                     ],
