@@ -3,6 +3,7 @@ package com.ai4ai.ycc.domain.profile.service.impl;
 import com.ai4ai.ycc.common.entity.BaseEntity;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.account.repository.AccountRepository;
+import com.ai4ai.ycc.domain.profile.dto.response.AccountResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.RequestLinkDto;
 import com.ai4ai.ycc.domain.profile.dto.request.*;
 import com.ai4ai.ycc.domain.profile.dto.response.*;
@@ -427,6 +428,44 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
             profileLinkRepository.save(profileLink);
         }
         log.info("[linkProfiles] 프로필 연동 등록 완료");
+    }
+
+    @Override
+    public List<AccountResponseDto> getLinkedAccount(Profile profile) {
+        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByProfileAndDelYn(profile, "N");
+        List<AccountResponseDto> result = new ArrayList<>();
+
+        for (ProfileLink profileLink : profileLinkList) {
+            Account account = profileLink.getAccount();
+            Account owner = profileLink.getOwner();
+
+            if (account.getAccountSeq() == owner.getAccountSeq()) {
+                continue;
+            }
+
+            String regDttm = dateUtil.convertToStringType(profileLink.getRegDttm().toLocalDate());
+
+            result.add(AccountResponseDto.builder()
+                            .profileLinkSeq(profileLink.getProfileLinkSeq())
+                            .name(account.getName())
+                            .email(account.getEmail())
+                            .regDttm(regDttm)
+                    .build());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void unlink(Account account, long profileLinkSeq) {
+        ProfileLink profileLink = profileLinkRepository.findByProfileLinkSeqAndDelYn(profileLinkSeq, "N")
+                .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
+
+        if (profileLink.getOwner().getAccountSeq() != account.getAccountSeq()) {
+            throw new ErrorException(ProfileLinkErrorCode.BAD_REQUEST);
+        }
+
+        profileLink.remove();
     }
 
 

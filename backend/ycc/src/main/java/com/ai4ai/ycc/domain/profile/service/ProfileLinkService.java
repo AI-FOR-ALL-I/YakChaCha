@@ -1,6 +1,7 @@
 package com.ai4ai.ycc.domain.profile.service;
 
 import com.ai4ai.ycc.domain.account.entity.Account;
+import com.ai4ai.ycc.domain.profile.dto.response.AccountResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.request.*;
 import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
@@ -35,4 +36,8 @@ public interface ProfileLinkService {
     List<ReceiverProfileResponseDto> getRecieverProfileList(Account account);
 
     void linkProfiles(Account account, List<LinkProfileRequestDto> requestDto);
+
+    List<AccountResponseDto> getLinkedAccount(Profile profile);
+
+    void unlink(Account account, long profileLinkSeq);
 }
