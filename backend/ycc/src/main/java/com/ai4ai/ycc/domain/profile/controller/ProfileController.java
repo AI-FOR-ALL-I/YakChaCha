@@ -6,12 +6,14 @@ import com.ai4ai.ycc.common.response.Result;
 import com.ai4ai.ycc.domain.account.entity.Account;
 import com.ai4ai.ycc.domain.profile.dto.request.CreateProfileRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.request.ModifyProfileRequestDto;
+import com.ai4ai.ycc.domain.profile.dto.response.AccountResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,4 +72,11 @@ public class ProfileController {
                 .body(responseService.getSuccessResult());
     }
 
+    @GetMapping("/{profileLinkSeq}/links")
+    public ResponseEntity<Result> getLinkedAccount(@LoginUser Account account, @PathVariable long profileLinkSeq) {
+        Profile profile = profileService.getProfile(account, profileLinkSeq);
+        List<AccountResponseDto> result = profileLinkService.getLinkedAccount(profile);
+        return ResponseEntity.ok()
+                .body(responseService.getListResult(result));
+    }
 }
