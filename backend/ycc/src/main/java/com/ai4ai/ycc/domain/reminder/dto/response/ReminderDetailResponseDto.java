@@ -26,6 +26,7 @@ public class ReminderDetailResponseDto {
         private int color;
     }
 
+    private long reminderSeq;
     private String title;
     private String time;
     private int totalCount;
@@ -33,7 +34,8 @@ public class ReminderDetailResponseDto {
     private List<Medicine> medicineList;
 
     @Builder
-    public ReminderDetailResponseDto(String title, String time) {
+    public ReminderDetailResponseDto(long reminderSeq, String title, String time) {
+        this.reminderSeq = reminderSeq;
         this.title = title;
         this.time = time;
         this.totalCount = 0;

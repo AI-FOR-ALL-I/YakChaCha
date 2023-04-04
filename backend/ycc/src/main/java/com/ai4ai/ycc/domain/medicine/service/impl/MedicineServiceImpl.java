@@ -52,64 +52,6 @@ public class MedicineServiceImpl implements MedicineService {
 
     // 내 약 등록
     @Override
-    public void regist(List<RegistRequestDto> requestDto, Profile profile) {
-        List<Tag> tagList = tagRepository.findAllByProfileSeqAndDelYn(profile.getProfileSeq(),"N");
-        LocalDate now = LocalDate.now();
-        for(RegistRequestDto registRequestDto: requestDto){
-            boolean finish = false;
-            System.out.println(registRequestDto.getEndDate());
-            LocalDate startDate = LocalDate.parse(registRequestDto.getStartDate(),DateTimeFormatter.ISO_DATE);
-            LocalDate endDate = LocalDate.parse(registRequestDto.getEndDate(),DateTimeFormatter.ISO_DATE);
-            if(endDate.isBefore(now) || startDate.isAfter(now)){// 지금 복용 안하는 약을 등록한 경우
-                finish = true;
-            }
-
-            Medicine medicine = medicineRepository.findByItemSeq(registRequestDto.getItemSeq());
-            List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
-
-            for(MyMedicine temp_Medicine: myMedicineList){
-                if(temp_Medicine.getMedicine()==medicine){
-                    deleteMyMedicine(profile, temp_Medicine.getMyMedicineSeq());
-                    break;
-                }
-            }
-            MyMedicine myMedicine = MyMedicine.builder()
-                .endDate(endDate)
-                .finish(finish? "Y":"N")
-                .medicine(medicine)
-                .profile(profile)
-                .startDate(startDate)
-                .build();
-            myMedicineRepository.save(myMedicine);
-            loop:
-            for(List<String> tag: registRequestDto.getTagList()){
-                for(Tag mytag : tagList) {
-                    if(mytag.getName().equals(tag.get(0))){
-                        MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
-                            .myMedicine(myMedicine)
-                            .tag(mytag)
-                            .build();
-                        myMedicineHasTagRepository.save(myMedicineHasTag);
-                        continue loop;
-                    }
-                }
-                Tag mytag = Tag.builder()
-                    .profileSeq(profile.getProfileSeq())
-                    .name(tag.get(0))
-                    .color(Integer.parseInt(tag.get(1)))
-                    .build();
-                tagRepository.save(mytag);
-                MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
-                    .myMedicine(myMedicine)
-                    .tag(mytag)
-                    .build();
-                myMedicineHasTagRepository.save(myMedicineHasTag);
-            }
-        }
-        return;
-    }
-
-    @Override
     public List<MedicineDto> searchMedicine(List<String> input, Profile profile, String type) {
         List<MedicineDto> medicineDtoList = new ArrayList<>();
         List<Medicine> medicineList = new ArrayList<>();
@@ -144,6 +86,13 @@ public class MedicineServiceImpl implements MedicineService {
                     tempList.add(Long.parseLong(medicine));
                 }
                 medicineList = medicineRepository.findAllByItemSeqIn(tempList);
+                Collections.sort(medicineList, new Comparator<Medicine>() {
+                    @Override
+                    public int compare(Medicine o1, Medicine o2) {
+                        return tempList.indexOf(o1.getItemSeq()) - tempList.indexOf(o2.getItemSeq());
+                    }
+                });
+
                 break;
             default:
                 break;
@@ -172,7 +121,7 @@ public class MedicineServiceImpl implements MedicineService {
             boolean oldWarn = false;
             boolean collide = false;
             List collideList = new ArrayList<String>();
-            
+
             if(pregnant && medicine.getTypeCode().contains("임")){
                 pregnantWarn=true;
             }
@@ -271,6 +220,77 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
+    public void regist(List<RegistRequestDto> requestDto, Profile profile) {
+        LocalDate now = LocalDate.now();
+        for(RegistRequestDto registRequestDto: requestDto){
+            List<Tag> tagList = tagRepository.findAllByProfileSeqAndDelYn(profile.getProfileSeq(),"N");
+            boolean finish = false;
+            System.out.println(registRequestDto.getEndDate());
+            LocalDate startDate = LocalDate.parse(registRequestDto.getStartDate(),DateTimeFormatter.ISO_DATE);
+            LocalDate endDate = LocalDate.parse(registRequestDto.getEndDate(),DateTimeFormatter.ISO_DATE);
+            if(endDate.isBefore(now) || startDate.isAfter(now)){// 지금 복용 안하는 약을 등록한 경우
+                finish = true;
+            }
+
+            Medicine medicine = medicineRepository.findByItemSeq(registRequestDto.getItemSeq());
+            List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinishAndProfile("N","N",profile);
+
+            MyMedicine myMedicine = new MyMedicine();
+            boolean exist = false;
+            for(MyMedicine temp_Medicine: myMedicineList){
+                if(temp_Medicine.getMedicine()==medicine){
+                    myMedicine = temp_Medicine;
+                    exist=true;
+                    break;
+                }
+            }
+            if(exist){
+                List<MyMedicineHasTag> myMedicineHasTagList = myMedicineHasTagRepository.findAllByDelYnAndMyMedicine("N",myMedicine);
+                for(MyMedicineHasTag myMedicineHasTag: myMedicineHasTagList){
+                    myMedicineHasTag.remove();
+                }
+                myMedicine.modify(startDate,endDate,finish? "Y":"N");
+                myMedicineRepository.save(myMedicine);
+            }else{
+                myMedicine = MyMedicine.builder()
+                    .endDate(endDate)
+                    .finish(finish? "Y":"N")
+                    .medicine(medicine)
+                    .profile(profile)
+                    .startDate(startDate)
+                    .build();
+                myMedicineRepository.save(myMedicine);
+            }
+
+            loop:
+            for(List<String> tag: registRequestDto.getTagList()){
+                for(Tag mytag : tagList) {
+                    if(mytag.getName().equals(tag.get(0))){
+                        MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
+                            .myMedicine(myMedicine)
+                            .tag(mytag)
+                            .build();
+                        myMedicineHasTagRepository.save(myMedicineHasTag);
+                        continue loop;
+                    }
+                }
+                Tag mytag = Tag.builder()
+                    .profileSeq(profile.getProfileSeq())
+                    .name(tag.get(0))
+                    .color(Integer.parseInt(tag.get(1)))
+                    .build();
+                tagRepository.save(mytag);
+                MyMedicineHasTag myMedicineHasTag = MyMedicineHasTag.builder()
+                    .myMedicine(myMedicine)
+                    .tag(mytag)
+                    .build();
+                myMedicineHasTagRepository.save(myMedicineHasTag);
+            }
+        }
+        return;
+    }
+
+    @Override
     public List<TagDto> showTags(Profile profile) {
         List<Tag> tags = tagRepository.findAllByProfileSeqAndDelYn(profile.getProfileSeq(),"N");
         List<TagDto> output = new ArrayList<>();
@@ -286,7 +306,7 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public List<MedicineByTagDto> searchByTags(Profile profile, List<String> tagList) {
-        List<MyMedicineHasTag> myMedicineHasTagList=myMedicineHasTagRepository.findAllByDelYnAndTag_NameIn(tagList,
+        List<MyMedicineHasTag> myMedicineHasTagList=myMedicineHasTagRepository.findAllByDelYnAndMyMedicine_FinishAndTag_NameIn(tagList,
             profile.getProfileSeq());
         HashMap<MyMedicine, List<TagDto>> myMedicineListHashMap = new HashMap<>();
         for(MyMedicineHasTag myMedicineHasTag : myMedicineHasTagList){
@@ -330,24 +350,32 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public void deleteMyMedicine(Profile profile, long myMedicineSeq) {
+    public MyMedicine deleteMyMedicine(Profile profile, long myMedicineSeq) {
         MyMedicine myMedicine = myMedicineRepository.findByMyMedicineSeq(myMedicineSeq);
         List<MyMedicineHasTag> myMedicineHasTags = myMedicineHasTagRepository.findByMyMedicineAndDelYn(myMedicine,"N");
         for (MyMedicineHasTag myMedicineHasTag : myMedicineHasTags){
             myMedicineHasTag.remove();
+            if(!myMedicineHasTagRepository.existsByTag_NameAndAndDelYnAndTag_ProfileSeq(myMedicineHasTag.getTag().getName(),"N",
+                profile.getProfileSeq())){
+                myMedicineHasTag.getTag().remove();
+            }
         }
         myMedicine.remove();
+        return myMedicine;
     }
 
     @Override
-    public void takenMyMedicine() {
+    public List<MyMedicine> takenMyMedicine() {
         List<MyMedicine> myMedicineList = myMedicineRepository.findAllByDelYnAndFinish("N","N");
         LocalDate now = LocalDate.now();
+        List<MyMedicine> takenMyMedicineList = new ArrayList<>();
         for(MyMedicine myMedicine : myMedicineList){
-            if(!now.isBefore(myMedicine.getEndDate())){
+            if(!now.isBefore(myMedicine.getEndDate().plusDays(1))){
                 myMedicine.taken();
+                takenMyMedicineList.add(myMedicine);
             }
         }
+        return takenMyMedicineList;
     }
 
     @Override

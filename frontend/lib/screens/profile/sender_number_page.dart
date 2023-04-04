@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/profile/sender_selected_profiles_page.dart';
+import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/common/text_field.dart';
+import 'package:dio/dio.dart';
 
 class SenderNumberPage extends StatefulWidget {
   const SenderNumberPage({super.key});
@@ -18,7 +21,21 @@ class _SenderNumberPageState extends State<SenderNumberPage> {
   }
 
   // 서버통신용
-  void sendDataToServer(BuildContext context) async {}
+  void sendDataToServer(BuildContext context) async {
+    try {
+      Response response = await ApiProfiles.putNumber(veritfyCode);
+      if (response.statusCode == 200) {
+        // 계정 선택 화면으로 이동
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SenderSelectedProfilesPage()));
+      }
+    } on DioError catch (error) {
+      print('error::$error.message');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,12 +68,8 @@ class _SenderNumberPageState extends State<SenderNumberPage> {
               child: InkWell(
                 onTap: () {
                   // 서버통신진행
-                  //sendDataToServer(context);
+                  sendDataToServer(context);
                   // 인증번호 입력하는 화면으로 이동시키기
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SenderNumberPage()));
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(

@@ -50,6 +50,12 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
           widget.senderAccountSeq!, profiles);
       if (response.statusCode == 200) {
         // TODO: move to 번호조회 페이지
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ReceiverNumberPage(
+                      senderAccountSeq: widget.senderAccountSeq!,
+                    )));
         // senderAccoutSeq 값 함께 넘겨주어야함!!!
         // {SERVER}/links/sender/{senderAccountSeq}/auth
       }
@@ -215,11 +221,6 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                         //sendDataToServer(context);
                         // 번호 확인하는 페이지로 이동
                         sendToServer(selectedItems);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ReceiverNumberPage()));
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

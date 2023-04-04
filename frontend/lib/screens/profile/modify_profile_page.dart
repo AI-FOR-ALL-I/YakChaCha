@@ -233,15 +233,15 @@ class _ModifyProfilePage extends State<ModifyProfilePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: isSelected ? Colors.white : Colors.lightGreen,
+                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
                 width: 2,
               ),
-              color: isSelected ? Colors.lightGreen : Colors.white,
+              color: isSelected ? Color(0xFFBBE4CB) : Colors.white,
             ),
             child: Text(
               text,
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.lightGreen,
+                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -268,15 +268,15 @@ class _ModifyProfilePage extends State<ModifyProfilePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: isSelected ? Colors.white : Colors.lightGreen,
+                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
                 width: 2,
               ),
-              color: isSelected ? Colors.lightGreen : Colors.white,
+              color: isSelected ? Color(0xFFBBE4CB) : Colors.white,
             ),
             child: Text(
               text,
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.lightGreen,
+                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -301,10 +301,10 @@ class _ModifyProfilePage extends State<ModifyProfilePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: Colors.lightGreen,
+                color: Color(0xFFBBE4CB),
                 width: 2,
               ),
-              color: Colors.lightGreen,
+              color: Color(0xFFBBE4CB),
             ),
             child: const Text(
               '등록하기',

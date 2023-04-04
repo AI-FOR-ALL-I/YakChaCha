@@ -41,7 +41,7 @@ class ApiClient {
   }
 
   // 탈퇴하기
-  static Future<Response> withDraw(String accessToken) async {
+  static Future<Response> withDraw() async {
     final accessToken = authController.accessToken;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     return dio.put(ApiConstants.withdraw,

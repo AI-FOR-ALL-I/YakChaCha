@@ -11,10 +11,12 @@ import com.ai4ai.ycc.domain.profile.dto.request.AcceptLinkRequestDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ConfirmLinkResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ReceiverProfileResponseDto;
+import com.ai4ai.ycc.domain.profile.entity.Profile;
 import com.ai4ai.ycc.domain.profile.service.ProfileLinkService;
 import com.ai4ai.ycc.domain.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,5 +88,14 @@ public class ProfileLinkController {
         return ResponseEntity.ok()
                 .body(responseService.getSuccessResult());
     }
+
+    @PutMapping("/{profileLinkSeq}/delete")
+    public ResponseEntity<Result> unlink(@LoginUser Account account, @PathVariable long profileLinkSeq) {
+        log.info("[unlink] 프로필 연동 끊기 API 호출");
+        profileLinkService.unlink(account, profileLinkSeq);
+        return ResponseEntity.ok()
+                .body(responseService.getSuccessResult());
+    }
+
 
 }

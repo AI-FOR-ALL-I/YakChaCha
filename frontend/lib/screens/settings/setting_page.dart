@@ -33,6 +33,26 @@ class SettingPage extends StatelessWidget {
     }
   }
 
+  void withDraw(BuildContext context) async {
+    final authController = Get.find<AuthController>();
+    final firebaseController = Get.find<FirebaseController>();
+    final profileController = Get.find<ProfileController>();
+
+    try {
+      dio.Response response = await ApiClient.withDraw();
+      if (response.statusCode == 200) {
+        // 로그아웃 성공
+        authController.clearTokens();
+        //firebaseController.clearTokens();
+        profileController.clearProfile();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SocialLogin()));
+      }
+    } catch (error) {
+      print('사용자 정보 요청 실패 $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +111,9 @@ class SettingPage extends StatelessWidget {
                       style: TextStyle(color: Colors.black54),
                     )),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      withDraw(context);
+                    },
                     child: const Text(
                       '탈퇴하기',
                       style: TextStyle(color: Colors.black54),

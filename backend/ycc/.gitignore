@@ -7,7 +7,7 @@ build/
 #gradlew
 #gradlew.bat
 
-*.log
+logs/
 
 ### STS ###
 .apt_generated

@@ -142,6 +142,7 @@ public class ReminderServiceImpl implements ReminderService {
                 .orElseThrow(() -> new ErrorException(ReminderErrorCode.REMINDER_ERROR_CODE));
 
         ReminderDetailResponseDto result = ReminderDetailResponseDto.builder()
+                .reminderSeq(reminderSeq)
                 .title(reminder.getTitle())
                 .time(reminder.getTime())
                 .build();
@@ -156,13 +157,14 @@ public class ReminderServiceImpl implements ReminderService {
                 log.info("NOT FOUND MEDICINE");
                 continue;
             }
+
             String img = medicine.getImg() == null ? "" : medicine.getImg();
             String name = medicine.getItemName();
             int count = reminderMedicine.getCount();
 
             List<ReminderDetailResponseDto.Tag> tags = new ArrayList<>();
 
-            MyMedicine myMedicine = myMedicineRepository.findByMedicineAndDelYn(medicine, "N")
+            MyMedicine myMedicine = myMedicineRepository.findByProfileAndMedicineAndDelYn(profile, medicine, "N")
                     .orElse(null);
 
             if (myMedicine == null) {
@@ -340,6 +342,31 @@ public class ReminderServiceImpl implements ReminderService {
         }
 
         return result;
+    }
+
+    @Override
+    public void removeByMyMedicine(MyMedicine myMedicine) {
+        Profile profile = myMedicine.getProfile();
+        List<Reminder> reminderList = reminderRepository.findAllByProfileAndDelYn(profile, "N");
+
+        for (Reminder reminder : reminderList) {
+            List<ReminderMedicine> reminderMedicineList = reminderMedicineRepository.findAllByReminderAndDelYn(reminder, "N");
+            int count = reminderMedicineList.size();
+
+            for (ReminderMedicine reminderMedicine : reminderMedicineList) {
+                if (reminderMedicine.getMedicineSeq() == myMedicine.getMedicine().getItemSeq()) {
+                    reminderMedicine.remove();
+                    count--;
+                    break;
+                }
+            }
+
+            if (count == 0) {
+                List<TakenRecord> takenRecords = takenRecordRepository.findAllByReminderAndDelYn(reminder, "N");
+                takenRecords.forEach(r -> r.remove());
+                reminder.remove();
+            }
+        }
     }
 
     @Override
