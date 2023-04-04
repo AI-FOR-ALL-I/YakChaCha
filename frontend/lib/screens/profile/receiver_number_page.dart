@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
+import 'package:frontend/bottom_navigation.dart';
 
 class ReceiverNumberPage extends StatefulWidget {
   const ReceiverNumberPage({super.key});
@@ -51,6 +52,12 @@ class _ReceiverNumberPageState extends State<ReceiverNumberPage> {
           remainingTime--;
         } else {
           timer.cancel();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BottomNavigation(
+                        where: 0,
+                      )));
         }
       });
     });
@@ -68,18 +75,24 @@ class _ReceiverNumberPageState extends State<ReceiverNumberPage> {
           const Text('상대방의 기기에\n인증번호를 등록해주세요.',
               style: TextStyle(fontSize: 20.0, color: Colors.black54)),
           Padding(
-            padding: const EdgeInsets.only(top: 15.0),
+            padding: const EdgeInsets.all(15.0),
             child: Container(
+              width: 320.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
                 color: const Color(0xFFE2E8E4),
               ),
               child: const Padding(
-                padding: EdgeInsetsDirectional.symmetric(
-                    vertical: 16.0, horizontal: 20.0),
-                child: Text('번호6자리들어갈자리'),
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                  '번호6자리들어갈자리',
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 8.0,
           ),
           GestureDetector(
             onTap: () {
@@ -88,15 +101,27 @@ class _ReceiverNumberPageState extends State<ReceiverNumberPage> {
             child: Row(
               children: [
                 const Text('어떻게 인증하져?'),
+                const SizedBox(
+                  width: 5.0,
+                ),
                 Icon(Icons.help_rounded,
                     size: 20.0, color: Theme.of(context).colorScheme.onSurface),
+                const SizedBox(
+                  width: 5.0,
+                ),
                 Text(
                   '$minutes:${seconds.toString().padLeft(2, '0')}',
                   style: const TextStyle(fontSize: 16.0),
                 )
               ],
             ),
-          )
+          ),
+          const SizedBox(
+            height: 4.0,
+          ),
+          const Text('3분안에 인증 실패 시 처음부터 인증을 진행해야합니다.',
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 15.0, color: Colors.red)),
         ]),
       ),
     );

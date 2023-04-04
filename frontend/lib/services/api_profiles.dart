@@ -111,7 +111,7 @@ class ApiProfiles {
     final data = {
       "profiles": profiles,
     };
-    final path = ApiConstants.modifyProfile
+    final path = ApiConstants.acceptRequest
         .replaceAll('{senderAccountSeq}', senderAccountSeq.toString());
     return dio.put(path,
         data: data,
