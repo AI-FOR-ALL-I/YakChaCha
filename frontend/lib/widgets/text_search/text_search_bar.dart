@@ -17,6 +17,26 @@ class _TextSearchBarState extends State<TextSearchBar> {
   final inputData = TextEditingController();
 
   Future<void> searchText(word) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () async => false,
+              child: Dialog(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Loading..."),
+                      Image.asset("assets/images/walking.gif"),
+                    ],
+                  ),
+                ),
+              ));
+        });
     try {
       Response response = await ApiSearch.textSearch(word);
       // print(response.data);
@@ -25,7 +45,16 @@ class _TextSearchBarState extends State<TextSearchBar> {
       setState(() {
         widget.getResultList?.call(dataList); // 이렇게 호출하기!!!
       });
+      Navigator.pop(context);
+      if (dataList == null) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(child: Text('검색결과가 없습니다'));
+            });
+      }
     } catch (e) {
+      Navigator.pop(context);
       print(e);
     }
   }
@@ -39,6 +68,10 @@ class _TextSearchBarState extends State<TextSearchBar> {
         child: TextField(
           controller: inputData,
           onChanged: (string) {},
+          onSubmitted: (value) {
+            searchText(inputData.text);
+            FocusScope.of(context).unfocus();
+          },
           decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(
                 borderSide:

@@ -37,10 +37,8 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                   Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                              '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['startDate']} 부터'),
                           GestureDetector(
                             onTap: () {
                               showDatePicker(
@@ -57,17 +55,24 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                                 }
                               });
                             },
-                            child: const Icon(
-                              Icons.date_range_outlined,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.date_range_outlined,
+                                ),
+                                Text(
+                                  '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['startDate']} 부터',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
                             ),
                           ),
-                          Text(
-                              '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['endDate']} 까지'), // endDate
                           GestureDetector(
                             onTap: () {
                               showDatePicker(
                                 context: context,
-                                initialDate: DateTime.now(),
+                                initialDate:
+                                    DateTime.now().add(Duration(days: 7)),
                                 firstDate: DateTime(DateTime.now().year - 5),
                                 lastDate: DateTime(DateTime.now().year + 5),
                               ).then((selectedDate) {
@@ -79,8 +84,16 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                                 }
                               });
                             },
-                            child: const Icon(
-                              Icons.date_range_outlined,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.date_range_outlined,
+                                ),
+                                Text(
+                                  '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['endDate']} 까지',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -138,6 +151,9 @@ class Before extends StatelessWidget {
                               child: Text(
                                 '${data['itemName']}',
                                 textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                maxLines: 2,
                               ),
                             ),
                             Row(
