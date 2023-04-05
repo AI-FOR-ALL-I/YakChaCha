@@ -153,7 +153,7 @@ class _SettingPageState extends State<SettingPage> {
           TextButton(
               onPressed: () {},
               child: const Text(
-                '사용자 설정',
+                '사용자 전환하기',
                 style: TextStyle(color: Colors.black54),
               )),
           const SettingMenuItem(
