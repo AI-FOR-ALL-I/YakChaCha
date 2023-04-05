@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
   //   }
   // }
 
-  getCameraImage(camera) async {
+  Future<void> getCameraImage(camera) async {
     var image;
     if (camera) {
       // var temp =
@@ -67,55 +67,58 @@ class _RegisterPageState extends State<RegisterPage> {
           .pickImage(source: ImageSource.gallery); // XFile 타입
       // image = await compressImage(temp!);
     }
-    if (image != null) {
-      // 여기서 로딩 시작?
+
+    if (image == null) {
+      return;
+    }
+    // 여기서 로딩 시작?
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () async => false,
+              child: Dialog(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Loading..."),
+                      Image.asset("assets/images/walking.gif"),
+                    ],
+                  ),
+                ),
+              ));
+        });
+    FormData formData = FormData.fromMap({
+      'image': await MultipartFile.fromFile(
+        image.path,
+        //  filename: 'image.jpg'
+      ),
+    });
+    if (formData != null) {}
+
+    var ocrResultList = await ocrSearch(formData);
+    if (ocrResultList != null) {
+      await controller.ocrToList(ocrResultList);
+      Navigator.pop(context);
+    } else {
+      Navigator.pop(context);
       showDialog(
           context: context,
-          builder: (BuildContext context) {
-            return WillPopScope(
-                onWillPop: () async => false,
-                child: Dialog(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("Loading..."),
-                        Image.asset("assets/images/walking.gif"),
-                      ],
-                    ),
-                  ),
-                ));
+          builder: (BuildContext constext) {
+            return Dialog(
+              child: SizedBox(
+                  height: 200.0,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Column(
+                    children: [Text('처방전 인식에 실패했습니다.'), Text('검색으로 등록해주세요')],
+                  )),
+            );
           });
-      FormData formData = FormData.fromMap({
-        'image': await MultipartFile.fromFile(
-          image.path,
-          //  filename: 'image.jpg'
-        ),
-      });
-      // var controller = PillRegisterController();
-      // getX.Get.put(controller);
-      var ocrResultList = await ocrSearch(formData);
-      if (ocrResultList != null) {
-        await controller.ocrToList(ocrResultList);
-        Navigator.pop(context);
-      } else {
-        Navigator.pop(context);
-        showDialog(
-            context: context,
-            builder: (BuildContext constext) {
-              return Dialog(
-                child: SizedBox(
-                    height: 200.0,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: Column(
-                      children: [Text('처방전 인식에 실패했습니다.'), Text('검색으로 등록해주세요')],
-                    )),
-              );
-            });
-      }
     }
   }
 

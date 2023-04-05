@@ -33,7 +33,8 @@ class PillRegisterController extends GetxController {
       var tempMap = {
         'itemSeq': data['itemSeq'],
         'startDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-        'endDate': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'endDate': DateFormat('yyyy-MM-dd')
+            .format(DateTime.now().add(Duration(days: 7))),
         'tagList': []
       };
       registerList.add(tempMap);

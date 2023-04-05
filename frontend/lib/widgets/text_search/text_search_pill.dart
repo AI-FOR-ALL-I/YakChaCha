@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 
 class TextSearchPillComponent extends StatefulWidget {
   const TextSearchPillComponent({Key? key, this.data}) : super(key: key);
@@ -22,7 +23,7 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
         elevation: 5,
         borderRadius: BorderRadius.circular(15),
         child: AspectRatio(
-          aspectRatio: 1.2/1,
+          aspectRatio: 1.2 / 1,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Stack(
@@ -78,13 +79,16 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                         //   maxHeight: double.infinity,
                         // ),
                         alignment: Alignment.center,
-                        child: Text(
-                          '${widget.data?['itemName']}',
-                          softWrap: true,
-                          maxLines: 1,
+                        child: Marquee(
+                          text: '${widget.data?['itemName']}',
+                          scrollAxis: Axis.horizontal,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
-                          overflow: TextOverflow.ellipsis,
+                          blankSpace: 20.0,
+                          velocity: 25.0,
+
+                          // overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
