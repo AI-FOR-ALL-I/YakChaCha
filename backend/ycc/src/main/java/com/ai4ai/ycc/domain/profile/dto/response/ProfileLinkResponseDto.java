@@ -7,13 +7,13 @@ import lombok.Getter;
 @Builder
 public class ProfileLinkResponseDto {
 
-    long profileLinkSeq;
-    int imgCode;
-    String nickname;
-    String name;
-    String gender;
-    String birthDate;
-    boolean isPregnancy;
-    int status;
+    private long profileLinkSeq;
+    private int imgCode;
+    private String nickname;
+    private String name;
+    private String gender;
+    private String birthDate;
+    private boolean isPregnancy;
+    private int status;
 
 }

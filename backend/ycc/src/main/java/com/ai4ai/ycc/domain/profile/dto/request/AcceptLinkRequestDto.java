@@ -7,6 +7,6 @@ import java.util.List;
 @Getter
 public class AcceptLinkRequestDto {
 
-    List<Long> profiles;
+    private List<Long> profiles;
 
 }

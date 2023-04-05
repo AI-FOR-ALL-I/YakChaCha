@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class LinkProfileRequestDto {
 
-    long profileSeq;
-    int imgCode;
-    String nickname;
+    private long profileSeq;
+    private int imgCode;
+    private String nickname;
 
 }

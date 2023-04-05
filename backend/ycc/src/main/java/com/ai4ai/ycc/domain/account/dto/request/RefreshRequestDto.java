@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public class RefreshRequestDto {
 
-    String refreshToken;
+    private String refreshToken;
 
 }

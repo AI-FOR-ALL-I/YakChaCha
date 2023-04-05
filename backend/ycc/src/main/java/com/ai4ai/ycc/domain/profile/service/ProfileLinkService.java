@@ -23,7 +23,6 @@ public interface ProfileLinkService {
     void removeProfile(Account account, long profileLinkSeq);
 
     void removeAllProfile(Account account);
-    void remove(ProfileLink profileLink);
 
     void sendLink(Account sender, SendLinkRequestDto requestDto) ;
 

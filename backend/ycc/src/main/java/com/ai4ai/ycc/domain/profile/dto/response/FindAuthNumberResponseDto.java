@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 public class FindAuthNumberResponseDto {
 
-    String senderName;
-    String authNumber;
+    private String senderName;
+    private String authNumber;
 
 }
