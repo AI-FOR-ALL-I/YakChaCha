@@ -23,4 +23,9 @@ class MyPillController extends GetxController {
     }
     update();
   }
+
+  void clear() {
+    myPillList = [];
+    update();
+  }
 }

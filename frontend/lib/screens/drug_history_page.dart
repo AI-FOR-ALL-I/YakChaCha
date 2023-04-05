@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/controller/my_pill_controller.dart';
+import 'package:frontend/models/my_pill_model.dart';
 import 'package:frontend/screens/myPills/my_pill_delete.dart';
+import 'package:frontend/services/my_pill_api.dart';
+import 'package:frontend/services/taken_pill_api.dart';
 import 'package:frontend/widgets/common/is_empty_pills.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 import 'package:get/get.dart';
@@ -16,137 +19,131 @@ class DrugHistoryPage extends StatefulWidget {
 
 class _DrugHistoryPageState extends State<DrugHistoryPage> {
   bool isClicked = true;
-  List myPills = [];
-  List takenPills = [];
-  MyPillController myPillController = Get.put(MyPillController());
-
-  Future<void> getAllPillList() async {
-    await myPillController.getPillList();
-    await myPillController.getTakenPillList();
-
-    myPills = myPillController.myPillList;
-    takenPills = myPillController.takenPillList;
-  }
+  final myPillController = Get.put(MyPillController());
 
   void onClickLeft() {
     setState(() {
       isClicked = true;
-      myPillController.getPillList();
     });
   }
 
   void onClickRight() {
     setState(() {
       isClicked = false;
-      myPillController.getTakenPillList();
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getAllPillList();
-  }
+  final Future myPills = MyPillApi.getMyPill();
+  final Future takenPills = TakenPillApi.getTakenPill();
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: Column(
-        children: [
-          Flexible(
-            flex: 2,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: GestureDetector(
-                          onTap: onClickLeft,
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                                color: isClicked
-                                    ? Color.fromARGB(255, 187, 228, 203)
-                                    : Color.fromARGB(255, 225, 225, 225)),
-                            child: Text(
-                              "복용중",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: isClicked ? Colors.black : Colors.white,
+    return Column(
+      children: [
+        // 맨위 탭,  할것: 이너쉐도우 넣어야함 - 초고난이도
+        Flexible(
+          flex: 2,
+          child: Column(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: onClickLeft,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
                               ),
+                              color: isClicked
+                                  ? Color.fromARGB(255, 187, 228, 203)
+                                  : Color.fromARGB(255, 225, 225, 225)),
+                          child: Text(
+                            "복용중",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: isClicked ? Colors.black : Colors.white,
                             ),
                           ),
                         ),
                       ),
-                      Flexible(
-                        flex: 1,
-                        child: GestureDetector(
-                          onTap: onClickRight,
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                ),
-                                color: !isClicked
-                                    ? Color.fromARGB(255, 187, 228, 203)
-                                    : Color.fromARGB(255, 225, 225, 225)),
-                            child: Text(
-                              "복용끝",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: !isClicked ? Colors.black : Colors.white,
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: onClickRight,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
                               ),
+                              color: !isClicked
+                                  ? Color.fromARGB(255, 187, 228, 203)
+                                  : Color.fromARGB(255, 225, 225, 225)),
+                          child: Text(
+                            "복용끝",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: !isClicked ? Colors.black : Colors.white,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // 바디 부분
-          Flexible(
-              flex: 25,
-              child: isClicked
-                  ? Builder(
-                      builder: (context) {
-                        return _myPillList();
-                      },
-                    )
-                  : Builder(
-                      builder: (context) {
-                        return _takenPillList();
+        ),
+        // 바디 부분
+        Flexible(
+            flex: 25,
+            child: isClicked
+                ? FutureBuilder(
+                    future: myPills,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return myPillList(snapshot);
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
-                    )),
-        ],
-      ),
+                    },
+                  )
+                : FutureBuilder(
+                    future: takenPills,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return takenPillList(snapshot);
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    })),
+      ],
     );
   }
 
-  Column _takenPillList() {
-    if (takenPills.isEmpty) {
+  Column takenPillList(AsyncSnapshot snapshot) {
+    if (!snapshot.hasData || snapshot.data!.isEmpty) {
       return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [IsEmptyPills(what: "알약")]);
     }
 
-    List data = takenPills;
+    List data = snapshot.data!;
     data.sort((a, b) {
       int aPeriodEnd =
           int.parse(a.period[1].replaceAll('-', '').substring(0, 6));
@@ -187,7 +184,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "총 ${takenPills.length.toString()}건",
+                    "총 ${snapshot.data!.length.toString()}건",
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -248,12 +245,12 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     );
   }
 
-  Column _myPillList() {
+  Column myPillList(AsyncSnapshot snapshot) {
     var isZero = false;
-    if (myPillController.myPillList.isEmpty) {
+    if (snapshot.data!.isEmpty) {
       isZero = true;
     } else {
-      myPillController.myPillList.sort((a, b) => a.dday.compareTo(b.dday));
+      snapshot.data!.sort((MyPillModel a,MyPillModel b) => a.dday.compareTo(b.dday));
     }
     return isZero
         ? Column(
@@ -273,7 +270,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "총 ${myPillController.myPillList.length.toString()}건",
+                          "총 ${snapshot.data!.length.toString()}건",
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
@@ -292,10 +289,10 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
               Flexible(
                 flex: 24,
                 child: ListView.separated(
-                  itemCount: myPillController.myPillList.length,
+                  itemCount: snapshot.data!.length,
                   separatorBuilder: (context, index) => SizedBox(),
                   itemBuilder: (context, index) {
-                    var pill = myPillController.myPillList[index];
+                    var pill = snapshot.data![index];
                     return RenewMyPill(
                         itemSeq: pill.itemSeq,
                         itemName: pill.itemName,
