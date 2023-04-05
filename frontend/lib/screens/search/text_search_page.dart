@@ -41,6 +41,8 @@ class _TextSearchPageState extends State<TextSearchPage> {
       Navigator.pop(context);
       Navigator.pop(context);
     } catch (e) {
+      Navigator.pop(context);
+      Navigator.pop(context);
       print(e);
     }
   }
@@ -201,7 +203,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
                     ],
                   ),
                 )
-              : const SizedBox(),
+              : const SizedBox(child: Text('검색 결과가 없습니다..')),
           // 여기부터는 사진 검색
           aiResultList.length > 0
               ? Expanded(

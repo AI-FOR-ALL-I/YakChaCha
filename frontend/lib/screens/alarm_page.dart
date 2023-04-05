@@ -14,8 +14,9 @@ class AlarmPage extends StatefulWidget {
 class _AlarmPageState extends State<AlarmPage> {
   getAlarmList() async {
     var controller = Get.put(AlarmController());
-    // List alarms = await controller.getAlarmList(); // 원래거
-    List alarms = await controller.getAlarmList() ?? [];
+    // List alarms = await controller.getAlarmList();
+    //// 원래거
+    await controller.getAlarmList();
   }
 
   Future<void> _goToUpdate() async {

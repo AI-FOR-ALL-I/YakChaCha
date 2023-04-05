@@ -7,8 +7,8 @@ import 'package:frontend/controller/profile_controller.dart';
 
 final controller = getX.Get.find<ProfileController>();
 final authController = getX.Get.find<AuthController>();
-final tempProfileLinkSeq = controller.profileLinkSeq;
-final accessToken = authController.accessToken;
+var tempProfileLinkSeq = controller.profileLinkSeq;
+var accessToken = authController.accessToken;
 
 final dio = Dio(
   BaseOptions(
@@ -20,6 +20,8 @@ final dio = Dio(
 
 class ApiPillRegister {
   static Future<Response> pillRegister(List data) async {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     final path = ApiConstants.pillRegister
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());

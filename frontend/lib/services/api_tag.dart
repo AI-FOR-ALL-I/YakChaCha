@@ -13,14 +13,16 @@ final dio = Dio(
 
 final controller = getX.Get.find<ProfileController>();
 final authController = getX.Get.find<AuthController>();
-final tempProfileLinkSeq = controller.profileLinkSeq;
-final accessToken = authController.accessToken;
+var tempProfileLinkSeq = controller.profileLinkSeq;
+var accessToken = authController.accessToken;
 
 // 알약 등록
 
 class ApiTag {
   // 태그 목록 조회
   static Future<Response> getTagList() async {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.getTagList
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(
@@ -34,6 +36,8 @@ class ApiTag {
 
   // 태그로 약 조회
   static Future<Response> getPillsFromTag(List data) async {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.getPillsFromTag
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.post(path,

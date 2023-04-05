@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/profile/profile_info.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
+import 'package:frontend/controller/multiprofile_controller.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' as getX;
 
 class SelectProfilePage extends StatefulWidget {
   const SelectProfilePage({super.key});
@@ -24,12 +26,15 @@ class _SelectProfilePage extends State<SelectProfilePage> {
   }
 
   void getData() async {
+    MultiProfileController multiProfileController =
+        getX.Get.put(MultiProfileController());
     try {
       Response response = await ApiProfiles.getMultiProfiles();
       if (response.statusCode == 200) {
         dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
         final List<Map<String, dynamic>> newData =
             List<Map<String, dynamic>>.from(response.data['data']);
+        multiProfileController.setMultiProfile(newData);
         setState(() {
           data = newData;
           print('data$data');

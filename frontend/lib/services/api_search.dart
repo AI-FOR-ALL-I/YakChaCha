@@ -13,12 +13,15 @@ final dio = Dio(
 
 final controller = getX.Get.find<ProfileController>();
 final authController = getX.Get.find<AuthController>();
-final tempProfileLinkSeq = controller.profileLinkSeq;
-final accessToken = authController.accessToken;
+var tempProfileLinkSeq = controller.profileLinkSeq;
+var accessToken = authController.accessToken;
 
 class ApiSearch {
   // 텍스트로 검색
   static Future<Response> textSearch(String word) async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.search
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(path,
@@ -28,6 +31,9 @@ class ApiSearch {
 
   // 여기가 사진으로 검색
   static Future<Response> imgSearch(data) async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.imgSearch
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.post(path,
@@ -37,6 +43,9 @@ class ApiSearch {
 
   // 여기가 사진으로 검색 후 약 디테일 받아오는 dio
   static Future<Response> imgSearchFinal(List data) async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.search
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(path,
@@ -46,6 +55,9 @@ class ApiSearch {
 
   // 처방전으로 검색
   static Future<Response> ocrSearch(data) async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.ocrSearch
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.post(path,
@@ -55,6 +67,9 @@ class ApiSearch {
 
   // OCR 마지막
   static Future<Response> ocrSearchFinal(List data) async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.search
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(path,
