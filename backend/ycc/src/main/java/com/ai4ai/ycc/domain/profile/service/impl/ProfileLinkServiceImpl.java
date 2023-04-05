@@ -331,6 +331,9 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
         log.info("[checkAuthNumber] redis 조회 완료");
 
+        Account receiver = accountRepository.findByAccountSeqAndDelYn(requestLink.getReceiver().getAccountSeq(), "N")
+                .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+
         if (requestLink == null || requestLink.getStatus() != 2) {
             throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
         }
@@ -348,6 +351,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         redisUtil.setex(key, requestLink, 600);
         log.info("[checkAuthNumber] redis 저장 완료");
 
+        fcmUtil.sendAuthSuccess(account, receiver);
     }
 
     @Override

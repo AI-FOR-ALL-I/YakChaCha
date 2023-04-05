@@ -51,6 +51,33 @@ public class FcmUtil {
         }
     }
 
+    public void sendAuthSuccess(Account sender, Account receiver) {
+        log.info("FCM Send Auth Success...!!! {}", LocalDateTime.now());
+
+        String title = "프로필 연동 인증 완료";
+        String body =  sender.getName() + "님이 프로필 연동 인증을 완료했습니다.";
+
+        Message message = Message.builder()
+                .putData("type", "auth")
+                .setNotification(Notification.builder()
+                        .setTitle(title)
+                        .setBody(body)
+                        .setImage(imgURL)
+                        .build())
+                .setToken(receiver.getDeviceToken())
+                .build();
+
+        String response = null;
+
+        try {
+            response = FirebaseMessaging.getInstance().send(message);
+            log.info("Success... sent message: {}", response);
+        } catch (FirebaseMessagingException e) {
+            log.warn("Fail... sent message");
+            throw new RuntimeException(e);
+        }
+    }
+
     public void sendReminder(ProfileLink profileLink) {
         log.info("FCM Send Reminder...!!! {}", LocalDateTime.now());
 
