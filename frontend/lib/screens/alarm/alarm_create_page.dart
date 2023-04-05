@@ -60,11 +60,20 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
             return Stack(children: [
               ListView(
                 children: [
-                  TextField(
-                    decoration: InputDecoration(hintText: '알람 제목을 입력해주세요'),
-                    onChanged: (text) {
-                      controller.setTitle(text);
-                    },
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: Text('알람 제목',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
+                    child: TextField(
+                      decoration: InputDecoration(hintText: '알람 제목을 입력해주세요'),
+                      onChanged: (text) {
+                        controller.setTitle(text);
+                      },
+                    ),
                   ),
                   CustomTimePicker(
                       setTime: controller.setTime,
@@ -100,7 +109,7 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                             child: Icon(Icons.add, color: Colors.white)),
                       )),
                   controller.displayList.isNotEmpty
-                      ? Expanded(
+                      ? SingleChildScrollView(
                           child: Column(children: [
                             ...controller.displayList
                                 .map((pill) =>
@@ -168,7 +177,7 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                             child: Icon(Icons.add, color: Colors.white)),
                       )),
                   controller.displayList.isNotEmpty
-                      ? Expanded(
+                      ? SingleChildScrollView(
                           child: Column(children: [
                             ...controller.displayList
                                 .map((pill) =>

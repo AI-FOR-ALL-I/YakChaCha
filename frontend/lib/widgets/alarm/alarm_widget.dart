@@ -71,7 +71,9 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: widget.data["title"] != null
-                                    ? Text(widget.data["title"])
+                                    ? Text(widget.data["title"],
+                                        style: TextStyle(
+                                            fontSize: 16, color: textColor))
                                     : Text(
                                         "약 먹을 시간이에요!",
                                         style: TextStyle(
@@ -100,13 +102,13 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
+                        padding: const EdgeInsets.only(right: 20.0),
                         child: Container(
                             child: (widget.data["status"] == 1) // 지남 + 안먹음
                                 ? GestureDetector(
                                     child: Icon(
                                       Icons.error_outline_outlined,
-                                      size: 35,
+                                      size: 50,
                                       color: textColor,
                                     ),
                                     onTap: () {
@@ -119,7 +121,7 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                                         2) // 지남 + 먹음 or 안지남 + 먹음
                                     ? Icon(
                                         Icons.check_circle_outlined,
-                                        size: 35,
+                                        size: 50,
                                         color: textColor,
                                       )
                                     : (widget.data["status"] == 3) // 곧 먹을거
@@ -127,7 +129,7 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                                             child: Icon(
                                               Icons
                                                   .radio_button_unchecked_outlined,
-                                              size: 35,
+                                              size: 50,
                                               color: textColor,
                                             ),
                                             onTap: () {

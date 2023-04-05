@@ -50,7 +50,10 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   child: widget.data['img'] != ""
-                      ? Image.network(widget.data['img'])
+                      ? Image.network(
+                          widget.data['img'],
+                          fit: BoxFit.fill,
+                        )
                       : Image.asset('assets/images/defaultPill1.png')),
               Flexible(
                   flex: 1,
@@ -120,5 +123,4 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
       ),
     );
   }
-  
 }

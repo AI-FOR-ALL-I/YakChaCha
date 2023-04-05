@@ -125,84 +125,90 @@ class Before extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
           height: MediaQuery.of(context).size.width * (0.8 / 3),
-          child: Expanded(
-              flex: 3,
-              child: Row(
-                children: [
-                  Flexible(
-                      flex: 2,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: flagImg
-                              ? Image.network('${data['img']}',
-                                  fit: BoxFit.cover)
-                              : Image.asset('assets/images/defaultPill1.png',
-                                  fit: BoxFit.cover))),
-                  Flexible(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5.0),
-                              child: Text(
-                                '${data['itemName']}',
-                                textAlign: TextAlign.left,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                maxLines: 2,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+          child: Column(
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Row(
+                    children: [
+                      Flexible(
+                          flex: 2,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: flagImg
+                                  ? Image.network('${data['img']}',
+                                      fit: BoxFit.fill)
+                                  : Image.asset(
+                                      'assets/images/defaultPill1.png',
+                                      fit: BoxFit.fill))),
+                      Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5.0),
+                                  child: Text(
+                                    '${data['itemName']}',
+                                    textAlign: TextAlign.left,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: true,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Row(
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          '임산부 주의',
-                                          style: TextStyle(
-                                              color: data['warnPregnant']
-                                                  ? Colors.red
-                                                  : Colors.grey),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '임산부 주의',
+                                              style: TextStyle(
+                                                  color: data['warnPregnant']
+                                                      ? Colors.red
+                                                      : Colors.grey),
+                                            ),
+                                            const Text(' | '),
+                                            Text('노약자 주의',
+                                                style: TextStyle(
+                                                    color: data['warnOld']
+                                                        ? Colors.red
+                                                        : Colors.grey))
+                                          ],
                                         ),
-                                        const Text(' | '),
-                                        Text('노약자 주의',
-                                            style: TextStyle(
-                                                color: data['warnOld']
-                                                    ? Colors.red
-                                                    : Colors.grey))
+                                        Row(
+                                          children: [
+                                            Text('어린이 주의',
+                                                style: TextStyle(
+                                                    color: data['warnAge']
+                                                        ? Colors.red
+                                                        : Colors.grey)),
+                                            const Text(' | '),
+                                            Text('충돌 주의',
+                                                style: TextStyle(
+                                                    color: data['collide']
+                                                        ? Colors.red
+                                                        : Colors.grey))
+                                          ],
+                                        ),
                                       ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text('어린이 주의',
-                                            style: TextStyle(
-                                                color: data['warnAge']
-                                                    ? Colors.red
-                                                    : Colors.grey)),
-                                        const Text(' | '),
-                                        Text('충돌 주의',
-                                            style: TextStyle(
-                                                color: data['collide']
-                                                    ? Colors.red
-                                                    : Colors.grey))
-                                      ],
-                                    ),
+                                    )
                                   ],
                                 )
                               ],
-                            )
-                          ],
-                        ),
-                      ))
-                ],
-              )),
+                            ),
+                          ))
+                    ],
+                  )),
+            ],
+          ),
         ),
       ],
     );

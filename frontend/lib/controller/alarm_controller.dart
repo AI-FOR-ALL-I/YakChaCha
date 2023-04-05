@@ -13,6 +13,7 @@ class AlarmController extends GetxController {
     try {
       var response = await ApiAlarm.getAlarmList();
       alarmList = response.data["data"];
+      print(alarmList);
     } catch (e) {
       print(e);
     }

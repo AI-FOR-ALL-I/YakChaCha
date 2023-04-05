@@ -15,9 +15,9 @@ class AlarmPage extends StatefulWidget {
 class _AlarmPageState extends State<AlarmPage> {
   List alarms = [];
 
+  var controller = Get.put(AlarmController());
   getAlarmList() async {
-    var controller = Get.put(AlarmController());
-    alarms = await controller.getAlarmList() ?? [];
+    await controller.getAlarmList();
   }
 
   Future<void> _goToUpdate() async {
@@ -56,7 +56,7 @@ class _AlarmPageState extends State<AlarmPage> {
         body: GetBuilder<AlarmController>(builder: (controller) {
           return Stack(
             children: [
-              alarms.isEmpty
+              controller.alarmList.isEmpty
                   ? const IsEmptyPills(what: "알람")
                   : ListView.builder(
                       padding: EdgeInsets.only(bottom: 30),
