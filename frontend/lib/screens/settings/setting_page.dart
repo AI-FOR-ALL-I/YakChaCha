@@ -3,6 +3,7 @@ import 'package:frontend/controller/auth_controller.dart';
 import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/controller/profile_controller.dart';
 import 'package:frontend/screens/login/social_login.dart';
+import 'package:frontend/screens/profile/create_profile_page.dart';
 import 'package:frontend/screens/profile/receiver_profile_page.dart';
 import 'package:frontend/services/api_client.dart';
 import 'package:frontend/services/api_profiles.dart';
@@ -21,6 +22,8 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  Map<String, dynamic> info = {};
+  bool isOwner = false;
   void logout(BuildContext context) async {
     final authController = Get.find<AuthController>();
     final firebaseController = Get.find<FirebaseController>();
@@ -61,12 +64,30 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
+  void profileDetails() async {
+    final profileController = Get.find<ProfileController>();
+    try {
+      dio.Response response =
+          await ApiProfiles.getProfileInfo(profileController.profileLinkSeq);
+      if (response.statusCode == 200) {
+        //dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+        final Map<String, dynamic> temp =
+            Map<String, dynamic>.from(response.data['data']);
+        isOwner = temp['owner'];
+        print('isOwner$isOwner');
+      }
+    } catch (e) {
+      print('error$e');
+    }
+  }
+
   MultiProfileController multiProfileController =
       Get.put(MultiProfileController());
 
   @override
   void initState() {
     super.initState();
+    profileDetails();
     // 여기서 프로필 정보 다 가져오기
   }
 
@@ -123,14 +144,14 @@ class _SettingPageState extends State<SettingPage> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              BottomNavigation(
+                                                              const BottomNavigation(
                                                                   where: 0)),
                                                     );
                                                   },
-                                                  child: Text('예')),
+                                                  child: const Text('예')),
                                               TextButton(
                                                   onPressed: () {},
-                                                  child: Text('아니오'))
+                                                  child: const Text('아니오'))
                                             ],
                                           )
                                         ],
@@ -180,9 +201,14 @@ class _SettingPageState extends State<SettingPage> {
                 })),
           ),
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateProfilePage()));
+              },
               child: const Text(
-                '사용자 전환하기',
+                '사용자 추가하기',
                 style: TextStyle(color: Colors.black54),
               )),
           const SettingMenuItem(
@@ -195,11 +221,16 @@ class _SettingPageState extends State<SettingPage> {
             menuTitle: '알림설정',
             cases: 1,
           ),
-          const SettingMenuItem(
-            iconName: Icons.autorenew_rounded,
-            menuTitle: '연동정보조회',
-            cases: 2,
-          ),
+          if (isOwner)
+            const SettingMenuItem(
+              iconName: Icons.autorenew_rounded,
+              menuTitle: '연동정보조회',
+              cases: 2,
+            ),
+          if (!isOwner)
+            const SizedBox(
+              height: 15,
+            ),
           Padding(
             padding: const EdgeInsets.only(
                 left: 15.0, right: 15.0, top: 8.0, bottom: 8.0),

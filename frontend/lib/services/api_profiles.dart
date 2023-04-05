@@ -207,4 +207,16 @@ class ApiProfiles {
           'Authorization': 'Bearer $accessToken'
         }));
   }
+
+  static Future<Response> searchLink(int profileLinkSeq) {
+    final accessToken = authController.accessToken;
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
+    final path = ApiConstants.searchLinks
+        .replaceAll('{profileLinkSeq}', profileLinkSeq.toString());
+    return dio.get(path,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        }));
+  }
 }
