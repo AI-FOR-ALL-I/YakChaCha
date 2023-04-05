@@ -76,22 +76,26 @@ class _MyAppState extends State<MyApp> {
           context: navigatorKey.currentState!.context,
           builder: (BuildContext context) {
             return AlertDialog(
-                title: Text('${notification?.title}'),
-                content: Column(
-                  children: [
-                    Text('${notification?.body}'),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ReceiverProfilePage(
-                                      senderAccountSeq: int.parse(
-                                          data["senderAccountSeq"]))));
-                        },
-                        child: Text("연동하러 가기"))
-                  ],
+                title: Center(child: Text('${notification?.title}')),
+                content: Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${notification?.body}'),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ReceiverProfilePage(
+                                        senderAccountSeq: int.parse(
+                                            data["senderAccountSeq"]))));
+                          },
+                          child: Text("연동하러 가기"))
+                    ],
+                  ),
                 ));
           });
       print(data);
@@ -103,22 +107,26 @@ class _MyAppState extends State<MyApp> {
           context: navigatorKey.currentState!.context,
           builder: (BuildContext context) {
             return AlertDialog(
-                title: Text('${notification?.title}'),
-                content: Column(
-                  children: [
-                    Text('${notification?.body}'),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BottomNavigation(
-                                        where: 0,
-                                      )));
-                        },
-                        child: Text("약 먹으러 가기"))
-                  ],
+                title: Center(child: Text('${notification?.title}')),
+                content: Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${notification?.body}'),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BottomNavigation(
+                                          where: 0,
+                                        )));
+                          },
+                          child: Text("약 먹으러 가기"))
+                    ],
+                  ),
                 ));
           });
     }

@@ -78,20 +78,20 @@ class _SettingPageState extends State<SettingPage> {
       body: Column(
         children: [
           SizedBox(
-            height: 150,
+            height: 170,
             // 여기가 프로필 위젯들
             child: Obx(() => ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: multiProfileController.multiProfileList.length,
                 itemBuilder: (BuildContext context, int index) {
+                  var profile = multiProfileController.multiProfileList[index];
                   return Padding(
                     padding: const EdgeInsets.only(
                         left: 10.0, top: 15.0, right: 5.0, bottom: 15.0),
                     child: GestureDetector(
                       onTap: () {
                         print(multiProfileController.multiProfileList[index]);
-                        var profile =
-                            multiProfileController.multiProfileList[index];
+
                         if (profile["profileLinkSeq"] !=
                             profileController.profileLinkSeq) {
                           showDialog(
@@ -141,10 +141,39 @@ class _SettingPageState extends State<SettingPage> {
                               });
                         }
                       },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.asset('assets/images/sampletips.jpg',
-                            width: 120, height: 120, fit: BoxFit.cover),
+                      // {profileLinkSeq: 20, imgCode: 1, nickname: 깃기, name: 깃기, gender: M, birthDate: 2011-04-05, owner: true, pregnancy: false}
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: profile["profileLinkSeq"] ==
+                                      profileController.profileLinkSeq
+                                  ? Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background, // 테두리 색상을 선택하세요.
+                                      width: 3, // 테두리 두께를 조절하세요.
+                                    )
+                                  : null,
+                              borderRadius: BorderRadius.circular(13.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.asset(
+                                  'assets/images/profile${profile["imgCode"]}.png',
+                                  width: profile["profileLinkSeq"] ==
+                                          profileController.profileLinkSeq
+                                      ? 114
+                                      : 120,
+                                  height: profile["profileLinkSeq"] ==
+                                          profileController.profileLinkSeq
+                                      ? 114
+                                      : 120,
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                          Text('${profile["nickname"]}')
+                        ],
                       ),
                     ),
                   );

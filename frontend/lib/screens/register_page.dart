@@ -30,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future ocrSearch(formData) async {
     try {
       var response = await ApiSearch.ocrSearch(formData);
-
+      print(response);
       var response2 =
           await controller.ocrSearchFinal(response.data["edi_code"]);
 
