@@ -20,6 +20,7 @@ var accessToken = authController.accessToken;
 
 class ApiAlarm {
   static Future<Response> getAlarmList() async {
+    dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     tempProfileLinkSeq = controller.profileLinkSeq;
     accessToken = authController.accessToken;
     final path = ApiConstants.getAlarm

@@ -17,7 +17,7 @@ class AlarmPillController extends GetxController {
   //     ]}
 
   // 최종적으로 보낼 Map
-  Map registerMap = {"title": null, "time": null, "mdicineList": []};
+  Map registerMap = {"title": null, "time": null, "medicineList": []};
 
   // 선택된 약 : [{"medicineSeq": 3, "count": 4}]
   List selectedList = [];
@@ -138,7 +138,7 @@ class AlarmPillController extends GetxController {
 
   // .pop() 하면 다 초기화
   void clear() {
-    Map registerMap = {"title": null, "time": null, "mdicineList": []};
+    Map registerMap = {"title": null, "time": null, "medicineList": []};
     selectedList = [];
 
     displayList = [];
