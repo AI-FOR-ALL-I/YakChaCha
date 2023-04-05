@@ -17,7 +17,6 @@ class _AlarmPageState extends State<AlarmPage> {
 
   getAlarmList() async {
     var controller = Get.put(AlarmController());
-    // List alarms = await controller.getAlarmList(); // 원래거
     alarms = await controller.getAlarmList() ?? [];
   }
 
@@ -43,6 +42,9 @@ class _AlarmPageState extends State<AlarmPage> {
     return Center(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: false,
+          titleSpacing: NavigationToolbar.kMiddleSpacing,
           title: Text('알람',
               style: TextStyle(
                   color: Colors.black,
@@ -57,6 +59,7 @@ class _AlarmPageState extends State<AlarmPage> {
               alarms.isEmpty
                   ? const IsEmptyPills(what: "알람")
                   : ListView.builder(
+                      padding: EdgeInsets.only(bottom: 30),
                       itemCount: controller.alarmList.length,
                       itemBuilder: (context, i) {
                         return CustomAlarmWidget(

@@ -13,14 +13,16 @@ final dio = Dio(
 
 final controller = getX.Get.find<ProfileController>();
 final authController = getX.Get.find<AuthController>();
-final tempProfileLinkSeq = controller.profileLinkSeq;
-final accessToken = authController.accessToken;
+var tempProfileLinkSeq = controller.profileLinkSeq;
+var accessToken = authController.accessToken;
 
 // 알약 등록
 
 class ApiAlarmRegister {
   static Future<Response> alarmRegister(
       Map data, String type, int reminderSeq) async {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.alarmRegister
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     if (type == "create") {
@@ -43,6 +45,8 @@ class ApiAlarmRegister {
   }
 
   static Future<void> alarmDelete(reminderSeq) {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.alarmRegister
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
 

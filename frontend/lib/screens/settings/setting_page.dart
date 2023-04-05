@@ -5,14 +5,22 @@ import 'package:frontend/controller/profile_controller.dart';
 import 'package:frontend/screens/login/social_login.dart';
 import 'package:frontend/screens/profile/receiver_profile_page.dart';
 import 'package:frontend/services/api_client.dart';
+import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/settings/setting_menu_item.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:frontend/controller/multiprofile_controller.dart';
+import 'package:frontend/bottom_navigation.dart';
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
 
+  @override
+  State<SettingPage> createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
   void logout(BuildContext context) async {
     final authController = Get.find<AuthController>();
     final firebaseController = Get.find<FirebaseController>();
@@ -53,33 +61,99 @@ class SettingPage extends StatelessWidget {
     }
   }
 
+  MultiProfileController multiProfileController =
+      Get.put(MultiProfileController());
+
+  @override
+  void initState() {
+    super.initState();
+    // 여기서 프로필 정보 다 가져오기
+  }
+
   @override
   Widget build(BuildContext context) {
+    ProfileController profileController = Get.put(ProfileController());
     return Scaffold(
       appBar: const SimpleAppBar(title: '사용자 전환'),
       body: Column(
         children: [
           SizedBox(
             height: 150,
-            child: ListView.builder(
+            // 여기가 프로필 위젯들
+            child: Obx(() => ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 5,
+                itemCount: multiProfileController.multiProfileList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.only(
                         left: 10.0, top: 15.0, right: 5.0, bottom: 15.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.asset('assets/images/sampletips.jpg',
-                          width: 120, height: 120, fit: BoxFit.cover),
+                    child: GestureDetector(
+                      onTap: () {
+                        print(multiProfileController.multiProfileList[index]);
+                        var profile =
+                            multiProfileController.multiProfileList[index];
+                        if (profile["profileLinkSeq"] !=
+                            profileController.profileLinkSeq) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  child: SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.2,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                              '${profile["nickname"]} 님의 프로필로 전환하시겠어요?'),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    profileController
+                                                        .saveProfile(profile[
+                                                            "profileLinkSeq"]);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              BottomNavigation(
+                                                                  where: 0)),
+                                                    );
+                                                  },
+                                                  child: Text('예')),
+                                              TextButton(
+                                                  onPressed: () {},
+                                                  child: Text('아니오'))
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        }
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.asset('assets/images/sampletips.jpg',
+                            width: 120, height: 120, fit: BoxFit.cover),
+                      ),
                     ),
                   );
-                }),
+                })),
           ),
           TextButton(
               onPressed: () {},
               child: const Text(
-                '사용자 설정',
+                '사용자 전환하기',
                 style: TextStyle(color: Colors.black54),
               )),
           const SettingMenuItem(

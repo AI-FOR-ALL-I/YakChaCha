@@ -58,20 +58,21 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
                 .build();
 
         profileLinkRepository.save(profileLink);
+
         log.info("[createProfileLink] 본인 프로필 링크 생성 완료");
-        
     }
 
     @Override
     public ProfileResponseDto getProfile(Account account, long profileLinkSeq) {
+        log.info("[getProfile] 프로필 조회 시작");
+
         ProfileLink profileLink = profileLinkRepository.findByAccountAndProfileLinkSeqAndDelYn(account, profileLinkSeq, "N")
                 .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
 
-        log.info("[getProfile] Profile 조회 시작");
         Profile profile = profileLink.getProfile();
-        log.info("[getProfile] Profile 조회 완료 > {}", profile);
-
         boolean isOwner = account.getAccountSeq() == profileLink.getOwner().getAccountSeq();
+
+        log.info("[getProfile] 프로필 조회 완료");
 
         return ProfileResponseDto.builder()
                 .profileLinkSeq(profileLink.getProfileLinkSeq())
@@ -87,21 +88,20 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
     @Override
     public List<ProfileResponseDto> getProfileList(Account account) {
-        log.info("[getProfileList] 프로필 목록 조회");
+        log.info("[getProfileList] 프로필 목록 조회 시작");
 
+        log.info("[getProfileList] ProfileLink 목록 조회 시작");
         List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountAndDelYn(account, "N");
-        log.info("[getProfileList] ProfileLink 목록 조회 완료 > {}", profileLinkList);
+        log.info("[getProfileList] ProfileLink 목록 조회 완료");
         
         List<ProfileResponseDto> result = new ArrayList<>();
 
         for (ProfileLink profileLink : profileLinkList) {
             log.info("[getProfileList] Profile 조회 시작");
             Profile profile = profileLink.getProfile();
-            log.info("[getProfileList] Profile 조회 완료 > {}", profile);
 
             boolean isOwner = account.getAccountSeq() == profileLink.getOwner().getAccountSeq();
 
-            log.info("[getProfileList] Profile 추가 시작");
             result.add(ProfileResponseDto.builder()
                             .profileLinkSeq(profileLink.getProfileLinkSeq())
                             .imgCode(profileLink.getImgCode())
@@ -112,7 +112,8 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
                             .birthDate(dateUtil.convertToStringType(profile.getBirthDate()))
                             .isOwner(isOwner)
                             .build());
-            log.info("[getProfileList] Profile 추가 완료");
+
+            log.info("[getProfileList] Profile 조회 완료");
         }
 
         log.info("[getProfileList] 프로필 목록 조회 완료");
@@ -122,7 +123,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
     @Override
     public void modifyProfile(Account account, long profileLinkSeq, ModifyProfileRequestDto requestDto) {
-        log.info("[modifyProfile] Profile 수정 시작");
+        log.info("[modifyProfile] 프로필 수정 시작");
 
         ProfileLink profileLink = profileLinkRepository.findByAccountAndProfileLinkSeqAndDelYn(account, profileLinkSeq, "N")
                 .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
@@ -139,44 +140,43 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         profileLink.modify(imgCode, nickname);
         profile.modify(name, gender, pregnancy, birthDate);
 
-//        profileLinkRepository.save(profileLink);
-//        profileRepository.save(profile);
-
-        log.info("[modifyProfile] Profile 수정 완료 > {}", profile);
+        log.info("[modifyProfile] 프로필 수정 완료");
     }
 
     @Override
     public void removeProfile(Account account, long profileLinkSeq) {
-        log.info("[removeProfile] Profile 삭제");
-
+        log.info("[removeProfile] 프로필 삭제 시작");
         ProfileLink profileLink = profileLinkRepository.findByAccountAndProfileLinkSeqAndDelYn(account, profileLinkSeq, "N")
                 .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
-
-        Profile profile = profileLink.getProfile();
-
-        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByProfileAndDelYn(profile, "N");
-
-        profileLinkList.forEach(BaseEntity::remove);
-
-        profile.remove();
-
-        log.info("[removeProfile] Profile 삭제 완료");
+        remove(profileLink);
+        log.info("[removeProfile] 프로필 삭제 완료");
     }
 
-    @Transactional
     @Override
     public void removeAllProfile(Account account) {
-        //List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountOrOwnerAndDelYn(account, account, "N");
-        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccount(account);
-        Set<Profile> profileSet = new HashSet<>();
-        profileLinkList.forEach(profileLink -> {
-            if (profileLink.getAccount().getAccountSeq() == profileLink.getOwner().getAccountSeq()) {
-                Profile profile = profileLink.getProfile();
-                profileSet.add(profile);
-            }
+        log.info("[removeAllProfile] 계정에 등록된 모든 프로필 정보 삭제 시작");
+        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountAndDelYn(account, "N");
+        profileLinkList.forEach(pl -> remove(pl));
+        log.info("[removeAllProfile] 계정에 등록된 모든 프로필 정보 삭제 완료");
+    }
+
+    @Override
+    public void remove(ProfileLink profileLink) {
+        Account account = profileLink.getAccount();
+        Account owner = profileLink.getOwner();
+        Profile profile = profileLink.getProfile();
+
+        if (account.getAccountSeq() == owner.getAccountSeq()) {
+            log.info("[remove] 본인 프로필 삭제 시작 > 연동 중인 계정에서 프로필 삭제 시작");
+            List<ProfileLink> profileLinkList = profileLinkRepository.findAllByProfileAndDelYn(profile, "N");
+            profileLinkList.forEach(pl -> pl.remove());
+            profile.remove();
+            log.info("[remove] 본인 프로필 삭제 완료 > 연동 중인 계정에서 프로필 삭제 완료");
+        } else {
+            log.info("[remove] 연동 프로필 삭제 시작");
             profileLink.remove();
-        });
-        profileSet.forEach(BaseEntity::remove);
+            log.info("[remove] 연동 프로필 삭제 완료");
+        }
     }
 
     @Override
@@ -217,6 +217,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
     @Override
     public ConfirmLinkResponseDto confirmLink(Account account, long senderAccountSeq) {
+        log.info("[confirmLink] 프로필 요청 확인하기 시작");
         Account sender = accountRepository.findByAccountSeqAndDelYn(senderAccountSeq, "N")
                 .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
 
@@ -232,7 +233,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
         String senderAccountName = requestLink.getSender().getName();
 
-        log.info("[confirmLink] 요청 목록 조회");
+        log.info("[confirmLink] ProfileLink 목록 조회 시작");
         List<ProfileLink> profileLinkList = profileLinkRepository.findAllByAccountAndDelYn(account, "N");
         log.info("[confirmLink] ProfileLink 목록 조회 완료 > {}", profileLinkList);
 
@@ -241,7 +242,7 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         for (ProfileLink profileLink : profileLinkList) {
             log.info("[confirmLink] Profile 조회 시작");
             Profile profile = profileLink.getProfile();
-            log.info("[confirmLink] Profile 조회 완료 > {}", profile);
+            log.info("[confirmLink] Profile 조회 완료");
 
             int status = 0;
 
@@ -259,7 +260,6 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
                 log.info("[confirmLink] 본인 프로필이 아닙니다.");
             }
 
-            log.info("[confirmLink] Profile 추가 시작");
             profiles.add(ProfileLinkResponseDto.builder()
                     .profileLinkSeq(profileLink.getProfileLinkSeq())
                     .imgCode(profileLink.getImgCode())
@@ -270,13 +270,9 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
                     .birthDate(dateUtil.convertToStringType(profile.getBirthDate()))
                     .status(status)
                     .build());
-            log.info("[confirmLink] Profile 추가 완료");
         }
 
-        log.info("[confirmLink] 프로필 목록 조회 완료");
-
-        log.info("[confirmLink] 요청 목록 완료");
-
+        log.info("[confirmLink] 프로필 요청 확인하기 완료");
         return ConfirmLinkResponseDto.builder()
                 .senderAccountSeq(senderAccountSeq)
                 .senderAccountName(senderAccountName)
@@ -379,11 +375,6 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         log.info("[getRecieverProfileList] profiles: {}", profiles);
 
         for (Long profileLinkSeq : profiles) {
-//            Profile profile = profileRepository.findByProfileSeqAndDelYn(profileSeq, "N")
-//                    .orElseThrow(() -> new ErrorException(ProfileErrorCode.PROFILE_NOT_FOUND));
-
-//            ProfileLink profileLink = profileLinkRepository.findByOwnerAndProfileAndDelYn(receiver, profile, "N")
-//                            .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
             ProfileLink profileLink = profileLinkRepository.findByProfileLinkSeqAndDelYn(profileLinkSeq, "N")
                             .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
 

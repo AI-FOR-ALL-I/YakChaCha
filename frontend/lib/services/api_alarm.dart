@@ -13,13 +13,15 @@ final dio = Dio(
 
 final controller = getX.Get.find<ProfileController>();
 final authController = getX.Get.find<AuthController>();
-final tempProfileLinkSeq = controller.profileLinkSeq;
-final accessToken = authController.accessToken;
+var tempProfileLinkSeq = controller.profileLinkSeq;
+var accessToken = authController.accessToken;
 
 // 알약 등록
 
 class ApiAlarm {
   static Future<Response> getAlarmList() async {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.getAlarm
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(
@@ -32,7 +34,9 @@ class ApiAlarm {
   }
 
   static Future<Response> getAlarmDetail(int alarmSeq) async {
-    print('시작!');
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
+
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     final path = ApiConstants.getAlarm
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
@@ -43,10 +47,11 @@ class ApiAlarm {
         'Authorization': 'Bearer $accessToken'
       }),
     );
-    print('끝');
   }
 
   static Future<Response> getAlarmCalendar(int alarmSeq, String yyyyMM) async {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.getAlarm
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.get(
@@ -59,6 +64,8 @@ class ApiAlarm {
   }
 
   static Future<Response> takePills(int alarmSeq) async {
+    tempProfileLinkSeq = controller.profileLinkSeq;
+    accessToken = authController.accessToken;
     final path = ApiConstants.getAlarm
         .replaceAll('{profileLinkSeq}', tempProfileLinkSeq.toString());
     return dio.put(

@@ -96,27 +96,24 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         log.info("[getAuthentication] 토큰 인증 정보 조회 시작");
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
-        log.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}",
-            userDetails.getUsername());
+        log.info("[getAuthentication] 토큰 인증 정보 조회 완료");
         return new UsernamePasswordAuthenticationToken(userDetails, "",
             userDetails.getAuthorities());
     }
 
     // JWT 토큰에서 회원 구별 정보 추출
     public String getUsername(String token) {
-        log.info("[getUsername] 토큰 기반 회원 구별 정보 추출");
-        log.info("[getUsername] Secret Key: {}", secretKey);
+        log.info("[getUsername] 토큰 기반 회원 구별 정보 추출 시작");
         String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
             .getSubject();
-        log.info("[getUsername] 토큰 기반 회원 구별 정보 추출 완료, info : {}", info);
+        log.info("[getUsername] 토큰 기반 회원 구별 정보 추출 완료");
         return info;
     }
 
     public String resolveToken(HttpServletRequest request) {
-        log.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
+        log.info("[resolveToken] HTTP 헤더에서 Token 값 추출 시작");
         String token = request.getHeader(AUTHORIZATION_HEADER);
 
-        log.info("token: {}", token);
         if(token == null | !StringUtils.hasText(token)) {
             log.info("[resolveToken] 토큰이 존재하지않습니다.");
             throw new TokenNotFoundException();

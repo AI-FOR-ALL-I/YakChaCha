@@ -113,7 +113,9 @@ class _MyAppState extends State<MyApp> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BottomNavigation(where: 0,)));
+                                  builder: (context) => BottomNavigation(
+                                        where: 0,
+                                      )));
                         },
                         child: Text("약 먹으러 가기"))
                   ],
@@ -136,8 +138,12 @@ class _MyAppState extends State<MyApp> {
                   senderAccountSeq: int.parse(data["senderAccountSeq"]))));
     } else if (data["type"] == "reminder") {
       profileController.saveProfile(int.parse(data["profileLinkSeq"]));
-      Navigator.push(navigatorKey.currentState!.context,
-          MaterialPageRoute(builder: (context) => BottomNavigation(where: 0,)));
+      Navigator.push(
+          navigatorKey.currentState!.context,
+          MaterialPageRoute(
+              builder: (context) => BottomNavigation(
+                    where: 0,
+                  )));
     }
   }
 
@@ -179,7 +185,7 @@ class _MyAppState extends State<MyApp> {
             onBackground: Color(0xFF6694F7), // Info - blue
             surface: Color(0xFFBABABA), // Placeholder
             onSurface: Color(0xFF848293)), // Point-Purple
-      ), // color:Theme.of(context).colorScheme.primary
+      ), // color:Theme.of(context).colorScheme.background
       initialBinding: BindingsBuilder(() {
         Get.put(FirebaseController());
       }),

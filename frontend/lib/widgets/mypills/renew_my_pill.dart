@@ -50,7 +50,7 @@ class RenewMyPill extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(
                 color: isSelected != null && isSelected == true
-                    ? Colors.green
+                    ? Theme.of(context).colorScheme.background
                     : Colors.transparent,
                 width: 2.0),
             boxShadow: [
@@ -106,10 +106,10 @@ class RenewMyPill extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: tag_list
-                                    .map((tagInfo) => TagWidget(
-                                        tagName: tagInfo["name"],
-                                        colorIndex: tagInfo["color"]))
-                                    .toList(),
+                              .map((tagInfo) => TagWidget(
+                                  tagName: tagInfo["name"],
+                                  colorIndex: tagInfo["color"]))
+                              .toList(),
                         ),
                       ),
                     )

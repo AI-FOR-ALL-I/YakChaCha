@@ -43,92 +43,106 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
       },
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Material(
-          elevation: 5,
-          borderRadius: BorderRadius.circular(20),
-          color: statusColor,
-          child: AspectRatio(
-            aspectRatio: 320 / 120,
-            child: Center(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: widget.data["title"] != null
-                                  ? Text(widget.data["title"])
-                                  : Text(
-                                      "약 먹을 시간이에요!",
-                                      style: TextStyle(
-                                          fontSize: 16, color: textColor),
-                                    ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                widget.data["time"].split(':')[0] +
-                                    ":" +
-                                    widget.data["time"].split(':')[1] +
-                                    " " +
-                                    widget.data["time"].split(':')[2],
-                                style: TextStyle(
-                                    fontSize: 42,
-                                    fontWeight: FontWeight.w500,
-                                    color: textColor),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: widget.data["status"] == 3
+                ? Border.all(
+                    color: Theme.of(context).colorScheme.background, width: 3)
+                : null,
+          ),
+          child: Material(
+            elevation: 5,
+            borderRadius: BorderRadius.circular(20),
+            color: statusColor,
+            child: AspectRatio(
+              aspectRatio: 320 / 120,
+              child: Center(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: widget.data["title"] != null
+                                    ? Text(widget.data["title"])
+                                    : Text(
+                                        "약 먹을 시간이에요!",
+                                        style: TextStyle(
+                                            fontSize: 16, color: textColor),
+                                      ),
                               ),
                             ),
-                          ),
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  widget.data["time"].split(':')[0] +
+                                      ":" +
+                                      widget.data["time"].split(':')[1] +
+                                      " " +
+                                      widget.data["time"].split(':')[2],
+                                  style: TextStyle(
+                                      fontSize: 42,
+                                      fontWeight: FontWeight.w500,
+                                      color: textColor),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
-                      child: Container(
-                          child: (widget.data["status"] == 1)
-                              ? GestureDetector(
-                                  child: Icon(
-                                    Icons.error_outline_outlined,
-                                    size: 35,
-                                    color: textColor,
-                                  ),
-                                  onTap: () {
-                                    var controller = Get.put(AlarmController());
-                                    controller
-                                        .takePill(widget.data["reminderSeq"]);
-                                  })
-                              : (widget.data["status"] == 2)
-                                  ? Icon(
-                                      Icons.check_circle_outlined,
+                      Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: Container(
+                            child: (widget.data["status"] == 1) // 지남 + 안먹음
+                                ? GestureDetector(
+                                    child: Icon(
+                                      Icons.error_outline_outlined,
                                       size: 35,
                                       color: textColor,
-                                    )
-                                  : GestureDetector(
-                                      child: Icon(
-                                        Icons.radio_button_unchecked_outlined,
+                                    ),
+                                    onTap: () {
+                                      var controller =
+                                          Get.put(AlarmController());
+                                      controller
+                                          .takePill(widget.data["reminderSeq"]);
+                                    })
+                                : (widget.data["status"] ==
+                                        2) // 지남 + 먹음 or 안지남 + 먹음
+                                    ? Icon(
+                                        Icons.check_circle_outlined,
                                         size: 35,
                                         color: textColor,
-                                      ),
-                                      onTap: () {
-                                        var controller =
-                                            Get.put(AlarmController());
-                                        controller.takePill(
-                                            widget.data["reminderSeq"]);
-                                      })
+                                      )
+                                    : (widget.data["status"] == 3) // 곧 먹을거
+                                        ? GestureDetector(
+                                            child: Icon(
+                                              Icons
+                                                  .radio_button_unchecked_outlined,
+                                              size: 35,
+                                              color: textColor,
+                                            ),
+                                            onTap: () {
+                                              var controller =
+                                                  Get.put(AlarmController());
+                                              controller.takePill(
+                                                  widget.data["reminderSeq"]);
+                                            })
+                                        : null
 
-                          // child: Icon(Icons.check_circle_outlined),
-                          ),
-                    ) // 여기가 체크 아이콘
-                  ]),
+                            // child: Icon(Icons.check_circle_outlined),
+                            ),
+                      ) // 여기가 체크 아이콘
+                    ]),
+              ),
             ),
           ),
         ),
