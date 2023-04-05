@@ -359,30 +359,38 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
     public List<ReceiverProfileResponseDto> getRecieverProfileList(Account account) {
         String key = "requestLink:" + account.getAccountSeq();
 
-        log.info("[checkAuthNumber] redis 조회 시작");
+        log.info("[getRecieverProfileList] redis 조회 시작");
         RequestLinkDto requestLink = redisUtil.get(key, RequestLinkDto.class);
-        log.info("[checkAuthNumber] redis 조회 완료");
+        log.info("[getRecieverProfileList] redis 조회 완료");
 
         if (requestLink == null || requestLink.getStatus() != 3) {
             throw new ErrorException(ProfileLinkErrorCode.NOT_FOUND_LINK);
         }
 
+        log.info("[getRecieverProfileList] 수신자 계정 조회 사작");
         long receiverAccountSeq = requestLink.getReceiver().getAccountSeq();
         Account receiver = accountRepository.findByAccountSeqAndDelYn(receiverAccountSeq, "N")
                 .orElseThrow(() -> new ErrorException(AccountErrorCode.ACCOUNT_NOT_FOUND));
+        log.info("[getRecieverProfileList] 수신자 계정 조회 완료");
 
         List<ReceiverProfileResponseDto> result = new ArrayList<>();
 
         List<Long> profiles = requestLink.getProfiles();
-        for (Long profileSeq : profiles) {
-            Profile profile = profileRepository.findByProfileSeqAndDelYn(profileSeq, "N")
-                    .orElseThrow(() -> new ErrorException(ProfileErrorCode.PROFILE_NOT_FOUND));
+        log.info("[getRecieverProfileList] profiles: {}", profiles);
 
-            ProfileLink profileLink = profileLinkRepository.findByOwnerAndProfileAndDelYn(receiver, profile, "N")
+        for (Long profileLinkSeq : profiles) {
+//            Profile profile = profileRepository.findByProfileSeqAndDelYn(profileSeq, "N")
+//                    .orElseThrow(() -> new ErrorException(ProfileErrorCode.PROFILE_NOT_FOUND));
+
+//            ProfileLink profileLink = profileLinkRepository.findByOwnerAndProfileAndDelYn(receiver, profile, "N")
+//                            .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
+            ProfileLink profileLink = profileLinkRepository.findByProfileLinkSeqAndDelYn(profileLinkSeq, "N")
                             .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
 
+            Profile profile = profileLink.getProfile();
+
             result.add(ReceiverProfileResponseDto.builder()
-                            .profileSeq(profileSeq)
+                            .profileSeq(profile.getProfileSeq())
                             .imgCode(profileLink.getImgCode())
                             .nickname(profileLink.getNickname())
                             .name(profile.getName())
