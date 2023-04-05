@@ -3,6 +3,7 @@ import 'package:frontend/controller/profile_controller.dart';
 import 'package:frontend/models/get_news_model.dart';
 import 'package:frontend/services/api_get_news.dart';
 import 'package:frontend/services/api_profiles.dart';
+import 'package:frontend/widgets/common/is_empty_pills.dart';
 import 'package:frontend/widgets/main/eat_check_button.dart';
 import 'package:frontend/widgets/main/health_tip_item.dart';
 import 'package:frontend/widgets/main/my_drug_item.dart';
@@ -85,6 +86,10 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Future<List<GetNewsModel>> todayNews = ApiGetNews.getNews();
+    var flag = true;
+    if (drugs == [] || drugs.isEmpty) {
+      flag = false;
+    }
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
@@ -101,8 +106,8 @@ class _HomePage extends State<HomePage> {
               removeTop: true,
               child: ListView(
                 children: [
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       Padding(
                         padding: EdgeInsets.all(15.0),
                         child: Text(
@@ -146,24 +151,20 @@ class _HomePage extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: drugs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final item = drugs[index];
-                          print('item$item');
-                          if (drugs.isEmpty) {
-                            return Container(
-                                child: const Text('등록된 약이 없습니다....'));
-                          } else {
-                            return MyDrugItem(
-                              imagePath: item["img"],
-                              title: item['itemName'],
-                              tag_list: item['tagList'],
-                            );
-                          }
-                        }),
+                    height: 220,
+                    child: flag
+                        ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: drugs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final item = drugs[index];
+                              return MyDrugItem(
+                                imagePath: item["img"],
+                                title: item['itemName'],
+                                tag_list: item['tagList'],
+                              );
+                            })
+                        : const IsEmptyPills(what: "알약"),
                   ),
                   const Padding(
                     padding: EdgeInsetsDirectional.symmetric(
@@ -188,7 +189,7 @@ class _HomePage extends State<HomePage> {
                           if (snapshot.hasData) {
                             return newsList(snapshot);
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
                         },
                       ),
@@ -218,3 +219,4 @@ class _HomePage extends State<HomePage> {
         });
   }
 }
+

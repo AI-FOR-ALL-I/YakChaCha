@@ -90,7 +90,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                         },
                         child: const Icon(
                           Icons.arrow_drop_up_outlined,
-                          size: 30,
+                          size: 24,
                         ),
                       );
                     }),
@@ -108,7 +108,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                       },
                       child: const Icon(
                         Icons.arrow_drop_down_outlined,
-                        size: 30,
+                        size: 24,
                       ),
                     ),
                   ],
@@ -120,4 +120,5 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
       ),
     );
   }
+  
 }

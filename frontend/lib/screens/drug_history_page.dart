@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/controller/my_pill_controller.dart';
-import 'package:frontend/models/my_pill_model.dart';
 import 'package:frontend/screens/myPills/my_pill_delete.dart';
 import 'package:frontend/services/my_pill_api.dart';
 import 'package:frontend/services/taken_pill_api.dart';
+import 'package:frontend/widgets/common/is_empty_pills.dart';
 import 'package:frontend/widgets/mypills/renew_my_pill.dart';
 import 'package:get/get.dart';
 
@@ -139,7 +139,9 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
 
   Column takenPillList(AsyncSnapshot<List> snapshot) {
     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-      return isEmptyPills();
+      return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [IsEmptyPills(what: "알약")]);
     }
 
     List data = snapshot.data!;
@@ -244,33 +246,6 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     );
   }
 
-  Column isEmptyPills() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.medication,
-                size: 58,
-              ),
-              Text(
-                "복용한 내역이 없습니다.",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Column myPillList(AsyncSnapshot<List> snapshot) {
     var isZero = false;
     if (snapshot.data!.isEmpty) {
@@ -279,7 +254,10 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
       snapshot.data!.sort((a, b) => a.dday.compareTo(b.dday));
     }
     return isZero
-        ? isEmptyPills()
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [IsEmptyPills(what: "알약")],
+          )
         : Column(
             children: [
               Flexible(
