@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/pill_detail_model.dart';
 import 'package:frontend/widgets/pill_detail/pill_detail_line_state.dart';
+import 'package:frontend/widgets/pill_detail/pill_detail_line_state_collide.dart';
 import 'package:frontend/widgets/pill_detail/pill_detail_line_state_hyo.dart';
 import 'package:frontend/widgets/pill_detail/pill_detail_line_state_method.dart';
 import 'package:frontend/widgets/pill_detail/pill_detail_line_state_warn.dart';
@@ -170,7 +171,8 @@ class PillDetailsForApi extends StatelessWidget {
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: List.generate(pillDetail.startDate.length, (index) {
+                          children: List.generate(pillDetail.startDate.length,
+                              (index) {
                             return Text(
                               "${pillDetail.startDate[index]} ~ ${pillDetail.endDate[index]}",
                               style: TextStyle(fontSize: 20),
@@ -193,8 +195,11 @@ class PillDetailsForApi extends StatelessWidget {
                 lineTitle: "보관 방법", content: pillDetail.storageMethod),
             PillDetailLineWarn(
                 lineTitle: "복용 시 주의사항", content: pillDetail.nbDocData),
-            PillDetailLine(
-                lineTitle: "함께 먹지 말아야 하는 성분", content: pillDetail.typeCode),
+            pillDetail.collideList.isNotEmpty
+                ? PillDetailLineCollide(
+                    lineTitle: "함께 먹지 말아야 하는 성분",
+                    content: pillDetail.collideList)
+                : SizedBox(),
           ],
         )
       ],
