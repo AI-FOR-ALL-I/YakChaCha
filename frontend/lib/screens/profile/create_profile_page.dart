@@ -23,6 +23,14 @@ class _CreateProfilePage extends State<CreateProfilePage> {
   bool isFemale = false;
   bool isPregnant = false;
   String initBirthDate = '';
+  // 프로필 이미지 인덱스 설정
+  int _selectedImageIndex = 1;
+
+  void _changeProfileImage(int index) {
+    setState(() {
+      _selectedImageIndex = index;
+    });
+  }
 
   void onBirthDateSelected(String birthDate) {
     // 생년월일 값 처리
@@ -49,8 +57,8 @@ class _CreateProfilePage extends State<CreateProfilePage> {
       } else {
         gender = 'M';
       }
-      dio.Response response = await ApiProfiles.createProfile(
-          name, gender, isPregnant, initBirthDate, nickname, 1);
+      dio.Response response = await ApiProfiles.createProfile(name, gender,
+          isPregnant, initBirthDate, nickname, _selectedImageIndex);
       // 이미지 코드는 지금 임의로 1로 보내는중입니다.
       // TODO: - 이미지 코드 설정
 
@@ -79,18 +87,21 @@ class _CreateProfilePage extends State<CreateProfilePage> {
                   height: 30,
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  GestureDetector(
-                      onTap: () async {
-                        Navigator.push(
+                  Image.asset('assets/images/profile$_selectedImageIndex.png',
+                      width: 100.0, height: 100.0)
+                ]),
+                TextButton(
+                    onPressed: () async {
+                      int selectedIndex = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const SelectProfileImagePage()),
-                        );
-                      },
-                      child: Image.asset('assets/images/sampletips.jpg',
-                          width: 100.0, height: 100.0)),
-                ]),
+                              builder: (context) => SelectProfileImagePage()));
+                      _changeProfileImage(selectedIndex + 1);
+                    },
+                    child: const Text(
+                      '이미지 변경하기',
+                      style: TextStyle(color: Colors.black54),
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -179,15 +190,15 @@ class _CreateProfilePage extends State<CreateProfilePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
+                color: isSelected ? Colors.white : const Color(0xFFBBE4CB),
                 width: 2,
               ),
-              color: isSelected ? Color(0xFFBBE4CB) : Colors.white,
+              color: isSelected ? const Color(0xFFBBE4CB) : Colors.white,
             ),
             child: Text(
               text,
               style: TextStyle(
-                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
+                color: isSelected ? Colors.white : const Color(0xFFBBE4CB),
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -214,15 +225,15 @@ class _CreateProfilePage extends State<CreateProfilePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
+                color: isSelected ? Colors.white : const Color(0xFFBBE4CB),
                 width: 2,
               ),
-              color: isSelected ? Color(0xFFBBE4CB) : Colors.white,
+              color: isSelected ? const Color(0xFFBBE4CB) : Colors.white,
             ),
             child: Text(
               text,
               style: TextStyle(
-                color: isSelected ? Colors.white : Color(0xFFBBE4CB),
+                color: isSelected ? Colors.white : const Color(0xFFBBE4CB),
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -247,10 +258,10 @@ class _CreateProfilePage extends State<CreateProfilePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: Color(0xFFBBE4CB),
+                color: const Color(0xFFBBE4CB),
                 width: 2,
               ),
-              color: Color(0xFFBBE4CB),
+              color: const Color(0xFFBBE4CB),
             ),
             child: const Text(
               '등록하기',

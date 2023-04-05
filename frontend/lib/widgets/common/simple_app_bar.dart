@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/alarm_page.dart';
+import 'package:frontend/screens/profile/create_profile_page.dart';
+import 'package:frontend/screens/profile/select_profile_image_page.dart';
 import 'package:frontend/screens/settings/setting_bottom_sheet.dart';
 import 'package:frontend/services/api_alarm_register.dart';
 import 'package:get/get.dart';
@@ -50,6 +51,19 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               // 프로필 추가. 회원 연동 추가 모달 띄우기
               _showModalBottomSheet(context);
+            },
+            icon: const Icon(Icons.add, color: Colors.black),
+          )
+        else if (title == '프로필 선택')
+          IconButton(
+            onPressed: () {
+              // 프로필 추가. 회원 연동 추가 모달 띄우기
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CreateProfilePage(),
+                ),
+              );
             },
             icon: const Icon(Icons.add, color: Colors.black),
           )

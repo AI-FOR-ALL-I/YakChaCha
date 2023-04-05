@@ -3,9 +3,9 @@ import 'package:frontend/controller/auth_controller.dart';
 import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/controller/profile_controller.dart';
 import 'package:frontend/screens/login/social_login.dart';
+import 'package:frontend/screens/profile/create_profile_page.dart';
 import 'package:frontend/screens/profile/receiver_profile_page.dart';
 import 'package:frontend/services/api_client.dart';
-import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:frontend/widgets/settings/setting_menu_item.dart';
 import 'package:dio/dio.dart' as dio;
@@ -123,14 +123,14 @@ class _SettingPageState extends State<SettingPage> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              BottomNavigation(
+                                                              const BottomNavigation(
                                                                   where: 0)),
                                                     );
                                                   },
-                                                  child: Text('예')),
+                                                  child: const Text('예')),
                                               TextButton(
                                                   onPressed: () {},
-                                                  child: Text('아니오'))
+                                                  child: const Text('아니오'))
                                             ],
                                           )
                                         ],
@@ -151,9 +151,14 @@ class _SettingPageState extends State<SettingPage> {
                 })),
           ),
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateProfilePage()));
+              },
               child: const Text(
-                '사용자 전환하기',
+                '사용자 추가하기',
                 style: TextStyle(color: Colors.black54),
               )),
           const SettingMenuItem(
