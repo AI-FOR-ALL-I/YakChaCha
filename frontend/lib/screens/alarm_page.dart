@@ -40,6 +40,9 @@ class _AlarmPageState extends State<AlarmPage> {
     return Center(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: false,
+          titleSpacing: NavigationToolbar.kMiddleSpacing,
           title: Text('알람',
               style: TextStyle(
                   color: Colors.black,
@@ -52,6 +55,7 @@ class _AlarmPageState extends State<AlarmPage> {
           return Stack(
             children: [
               ListView.builder(
+                  padding: EdgeInsets.only(bottom: 30),
                   itemCount: controller.alarmList.length,
                   itemBuilder: (context, i) {
                     return CustomAlarmWidget(
