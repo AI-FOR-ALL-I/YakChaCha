@@ -25,9 +25,6 @@ class _MapPageState extends State<MapPage> {
     final nowAround = ApiDrugStorePos.getDrugStorePos(
         {"xBig": widget.lngBig, "ySmall": widget.latSmall});
     Size size = MediaQuery.of(context).size;
-    print("!@#!@#!@#!@#!@#");
-    print(widget.latSmall);
-    print(widget.lngBig);
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

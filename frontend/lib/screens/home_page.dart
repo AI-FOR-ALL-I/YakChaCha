@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controller/profile_controller.dart';
+import 'package:frontend/models/get_news_model.dart';
+import 'package:frontend/services/api_get_news.dart';
 import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/main/eat_check_button.dart';
 import 'package:frontend/widgets/main/health_tip_item.dart';
@@ -82,6 +84,8 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Future<List<GetNewsModel>> todayNews = ApiGetNews.getNews();
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Scaffold(
@@ -105,7 +109,7 @@ class _HomePage extends State<HomePage> {
                           "약 먹어야하는 시간",
                           style: TextStyle(
                               color: Colors.black,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16.0),
                         ),
                       ),
@@ -114,6 +118,7 @@ class _HomePage extends State<HomePage> {
                         padding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 5.0),
                         child: Text(
+                          // TODO: 다음 알람의 시간으로 대체 해야함
                           "17:00",
                           style: TextStyle(
                               color: Colors.black,
@@ -136,12 +141,12 @@ class _HomePage extends State<HomePage> {
                       "내 약 목록",
                       style: TextStyle(
                           color: Colors.black,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           fontSize: 16.0),
                     ),
                   ),
                   SizedBox(
-                    height: 150,
+                    height: 200,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: drugs.length,
@@ -149,11 +154,14 @@ class _HomePage extends State<HomePage> {
                           final item = drugs[index];
                           print('item$item');
                           if (drugs.isEmpty) {
-                            return Container(child: const Text('비어있음....'));
+                            return Container(
+                                child: const Text('등록된 약이 없습니다....'));
                           } else {
                             return MyDrugItem(
-                                imagePath: 'assets/images/night.png',
-                                title: item['itemName']);
+                              imagePath: item["img"],
+                              title: item['itemName'],
+                              tag_list: item['tagList'],
+                            );
                           }
                         }),
                   ),
@@ -161,10 +169,10 @@ class _HomePage extends State<HomePage> {
                     padding: EdgeInsetsDirectional.symmetric(
                         horizontal: 15.0, vertical: 15.0),
                     child: Text(
-                      "상식 어쩌구",
+                      "오늘의 건강 상식",
                       style: TextStyle(
                           color: Colors.black,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           fontSize: 16.0),
                     ),
                   ),
@@ -174,12 +182,16 @@ class _HomePage extends State<HomePage> {
                     child: SizedBox(
                       width: 300,
                       height: 290,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (BuildContext context, int index) {
-                            return const HealthTipItem();
-                          }),
+                      child: FutureBuilder(
+                        future: todayNews,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return newsList(snapshot);
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
                     ),
                   )
                 ],
@@ -189,5 +201,20 @@ class _HomePage extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  ListView newsList(AsyncSnapshot<List<GetNewsModel>> snapshot) {
+    var news = snapshot.data!;
+    return ListView.separated(
+        separatorBuilder: (context, index) => const SizedBox(width: 10),
+        scrollDirection: Axis.horizontal,
+        itemCount: news.length,
+        itemBuilder: (context, index) {
+          return HealthTipItem(
+              url: news[index].url,
+              img: news[index].img,
+              title: news[index].title,
+              description: news[index].description);
+        });
   }
 }
