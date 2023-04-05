@@ -11,7 +11,7 @@ def run_ocr_model(image):
         numbers = re.findall(r'\d+', string)
         if numbers:
             for j in numbers:
-                if len(j) == 9 and j[0] == '6':
+                if len(j) == 9:
                     edi_code.append(j)
     
     result = {
