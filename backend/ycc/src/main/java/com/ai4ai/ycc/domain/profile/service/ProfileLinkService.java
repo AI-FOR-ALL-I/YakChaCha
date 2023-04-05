@@ -8,6 +8,7 @@ import com.ai4ai.ycc.domain.profile.dto.response.FindAuthNumberResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.dto.response.ReceiverProfileResponseDto;
 import com.ai4ai.ycc.domain.profile.entity.Profile;
+import com.ai4ai.ycc.domain.profile.entity.ProfileLink;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public interface ProfileLinkService {
     void removeProfile(Account account, long profileLinkSeq);
 
     void removeAllProfile(Account account);
+    void remove(ProfileLink profileLink);
 
     void sendLink(Account sender, SendLinkRequestDto requestDto) ;
 

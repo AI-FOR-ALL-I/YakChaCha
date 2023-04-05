@@ -38,4 +38,6 @@ public interface ProfileLinkRepository extends JpaRepository<ProfileLink, Long> 
     Optional<ProfileLink> findByOwnerAndProfileAndDelYn(Account owner, Profile profile, String delYn);
 
     Optional<ProfileLink> findByProfileLinkSeqAndDelYn(long profileLinkSeq, String n);
+
+    Optional<ProfileLink> findByOwnerAndProfileLinkSeqAndDelYn(Account owner, long profileLinkSeq, String delYn);
 }
