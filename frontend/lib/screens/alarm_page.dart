@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/widgets/alarm/alarm_widget.dart';
 import 'package:frontend/screens/alarm/alarm_create_page.dart';
 import 'package:frontend/controller/alarm_controller.dart';
+import 'package:frontend/widgets/common/is_empty_pills.dart';
 import 'package:get/get.dart';
 
 class AlarmPage extends StatefulWidget {
@@ -12,17 +13,19 @@ class AlarmPage extends StatefulWidget {
 }
 
 class _AlarmPageState extends State<AlarmPage> {
+  List alarms = [];
+
   getAlarmList() async {
     var controller = Get.put(AlarmController());
     // List alarms = await controller.getAlarmList(); // 원래거
-    List alarms = await controller.getAlarmList() ?? [];
+    alarms = await controller.getAlarmList() ?? [];
   }
 
   Future<void> _goToUpdate() async {
     await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => AlarmCreatePage(
+            builder: (context) => const AlarmCreatePage(
                   isCreate: true,
                 )));
     await getAlarmList();
@@ -36,6 +39,7 @@ class _AlarmPageState extends State<AlarmPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(alarms);
     return Center(
       child: Scaffold(
         appBar: AppBar(
@@ -50,13 +54,15 @@ class _AlarmPageState extends State<AlarmPage> {
         body: GetBuilder<AlarmController>(builder: (controller) {
           return Stack(
             children: [
-              ListView.builder(
-                  itemCount: controller.alarmList.length,
-                  itemBuilder: (context, i) {
-                    return CustomAlarmWidget(
-                      data: controller.alarmList[i],
-                    );
-                  }),
+              alarms.isEmpty
+                  ? const IsEmptyPills(what: "알람")
+                  : ListView.builder(
+                      itemCount: controller.alarmList.length,
+                      itemBuilder: (context, i) {
+                        return CustomAlarmWidget(
+                          data: controller.alarmList[i],
+                        );
+                      }),
               Positioned(
                 bottom: 25,
                 right: 20,
@@ -65,7 +71,7 @@ class _AlarmPageState extends State<AlarmPage> {
                     onPressed: () {
                       _goToUpdate();
                     },
-                    child: Text('+',
+                    child: const Text('+',
                         style: TextStyle(color: Colors.white, fontSize: 36))),
               )
             ],
