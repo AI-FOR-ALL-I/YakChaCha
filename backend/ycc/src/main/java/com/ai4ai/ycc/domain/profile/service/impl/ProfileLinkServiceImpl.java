@@ -147,20 +147,25 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
 
     @Override
     public void removeProfile(Account account, long profileLinkSeq) {
-        log.info("[removeProfile] Profile 삭제");
+        log.info("[removeProfile] 프로필 삭제");
 
         ProfileLink profileLink = profileLinkRepository.findByAccountAndProfileLinkSeqAndDelYn(account, profileLinkSeq, "N")
                 .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
 
+        Account owner = profileLink.getOwner();
         Profile profile = profileLink.getProfile();
 
-        List<ProfileLink> profileLinkList = profileLinkRepository.findAllByProfileAndDelYn(profile, "N");
+        if (account.getAccountSeq() == owner.getAccountSeq()) {
+            log.info("[removeProfile] 본인 프로필 삭제 > 연동 중인 계정에서 프로필 삭제");
+            List<ProfileLink> profileLinkList = profileLinkRepository.findAllByProfileAndDelYn(profile, "N");
+            profileLinkList.forEach(pl -> pl.remove());
+            profile.remove();
+        } else {
+            log.info("[removeProfile] 연동 프로필 삭제");
+            profileLink.remove();
+        }
 
-        profileLinkList.forEach(BaseEntity::remove);
-
-        profile.remove();
-
-        log.info("[removeProfile] Profile 삭제 완료");
+        log.info("[removeProfile] 프로필 삭제 완료");
     }
 
     @Transactional
@@ -379,11 +384,6 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         log.info("[getRecieverProfileList] profiles: {}", profiles);
 
         for (Long profileLinkSeq : profiles) {
-//            Profile profile = profileRepository.findByProfileSeqAndDelYn(profileSeq, "N")
-//                    .orElseThrow(() -> new ErrorException(ProfileErrorCode.PROFILE_NOT_FOUND));
-
-//            ProfileLink profileLink = profileLinkRepository.findByOwnerAndProfileAndDelYn(receiver, profile, "N")
-//                            .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
             ProfileLink profileLink = profileLinkRepository.findByProfileLinkSeqAndDelYn(profileLinkSeq, "N")
                             .orElseThrow(() -> new ErrorException(ProfileLinkErrorCode.NOT_FOUND_PROFILE_LINK));
 
