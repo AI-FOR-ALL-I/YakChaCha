@@ -17,7 +17,7 @@ class AlarmMyPillPage extends StatefulWidget {
 }
 
 class _AlarmMyPillPageState extends State<AlarmMyPillPage> {
-  final Future<List<MyPillModel>> myPills = MyPillApi.getMyPill();
+  final Future myPills = MyPillApi.getMyPill();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _AlarmMyPillPageState extends State<AlarmMyPillPage> {
   }
 }
 
-Column myPillList(AsyncSnapshot<List<MyPillModel>> snapshot) {
+Column myPillList(AsyncSnapshot snapshot) {
   return Column(
     children: [
       Flexible(

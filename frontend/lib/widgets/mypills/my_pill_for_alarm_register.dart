@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
 import 'package:frontend/widgets/common/tag_widget.dart';
 import 'package:get/get.dart';
@@ -18,7 +17,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onLongPress: () {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -43,6 +42,7 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                   margin: const EdgeInsets.only(right: 7),

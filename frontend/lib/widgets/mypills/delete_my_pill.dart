@@ -6,12 +6,12 @@ import 'package:frontend/controller/my_pill_controller.dart';
 import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
 import 'package:frontend/services/api_delete_my_pill.dart';
 import 'package:frontend/widgets/common/tag_widget.dart';
+import 'package:get/get.dart';
 
 class DeleteMyPill extends StatefulWidget {
   final String itemName, img;
   final int itemSeq, myMedicineSeq;
   final List tag_list;
-  final MyPillController myPillController;
 
   const DeleteMyPill({
     super.key,
@@ -20,7 +20,6 @@ class DeleteMyPill extends StatefulWidget {
     required this.img,
     required this.tag_list,
     required this.myMedicineSeq,
-    required this.myPillController,
   });
 
   @override
@@ -28,6 +27,14 @@ class DeleteMyPill extends StatefulWidget {
 }
 
 class _DeleteMyPillState extends State<DeleteMyPill> {
+  MyPillController myPillController = Get.put(MyPillController());
+
+  Future<void> deletePill() async {
+    await ApiDeleteMyPill.getPillDetail(widget.myMedicineSeq);
+    myPillController.getPillList();
+    myPillController.getTakenPillList();
+  }
+
   @override
   Widget build(BuildContext context) {
     var imgFlag = false;
@@ -140,50 +147,51 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
                   size: 32,
                 ),
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('삭제'),
-                        content: Text('정말 ${widget.itemName} 약을 삭제하시겠습니까?'),
-                        actions: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('취소'),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFFF6961),
-                            ),
-                            onPressed: () {
-                              // 함수 실행 코드 작성
-                              ApiDeleteMyPill.getPillDetail(
-                                  widget.myMedicineSeq);
-
-                              widget.myPillController.increment(0);
-
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pop();
-                              // Navigator.of(context).popAndPushNamed(routeName);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BottomNavigation(where: 3)));
-                            },
-                            child: Text('삭제'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  customShowDialog(context);
                 },
               )),
         ],
       ),
+    );
+  }
+
+  Future<dynamic> customShowDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('삭제'),
+          content: Text('정말 ${widget.itemName} 약을 삭제하시겠습니까?'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('취소'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFF6961),
+              ),
+              onPressed: () {
+                // 함수 실행 코드 작성
+                deletePill();
+
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                // Navigator.of(context).popAndPushNamed(routeName);
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const BottomNavigation(where: 3)));
+              },
+              child: Text('삭제'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
