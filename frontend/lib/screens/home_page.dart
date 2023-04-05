@@ -162,6 +162,8 @@ class _HomePage extends State<HomePage> {
                                 imagePath: item["img"],
                                 title: item['itemName'],
                                 tag_list: item['tagList'],
+                                itemSeq: item['itemSeq']
+                                ,
                               );
                             })
                         : const IsEmptyPills(what: "알약"),
