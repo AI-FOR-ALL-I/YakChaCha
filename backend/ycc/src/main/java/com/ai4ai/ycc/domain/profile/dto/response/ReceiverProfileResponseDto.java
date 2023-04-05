@@ -7,12 +7,12 @@ import lombok.Getter;
 @Builder
 public class ReceiverProfileResponseDto {
 
-    long profileSeq;
-    int imgCode;
-    String nickname;
-    String name;
-    String gender;
-    String birthDate;
-    boolean isPregnancy;
+    private long profileSeq;
+    private int imgCode;
+    private String nickname;
+    private String name;
+    private String gender;
+    private String birthDate;
+    private boolean isPregnancy;
 
 }

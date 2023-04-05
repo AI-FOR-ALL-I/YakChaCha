@@ -9,8 +9,8 @@ import java.util.List;
 @Builder
 public class ConfirmLinkResponseDto {
 
-    long senderAccountSeq;
-    String senderAccountName;
-    List<ProfileLinkResponseDto> profiles;
+    private long senderAccountSeq;
+    private String senderAccountName;
+    private List<ProfileLinkResponseDto> profiles;
 
 }

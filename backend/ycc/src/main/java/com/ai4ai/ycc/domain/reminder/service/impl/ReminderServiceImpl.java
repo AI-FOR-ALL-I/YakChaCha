@@ -102,10 +102,8 @@ public class ReminderServiceImpl implements ReminderService {
         LocalTime now = LocalTime.now();
 
         List<ReminderResponseDto> resultList = new ArrayList<>();
-        boolean isBefore = true;
 
         int status = -1;
-
         boolean found = false;
 
         for (Reminder reminder : reminderList) {

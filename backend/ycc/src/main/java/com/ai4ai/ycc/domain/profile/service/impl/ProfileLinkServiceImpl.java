@@ -160,7 +160,6 @@ public class ProfileLinkServiceImpl implements ProfileLinkService {
         log.info("[removeAllProfile] 계정에 등록된 모든 프로필 정보 삭제 완료");
     }
 
-    @Override
     public void remove(ProfileLink profileLink) {
         Account account = profileLink.getAccount();
         Account owner = profileLink.getOwner();
