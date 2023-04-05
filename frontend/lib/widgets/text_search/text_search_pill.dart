@@ -43,10 +43,13 @@ class _TextSearchPillComponentState extends State<TextSearchPillComponent> {
                                     'assets/images/defaultPill1.png',
                                     fit: BoxFit.fill,
                                   )
-                                : Image.network(
-                                    '${widget.data?['img']}',
-                                    fit: BoxFit.fill,
-                                  ),
+                                : Image.network('${widget.data?['img']}',
+                                    fit: BoxFit.fill, errorBuilder:
+                                        (BuildContext context, Object exception,
+                                            StackTrace? stackTrace) {
+                                    return Image.asset(
+                                        'assets/images/defaultPill1.png');
+                                  }),
                           ),
                           if (widget.data?['collide'] ||
                               widget.data?['warnPregnant'] ||

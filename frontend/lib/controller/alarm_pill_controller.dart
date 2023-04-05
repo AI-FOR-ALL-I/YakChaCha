@@ -146,7 +146,7 @@ class AlarmPillController extends GetxController {
     tempList = []; // [1, 2, 3,]
 
     myPillList = [];
-    tagList = []; // tag 목록 다 가져오기
+    tagList = [];
     selectedTagList = [];
     update();
   }
@@ -162,8 +162,14 @@ class AlarmPillController extends GetxController {
   Future getTagList() async {
     try {
       var response = await ApiTag.getTagList();
-      tagList = response.data["data"];
-      print(tagList);
+
+      List recievedTagList = response.data["data"];
+      List tagNameList = tagList.map((tag) => tag["name"]).toList();
+      for (var i = 0; i < recievedTagList.length; i++) {
+        if (!tagNameList.contains(recievedTagList[i]["name"])) {
+          tagList.add(recievedTagList[i]);
+        }
+      }
       update();
       return tagList;
     } catch (e) {

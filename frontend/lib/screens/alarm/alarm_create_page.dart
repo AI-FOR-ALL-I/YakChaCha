@@ -106,7 +106,8 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Color(0xFFBBE4CB)),
-                            child: Icon(Icons.add, color: Colors.white)),
+                            child:
+                                Icon(Icons.add, size: 40, color: Colors.white)),
                       )),
                   controller.displayList.isNotEmpty
                       ? SingleChildScrollView(
@@ -134,12 +135,21 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
             return Stack(children: [
               ListView(
                 children: [
-                  TextField(
-                    controller: _textEditingController,
-                    decoration: InputDecoration(hintText: '알람 제목을 입력해주세요'),
-                    onChanged: (text) {
-                      controller.setTitle(text);
-                    },
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: Text('알람 제목',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 5),
+                    child: TextField(
+                      controller: _textEditingController,
+                      decoration: InputDecoration(hintText: '알람 제목을 입력해주세요'),
+                      onChanged: (text) {
+                        controller.setTitle(text);
+                      },
+                    ),
                   ),
                   CustomTimePicker(
                     setTime: controller.setTime,
@@ -174,7 +184,8 @@ class _AlarmCreatePageState extends State<AlarmCreatePage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Color(0xFFBBE4CB)),
-                            child: Icon(Icons.add, color: Colors.white)),
+                            child:
+                                Icon(Icons.add, size: 40, color: Colors.white)),
                       )),
                   controller.displayList.isNotEmpty
                       ? SingleChildScrollView(

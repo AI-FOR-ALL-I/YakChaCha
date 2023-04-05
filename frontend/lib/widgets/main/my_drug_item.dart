@@ -53,7 +53,15 @@ class MyDrugItem extends StatelessWidget {
                     child: imagePath == ''
                         ? Image.asset('assets/images/defaultPill1.png',
                             fit: BoxFit.fill)
-                        : Image.network(imagePath, fit: BoxFit.fill),
+                        : Image.network(
+                            imagePath,
+                            fit: BoxFit.fill,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                              return Image.asset(
+                                  'assets/images/defaultPill1.png');
+                            },
+                          ),
                   ),
                 ),
               ),

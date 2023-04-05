@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class TagWidget extends StatelessWidget {
   // 태그명과 색깔 인덱스를 받아올 것
@@ -30,9 +31,13 @@ class TagWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
           child: Center(
-            child: Text(
+            child: AutoSizeText(
               tagName,
               style: TextStyle(color: Colors.white),
+              maxLines: 1,
+              maxFontSize: 14,
+              minFontSize: 8,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),

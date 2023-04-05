@@ -115,7 +115,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 200.0,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Column(
-                    children: [Text('처방전 인식에 실패했습니다.'), Text('검색으로 등록해주세요')],
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('처방전 인식에 실패했습니다.', style: TextStyle(fontSize: 20)),
+                      Text('검색으로 등록해주세요', style: TextStyle(fontSize: 15))
+                    ],
                   )),
             );
           });
@@ -154,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
     // getX.Get.put(PillRegisterController());
 
     return Scaffold(
-      appBar: SimpleAppBar(title: '텍스트로 등록'),
+      appBar: SimpleAppBar(title: '약 등록'),
       body: getX.GetBuilder<PillRegisterController>(
           tag: "registerController",
           builder: (controller) {
@@ -165,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.only(top: 10),
                     child: Center(
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
+                        width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.width * 0.1,
                         decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
@@ -206,6 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Icon(
                             Icons.add_outlined,
                             color: Colors.white,
+                            size: 40,
                           ),
                         ),
                       ),

@@ -68,7 +68,7 @@ class _TagPickerForAlarmPageState extends State<TagPickerForAlarmPage> {
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
-                        // mainAxisSpacing: 10,
+                        mainAxisSpacing: 5,
                         // crossAxisSpacing: 10,
                         childAspectRatio: MediaQuery.of(context).size.width *
                             0.15 /
@@ -81,13 +81,10 @@ class _TagPickerForAlarmPageState extends State<TagPickerForAlarmPage> {
                         onTap: () {
                           controller.updateTagList(tagSeq, tagName, colorIndex);
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 5.0),
-                          child: SizedBox(
-                              height: MediaQuery.of(context).size.width * 0.07,
-                              child: TagWidget(
-                                  tagName: tagName, colorIndex: colorIndex)),
-                        ),
+                        child: SizedBox(
+                            height: MediaQuery.of(context).size.width * 0.07,
+                            child: TagWidget(
+                                tagName: tagName, colorIndex: colorIndex)),
                       );
                     }),
               )
