@@ -115,7 +115,14 @@ class PillDetailsForApi extends StatelessWidget {
               aspectRatio: 2 / 1,
               child: imgFlag
                   ? Image.asset(img, fit: BoxFit.fill)
-                  : Image.network(img, fit: BoxFit.fill)),
+                  : Image.network(
+                      img,
+                      fit: BoxFit.fill,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Image.asset('assets/images/defaultPill1.png');
+                      },
+                    )),
         ),
 
         // 약 이름 + 제조 회사

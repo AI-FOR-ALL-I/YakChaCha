@@ -50,10 +50,11 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   child: widget.data['img'] != ""
-                      ? Image.network(
-                          widget.data['img'],
-                          fit: BoxFit.fill,
-                        )
+                      ? Image.network(widget.data['img'], fit: BoxFit.fill,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                          return Image.asset('assets/images/defaultPill1.png');
+                        })
                       : Image.asset('assets/images/defaultPill1.png')),
               Flexible(
                   flex: 1,
@@ -91,9 +92,12 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                           // print(widget.data);
                           controller.changeCount(widget.data["medicineSeq"], 1);
                         },
-                        child: const Icon(
-                          Icons.arrow_drop_up_outlined,
-                          size: 24,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: const Icon(
+                            Icons.arrow_drop_up_outlined,
+                            size: 25,
+                          ),
                         ),
                       );
                     }),
@@ -109,9 +113,12 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                       onTap: () {
                         controller.changeCount(widget.data["medicineSeq"], -1);
                       },
-                      child: const Icon(
-                        Icons.arrow_drop_down_outlined,
-                        size: 24,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: const Icon(
+                          Icons.arrow_drop_down_outlined,
+                          size: 25,
+                        ),
                       ),
                     ),
                   ],

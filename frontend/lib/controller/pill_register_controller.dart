@@ -14,7 +14,6 @@ class PillRegisterController extends GetxController {
   List registerList = [];
   // 안에 들어가는 요소 {itemSeq:1, start_date:'YYYY-MM-DD', end_date:'YYYY-MM-DD', tag_list:[['태그이름',1], ['태그이름', 2]]}
 
-  // TODO: 여기에 사용자가 만든 모든 태그를 다 받아오기
   // 이후
   List tagList = [];
 
@@ -84,7 +83,6 @@ class PillRegisterController extends GetxController {
     for (int i = 0; i < registerList.length; i++) {
       if (registerList[i]['itemSeq'] == seq) {
         registerList[i]['tagList'].removeWhere((tag) => tag[0] == tagName);
-        print(registerList[i]['tagList']);
         break;
       }
     }
@@ -95,8 +93,13 @@ class PillRegisterController extends GetxController {
   void addTag(seq, tagName, color) {
     for (int i = 0; i < registerList.length; i++) {
       if (registerList[i]['itemSeq'] == seq) {
-        registerList[i]['tagList'].add([tagName, color.toString()]);
-        break;
+        if (!registerList[i]['tagList']
+            .map((tag) => tag[0])
+            .toList()
+            .contains(tagName)) {
+          registerList[i]['tagList'].add([tagName, color.toString()]);
+          break;
+        }
       }
     }
 
@@ -134,12 +137,11 @@ class PillRegisterController extends GetxController {
     update();
   }
 
-  // TODO: 여기서 dio 요청보내기
   Future dioRequest() async {
     try {
       dio.Response response = await ApiPillRegister.pillRegister(registerList);
       Map<String, dynamic> data = response.data;
-      print(data);
+
       return data['success'];
     } catch (e) {
       print(e);
@@ -169,7 +171,7 @@ class PillRegisterController extends GetxController {
       if (data != null) {
         dio.Response response = await ApiSearch.ocrSearchFinal(data);
         Map<String, dynamic> response2 = response.data;
-        print(response2["data"].length);
+
         update();
         return response2["data"];
       }
@@ -179,7 +181,6 @@ class PillRegisterController extends GetxController {
   }
 
   ocrToList(ocrResultList) {
-    print('ocrResultList에서 for문 돌리기 직전');
     for (int i = 0; i < ocrResultList.length; i++) {
       add(ocrResultList[i]);
     }

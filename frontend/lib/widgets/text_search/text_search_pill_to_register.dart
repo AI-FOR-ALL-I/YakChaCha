@@ -137,7 +137,13 @@ class Before extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15),
                               child: flagImg
                                   ? Image.network('${data['img']}',
-                                      fit: BoxFit.fill)
+                                      fit: BoxFit.fill, errorBuilder:
+                                          (BuildContext context,
+                                              Object exception,
+                                              StackTrace? stackTrace) {
+                                      return Image.asset(
+                                          'assets/images/defaultPill1.png');
+                                    })
                                   : Image.asset(
                                       'assets/images/defaultPill1.png',
                                       fit: BoxFit.fill))),

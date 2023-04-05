@@ -75,7 +75,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SimpleAppBar(title: '알람 설정'),
+      appBar: SimpleAppBar(title: '알람 상세'),
       body: GetBuilder<AlarmController>(builder: (controller) {
         return Column(
           children: [
@@ -86,7 +86,7 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(15)),
                 child: AspectRatio(
-                  aspectRatio: 3/1,
+                  aspectRatio: 3 / 1,
                   child: Stack(
                     children: [
                       Container(
@@ -98,10 +98,14 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(controller.alarmDetail != null &&
-                                        controller.alarmDetail['title'] != null
-                                    ? controller.alarmDetail["title"]
-                                    : "복약 알람!"),
+                                Text(
+                                  controller.alarmDetail != null &&
+                                          controller.alarmDetail['title'] !=
+                                              null
+                                      ? controller.alarmDetail["title"]
+                                      : "복약 알람!",
+                                  style: TextStyle(fontSize: 17),
+                                ),
                               ],
                             ),
                             Row(
@@ -158,11 +162,19 @@ class _AlarmDetailPageState extends State<AlarmDetailPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(controller.alarmDetail != null
-                        ? '총 ${controller.alarmDetail['totalCount']}정 | ${controller.alarmDetail['typeCount']} 종류'
-                        : '로딩중'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 20, 0, 10),
+                        child: Text(
+                          controller.alarmDetail != null
+                              ? '총 ${controller.alarmDetail['totalCount']}정 | ${controller.alarmDetail['typeCount']} 종류'
+                              : '로딩중',
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      ),
+                    ],
                   ),
                   Flexible(
                     flex: 1,

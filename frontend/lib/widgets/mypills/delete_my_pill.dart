@@ -81,10 +81,13 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
                                   'assets/images/defaultPill1.png',
                                   fit: BoxFit.fill,
                                 )
-                              : Image.network(
-                                  widget.img,
-                                  fit: BoxFit.fill,
-                                )),
+                              : Image.network(widget.img, fit: BoxFit.fill,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                  return Image.asset(
+                                      'assets/images/defaultPill1.png');
+                                })),
                     ), // 이미지
                     Expanded(
                         child: Padding(

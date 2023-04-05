@@ -75,10 +75,12 @@ class RenewMyPill extends StatelessWidget {
                             'assets/images/defaultPill1.png',
                             fit: BoxFit.fill,
                           )
-                        : Image.network(
-                            img,
-                            fit: BoxFit.fill,
-                          )),
+                        : Image.network(img, fit: BoxFit.fill, errorBuilder:
+                            (BuildContext context, Object exception,
+                                StackTrace? stackTrace) {
+                            return Image.asset(
+                                'assets/images/defaultPill1.png');
+                          })),
               ), // 이미지
               Expanded(
                   child: Padding(

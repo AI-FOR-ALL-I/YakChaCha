@@ -21,24 +21,95 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       alarmController.getAlarmList();
     }
 
+    List cancel = ["약 등록", "알람 수정", "알람 설정"];
     return AppBar(
       backgroundColor: Colors.white,
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.black),
-      ),
+      // 약 등록일 때는 뒤로가기 시에 한번 물어봐주기
+      leading: cancel.contains(title)
+          ? IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('변경사항을 취소하시겠습니까?'),
+                          ],
+                        ),
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('아니오',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15))),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  '예',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 15),
+                                ))
+                          ],
+                        ));
+                  },
+                );
+              },
+              icon: const Icon(Icons.arrow_back_ios_outlined,
+                  color: Colors.black),
+            )
+          : IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios_outlined,
+                  color: Colors.black),
+            ),
       title: Text(title, style: const TextStyle(color: Colors.black)),
       centerTitle: true,
       actions: [
         if (title == '알람 수정')
           TextButton(
               onPressed: () {
-                // TODO: 만약에 알람을 삭제하고 알람 메인 페이지로 이동하면, 뒤로가기 눌렀을 때 어떻게 되는 거지..?
-                updateAlarmList();
-                Navigator.pop(context);
-                Navigator.pop(context);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      print('here!!!!!!!!!!');
+                      return AlertDialog(
+                          title: Text('정말 알람을 삭제하시겠습니까?'),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('취소',
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.grey))),
+                              TextButton(
+                                  onPressed: () {
+                                    updateAlarmList();
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    '삭제',
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.red),
+                                  ))
+                            ],
+                          ));
+                    });
               },
               child: const Text(
                 '삭제',

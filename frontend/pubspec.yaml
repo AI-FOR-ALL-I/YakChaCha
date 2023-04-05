@@ -57,6 +57,7 @@ dependencies:
   table_calendar: ^3.0.9
   flutter_launcher_icons: ^0.12.0
   marquee: ^2.2.3
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
