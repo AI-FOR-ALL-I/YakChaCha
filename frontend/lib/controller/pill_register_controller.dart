@@ -169,7 +169,7 @@ class PillRegisterController extends GetxController {
       if (data != null) {
         dio.Response response = await ApiSearch.ocrSearchFinal(data);
         Map<String, dynamic> response2 = response.data;
-        print(response2["data"]);
+        print(response2["data"].length);
         update();
         return response2["data"];
       }
