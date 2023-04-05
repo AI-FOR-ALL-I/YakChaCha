@@ -19,4 +19,6 @@ public interface MyMedicineRepository extends JpaRepository<MyMedicine, Long> {
     Optional<MyMedicine> findByMedicineAndDelYn(Medicine medicine, String delYn);
 
     Optional<MyMedicine> findByProfileAndMedicineAndDelYn(Profile profile, Medicine medicine, String delYn);
+
+    Optional<MyMedicine> findByProfileAndMedicineAndFinishAndDelYn(Profile profile, Medicine medicine, String finish, String delYn);
 }

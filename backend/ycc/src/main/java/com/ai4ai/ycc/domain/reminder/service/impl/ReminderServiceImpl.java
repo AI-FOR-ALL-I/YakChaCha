@@ -164,7 +164,7 @@ public class ReminderServiceImpl implements ReminderService {
 
             List<ReminderDetailResponseDto.Tag> tags = new ArrayList<>();
 
-            MyMedicine myMedicine = myMedicineRepository.findByProfileAndMedicineAndDelYn(profile, medicine, "N")
+            MyMedicine myMedicine = myMedicineRepository.findByProfileAndMedicineAndFinishAndDelYn(profile, medicine, "N", "N")
                     .orElse(null);
 
             if (myMedicine == null) {
