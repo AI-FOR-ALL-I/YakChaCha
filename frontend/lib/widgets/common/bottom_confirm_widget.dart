@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/bottom_navigation.dart';
 import 'package:get/get.dart';
 import 'package:frontend/controller/alarm_pill_controller.dart';
 import 'package:frontend/controller/alarm_controller.dart';
-import 'package:frontend/screens/drug_history_page.dart';
 import 'dart:async';
+import 'package:confirm_dialog/confirm_dialog.dart';
 
 class BottomConfirmWidget extends StatefulWidget {
   final bool isAlarm;
@@ -51,39 +52,51 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
         child: widget.isAlarm // 여기가 알람 등록 페이지
             ? GestureDetector(
                 onTap: () async {
-                  bool? result;
-                  if (widget.isAlarmUpdate == null) {
-                    result = await controller.dioRequest("create", 0);
-                  } else {
-                    result = await controller.dioRequest(
-                        "update", widget.reminderSeq!);
-                  }
-                  AlarmController alarmController = Get.put(AlarmController());
-                  alarmController.getAlarmList();
-                  print(result);
-                  if (result != null && result) {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('성공적으로 등록되었습니다!'),
-                          content: Text('3초 뒤에 메인화면으로 이동합니다~'),
-                        );
-                      },
-                    );
+                  bool result = await confirm(
+                    context,
+                    title: const Text("컨펌"),
+                    content: const Text("이 작업을 수행 하시겠습니까?"),
+                    textOK: const Text("확인"),
+                    textCancel: const Text("취소"),
+                  );
+                  if (result) {
+                    bool? result;
+                    if (widget.isAlarmUpdate == null) {
+                      result = await controller.dioRequest("create", 0);
+                    } else {
+                      result = await controller.dioRequest(
+                          "update", widget.reminderSeq!);
+                    }
+                    AlarmController alarmController =
+                        Get.put(AlarmController());
+                    alarmController.getAlarmList();
+                    print(result);
+                    if (result != null && result) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            title: Text('성공적으로 등록되었습니다!'),
+                            content: Text('3초 뒤에 메인화면으로 이동합니다~'),
+                          );
+                        },
+                      );
 
 // 3초 후에 다이얼로그를 닫음
-                    Timer(Duration(seconds: 3), () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         DrugHistoryPage())); //하니까 엄청 꺠짐....
-                    });
+                      Timer(const Duration(seconds: 3), () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BottomNavigation(where: 1)));
+                      });
+                    }
                   }
                 },
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
@@ -108,7 +121,7 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                           size: 50,
                           color: Theme.of(context).colorScheme.background,
                         ),
-                        Text('확인')
+                        const Text('확인')
                       ],
                     ),
                   )
@@ -124,7 +137,7 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                                   context: context,
                                   barrierDismissible: false,
                                   builder: (BuildContext context) {
-                                    return AlertDialog(
+                                    return const AlertDialog(
                                       title: Text('성공적으로 등록되었습니다!'),
                                       content: Text('3초 뒤에 메인화면으로 이동합니다~'),
                                     );
@@ -132,7 +145,7 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                                 );
 
 // 3초 후에 다이얼로그를 닫음
-                                Timer(Duration(seconds: 3), () {
+                                Timer(const Duration(seconds: 3), () {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                   // Navigator.of(context).push(MaterialPageRoute(
@@ -150,7 +163,7 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                                 size: 50,
                                 color: Theme.of(context).colorScheme.background,
                               ),
-                              Text('등록')
+                              const Text('등록')
                             ],
                           ),
                         ),
@@ -166,7 +179,7 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                                 size: 50,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
-                              Text('취소')
+                              const Text('취소')
                             ],
                           ),
                         ),

@@ -25,78 +25,83 @@ class _MapPageState extends State<MapPage> {
     final nowAround = ApiDrugStorePos.getDrugStorePos(
         {"xBig": widget.lngBig, "ySmall": widget.latSmall});
     Size size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-            width: size.width - 15,
-            child: TextField(
-              cursorWidth: 3.0,
-              cursorHeight: 10,
-              focusNode: _focusNode,
-              controller: _textController,
-              maxLength: 10,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintStyle: const TextStyle(color: Colors.grey),
-                hintText: "ex) 역삼, 역삼역",
-                counterText: '',
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      if (_inputText != "") {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  DrugStoreSearch(keyword: _inputText),
-                            ));
-                      } else {
-                        _focusNode.requestFocus();
-                      }
-                    },
-                    icon: const Icon(Icons.search)),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+              width: size.width - 15,
+              child: TextField(
+                cursorWidth: 3.0,
+                cursorHeight: 10,
+                focusNode: _focusNode,
+                controller: _textController,
+                maxLength: 10,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  hintText: "ex) 역삼, 역삼역",
+                  counterText: '',
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        if (_inputText != "") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DrugStoreSearch(keyword: _inputText),
+                              ));
+                        } else {
+                          _focusNode.requestFocus();
+                        }
+                      },
+                      icon: const Icon(Icons.search)),
+                ),
+                onSubmitted: (value) {
+                  if (_inputText != "") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DrugStoreSearch(keyword: _inputText),
+                        ));
+                    FocusScope.of(context).unfocus();
+                  } else {
+                    _focusNode.requestFocus();
+                  }
+                },
+                onChanged: (text) {
+                  _inputText = text;
+                },
               ),
-              onSubmitted: (value) {
-                if (_inputText != "") {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DrugStoreSearch(keyword: _inputText),
-                      ));
-                  FocusScope.of(context).unfocus();
-                } else {
-                  _focusNode.requestFocus();
-                }
-              },
-              onChanged: (text) {
-                _inputText = text;
-              },
             ),
-          ),
-          FutureBuilder(
-              future: nowAround,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return drugStoreList(snapshot, context);
-                } else {
-                  return const Padding(
-                    padding: EdgeInsets.all(40.0),
-                    child: Center(
-                      child: Column(children: [
-                        Text("현 위치 기반 조회 중입니다."),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        CircularProgressIndicator()
-                      ]),
-                    ),
-                  );
-                }
-              }),
-        ],
+            FutureBuilder(
+                future: nowAround,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return drugStoreList(snapshot, context);
+                  } else {
+                    return const Padding(
+                      padding: EdgeInsets.all(40.0),
+                      child: Center(
+                        child: Column(children: [
+                          Text("현 위치 기반 조회 중입니다."),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          CircularProgressIndicator()
+                        ]),
+                      ),
+                    );
+                  }
+                }),
+          ],
+        ),
       ),
     );
   }

@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
   @override
   _HomePage createState() => _HomePage();
 }
+
 class _HomePage extends State<HomePage> {
   List<Map<String, dynamic>> drugs = [];
   Map<String, dynamic> profileInfo = {};
@@ -63,7 +64,6 @@ class _HomePage extends State<HomePage> {
       e.printError(info: 'errors');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +119,7 @@ class _HomePage extends State<HomePage> {
                       padding: EdgeInsets.all(10.0),
                       child: EatCheckButton(),
                     ),
-        
+
                     const Padding(
                       padding: EdgeInsetsDirectional.symmetric(
                           horizontal: 15.0, vertical: 15.0),
