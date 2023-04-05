@@ -1,13 +1,26 @@
+import 'package:frontend/services/my_pill_api.dart';
+import 'package:frontend/services/taken_pill_api.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyPillController extends GetxController {
-  final RxInt _isOn = 0.obs;
-  int get isOn => _isOn.value;
+  var myPillList = [];
+  Future getPillList() async {
+    try {
+      myPillList = await MyPillApi.getMyPill();
+    } catch (e) {
+      print(e);
+    }
+    update();
+  }
 
-  void increment(int what) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('isOn', isOn);
-    _isOn.value = what + 1;
+  var takenPillList = [];
+  Future getTakenPillList() async {
+    try {
+      takenPillList = await TakenPillApi.getTakenPill();
+    } catch (e) {
+      print(e);
+    }
+    update();
   }
 }

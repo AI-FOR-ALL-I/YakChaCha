@@ -26,7 +26,7 @@ class PillDetailsForApi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Future<PillDetailModel> pillDetail = PillDetailApi.getPillDetail(num);
+    final Future pillDetail = PillDetailApi.getPillDetail(num);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -44,7 +44,7 @@ class PillDetailsForApi extends StatelessWidget {
     );
   }
 
-  ListView pillDetailList(AsyncSnapshot<PillDetailModel> snapshot) {
+  ListView pillDetailList(AsyncSnapshot snapshot) {
     var pillDetail = snapshot.data!;
     var img = '';
     var imgFlag = false;

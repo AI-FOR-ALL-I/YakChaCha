@@ -39,47 +39,52 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   Widget build(BuildContext context) {
     print(alarms);
-    return Center(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          centerTitle: false,
-          titleSpacing: NavigationToolbar.kMiddleSpacing,
-          title: Text('알람',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize:
-                      MediaQuery.of(context).size.height >= 720 ? 30 : 16)),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Center(
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            centerTitle: false,
+            titleSpacing: NavigationToolbar.kMiddleSpacing,
+            title: Text('알람',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize:
+                        MediaQuery.of(context).size.height >= 720 ? 30 : 16)),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          body: GetBuilder<AlarmController>(builder: (controller) {
+            return Stack(
+              children: [
+                controller.alarmList.isEmpty
+                    ? const IsEmptyPills(what: "알람")
+                    : ListView.builder(
+                        padding: EdgeInsets.only(bottom: 30),
+                        itemCount: controller.alarmList.length,
+                        itemBuilder: (context, i) {
+                          return CustomAlarmWidget(
+                            data: controller.alarmList[i],
+                          );
+                        }),
+                Positioned(
+                  bottom: 25,
+                  right: 20,
+                  child: FloatingActionButton(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      onPressed: () {
+                        _goToUpdate();
+                      },
+                      child: const Text('+',
+                          style: TextStyle(color: Colors.white, fontSize: 36))),
+                )
+              ],
+            );
+          }),
         ),
-        body: GetBuilder<AlarmController>(builder: (controller) {
-          return Stack(
-            children: [
-              controller.alarmList.isEmpty
-                  ? const IsEmptyPills(what: "알람")
-                  : ListView.builder(
-                      padding: EdgeInsets.only(bottom: 30),
-                      itemCount: controller.alarmList.length,
-                      itemBuilder: (context, i) {
-                        return CustomAlarmWidget(
-                          data: controller.alarmList[i],
-                        );
-                      }),
-              Positioned(
-                bottom: 25,
-                right: 20,
-                child: FloatingActionButton(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    onPressed: () {
-                      _goToUpdate();
-                    },
-                    child: const Text('+',
-                        style: TextStyle(color: Colors.white, fontSize: 36))),
-              )
-            ],
-          );
-        }),
       ),
     );
   }
