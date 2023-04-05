@@ -51,7 +51,8 @@ class ApiConstants {
   static const String getProfileList = '$baseurl/$links/$profiles';
   // S 등록 POST
   static const String postSelectedProfile = '$baseurl/$links/$profiles';
-
+  // 프로필 연동 목록
+  static const String searchLinks = '$baseurl/$profiles/{profileLinkSeq}/links';
   // 알람 등록
   static const String alarmRegister =
       '$baseurl/profiles/{profileLinkSeq}/reminders';
