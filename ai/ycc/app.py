@@ -14,7 +14,7 @@ def check_os():
 @app.route('/run/prescription', methods=['POST'])
 def prescription_ocr():
     image = request.files['image']
-    image = Image.open(image)
+    image = image.read()
 
     ocr_result = run_ocr_model(image)
 
