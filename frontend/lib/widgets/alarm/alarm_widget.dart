@@ -66,7 +66,8 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                                   ? Text(widget.data["title"])
                                   : Text(
                                       "약 먹을 시간이에요!",
-                                      style: TextStyle(fontSize: 16, color: textColor),
+                                      style: TextStyle(
+                                          fontSize: 16, color: textColor),
                                     ),
                             ),
                           ),
@@ -81,7 +82,9 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                                     " " +
                                     widget.data["time"].split(':')[2],
                                 style: TextStyle(
-                                    fontSize: 42, fontWeight: FontWeight.w500, color: textColor),
+                                    fontSize: 42,
+                                    fontWeight: FontWeight.w500,
+                                    color: textColor),
                               ),
                             ),
                           ),
@@ -104,11 +107,16 @@ class _CustomAlarmWidgetState extends State<CustomAlarmWidget> {
                                         .takePill(widget.data["reminderSeq"]);
                                   })
                               : (widget.data["status"] == 2)
-                                  ? Icon(Icons.check_circle_outlined)
+                                  ? Icon(
+                                      Icons.check_circle_outlined,
+                                      size: 35,
+                                      color: textColor,
+                                    )
                                   : GestureDetector(
                                       child: Icon(
                                         Icons.radio_button_unchecked_outlined,
                                         size: 35,
+                                        color: textColor,
                                       ),
                                       onTap: () {
                                         var controller =

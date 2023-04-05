@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
 class HealthTipItem extends StatelessWidget {
+  final String url, img, title, description;
   const HealthTipItem({
     super.key,
+    required this.url,
+    required this.img,
+    required this.title,
+    required this.description,
   });
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -15,8 +21,8 @@ class HealthTipItem extends StatelessWidget {
       child: Stack(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: Image.asset(
-            'assets/images/sampletips.jpg',
+          child: Image.network(
+            img,
             fit: BoxFit.none,
             width: 250,
             height: 295,
@@ -34,19 +40,20 @@ class HealthTipItem extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    "토막상식어쩌구대박이죵",
-                    style: TextStyle(
+                    title,
+                    style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
-                        fontSize: 16.0),
+                        fontSize: 24.0),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  SizedBox(height: 10,),
                   Text(
-                    "어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구\n어쩌구저쩌구",
-                    style: TextStyle(
+                    description,
+                    style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: 16.0),
