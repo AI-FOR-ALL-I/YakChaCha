@@ -58,6 +58,19 @@ class _MapPageState extends State<MapPage> {
                     },
                     icon: const Icon(Icons.search)),
               ),
+              onSubmitted: (value) {
+                if (_inputText != "") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DrugStoreSearch(keyword: _inputText),
+                      ));
+                  FocusScope.of(context).unfocus();
+                } else {
+                  _focusNode.requestFocus();
+                }
+              },
               onChanged: (text) {
                 _inputText = text;
               },
@@ -72,7 +85,13 @@ class _MapPageState extends State<MapPage> {
                   return const Padding(
                     padding: EdgeInsets.all(40.0),
                     child: Center(
-                      child: CircularProgressIndicator(),
+                      child: Column(children: [
+                        Text("현 위치 기반 조회 중입니다."),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        CircularProgressIndicator()
+                      ]),
                     ),
                   );
                 }
@@ -98,7 +117,7 @@ class _MapPageState extends State<MapPage> {
           Container(
             margin: const EdgeInsets.only(bottom: 7),
             child: KakaoMapView(
-                customScript: '''
+              customScript: '''
                 var markers = [];
                 var imageSrc = "https://cdn-icons-png.flaticon.com/512/8059/8059164.png";
                 var imageSize = new kakao.maps.Size(40, 40);
@@ -119,17 +138,17 @@ class _MapPageState extends State<MapPage> {
                   addMarker(new kakao.maps.LatLng($positionY[i], $positionX[i]));
                 }
                 ''',
-                width: size.width,
-                height: size.width,
-                kakaoMapKey: kakaoMapKey,
-                lat: widget.latSmall,
-                lng: widget.lngBig,
-                showMapTypeControl: true,
-                showZoomControl: true,
-                zoomLevel: 5,
-                markerImageURL:
-                    'https://cdn-icons-png.flaticon.com/512/8059/8059164.png',
-                ),
+              width: size.width,
+              height: size.width,
+              kakaoMapKey: kakaoMapKey,
+              lat: widget.latSmall,
+              lng: widget.lngBig,
+              showMapTypeControl: true,
+              showZoomControl: true,
+              zoomLevel: 5,
+              markerImageURL:
+                  'https://cdn-icons-png.flaticon.com/512/8059/8059164.png',
+            ),
           ),
           Expanded(
             child: ListView.separated(

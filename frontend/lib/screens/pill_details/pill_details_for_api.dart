@@ -161,15 +161,21 @@ class PillDetailsForApi extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "복용기간:  ",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w700),
                         ),
-                        Text(
-                          "${pillDetail.startDate} ~ ${pillDetail.endDate}",
-                          style: TextStyle(fontSize: 20),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: List.generate(pillDetail.startDate.length, (index) {
+                            return Text(
+                              "${pillDetail.startDate[index]} ~ ${pillDetail.endDate[index]}",
+                              style: TextStyle(fontSize: 20),
+                            );
+                          }),
                         ),
                       ],
                     )
