@@ -1,14 +1,8 @@
-import os
-import cv2
-import numpy as np
-import json
-from pathlib import Path
+
 from torchvision.transforms import transforms
 from torchvision.models import resnet152, ResNet152_Weights
 import torch
-from PIL import Image
-from .make_pill_itemseq_dict import search_itemseq_by_pillid as search
-from .utils import read_dict_from_json
+import json
 
 # Define function to preprocess the image file and recognize objects
 def recognize_pills(model, img, device):
@@ -31,12 +25,12 @@ def run_predict_model(img):
     # Set device and other parameters
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    json_pill_itemseq_dict = r'./proj_pill/proj_pill/pill_itemseq_dict.json'
-    json_dir_dict = r'./proj_pill/proj_pill/idx_pillid_dict.json'
-    dict_temp = read_dict_from_json(json_dir_dict)
-    dict_idx_pillid = dict_temp['dict_idx_pillid']
+    with open('./proj_pill/proj_pill/dir_dict.json', 'r', encoding='utf-8') as f:
+        dir_dict = json.load(f)
 
-    print(dict_idx_pillid)
+    with open('./proj_pill/proj_pill/pill_itemseq_dict.json', 'r', encoding='utf-8') as f:
+        dict_temp = json.load(f)
+        dict_pillid_itemseq = dict_temp['dict_pillid_itemseq']
 
     # Load the trained model
     model_path = r'./proj_pill/proj_pill/new_resnet152_model.pt'
@@ -52,8 +46,11 @@ def run_predict_model(img):
     results = recognize_pills(model, img, device)
     results_idx = results[1].view(-1).tolist()[:5]
     
+    temp = [(dir_dict[str(results_idx[rk])], dict_pillid_itemseq[dir_dict[str(results_idx[rk])]]) for rk in range(5)]
+    for i in temp:
+        print(i)
 
     result = {
-        'item_seq': [str(search(dict_idx_pillid[str(results_idx[rk])], json_pill_itemseq_dict)[0]) for rk in range(5)]
+        'item_seq': [dir_dict[str(results_idx[rk])] for rk in range(5)]
     }
     return result
