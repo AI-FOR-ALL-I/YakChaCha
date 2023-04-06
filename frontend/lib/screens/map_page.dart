@@ -86,10 +86,10 @@ class _MapPageState extends State<MapPage> {
                   if (snapshot.hasData) {
                     return drugStoreList(snapshot, context);
                   } else {
-                    return const Padding(
-                      padding: EdgeInsets.all(40.0),
+                    return Padding(
+                      padding: const EdgeInsets.all(40.0),
                       child: Center(
-                        child: Column(children: [
+                        child: Column(children: const [
                           Text("현 위치 기반 조회 중입니다."),
                           SizedBox(
                             height: 50,

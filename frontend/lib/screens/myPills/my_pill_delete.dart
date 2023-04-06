@@ -7,7 +7,7 @@ import 'package:frontend/widgets/mypills/delete_my_pill.dart';
 import 'package:get/get.dart';
 
 class MyPillDelete extends StatefulWidget {
-  MyPillDelete({super.key});
+  const MyPillDelete({super.key});
   @override
   State<MyPillDelete> createState() => _MyPillDeleteState();
 }
@@ -28,8 +28,8 @@ class _MyPillDeleteState extends State<MyPillDelete> {
           } else {
             return Center(
               child: Column(
-                children: [
-                  const CircularProgressIndicator(),
+                children: const [
+                  CircularProgressIndicator(),
                 ],
               ),
             );
@@ -40,13 +40,13 @@ class _MyPillDeleteState extends State<MyPillDelete> {
   }
 
   Column isEmptyPills() {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.medication,
                 size: 58,

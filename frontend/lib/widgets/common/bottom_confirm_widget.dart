@@ -96,9 +96,9 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                     }
                   }
                 },
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Icon(
                       Icons.alarm_outlined,
                       size: 50,
