@@ -82,6 +82,9 @@ class ProfileInfo extends StatelessWidget {
                               Icons.auto_awesome,
                               color: Color(0xFFBBE4CB),
                             ),
+                          const SizedBox(
+                            width: 3.0,
+                          ),
                           Text(
                             nickname,
                             style: const TextStyle(
@@ -95,9 +98,9 @@ class ProfileInfo extends StatelessWidget {
                           Text(
                             name,
                             style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12,
+                                color: Colors.grey),
                           ),
                         ],
                       ),
