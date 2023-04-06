@@ -142,7 +142,7 @@ class _SettingPageState extends State<SettingPage> {
                   // 변경
                   return Padding(
                     padding: const EdgeInsets.only(
-                        left: 10.0, top: 15.0, right: 5.0, bottom: 15.0),
+                        left: 10.0, top: 15.0, right: 5.0, bottom: 10.0),
                     child: GestureDetector(
                       onTap: () {
                         //print(multiProfileController.multiProfileList[index]);
@@ -228,7 +228,10 @@ class _SettingPageState extends State<SettingPage> {
                                   fit: BoxFit.cover),
                             ),
                           ),
-                          Text('${profile["nickname"]}')
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Text('${profile["nickname"]}'),
+                          )
                         ],
                       ),
                     ),
