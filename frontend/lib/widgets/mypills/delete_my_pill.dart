@@ -36,6 +36,12 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    myPillController.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var imgFlag = false;
     if (widget.img == "") {

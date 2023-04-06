@@ -11,7 +11,7 @@ class PillDetailApi {
   static const String baseUrl = "https://j8a803.p.ssafy.io/api/profiles";
   static const String detail = "medicine/detail";
 
-  static Future getPillDetail(pillNum) async {
+  static Future<PillDetailModel> getPillDetail(pillNum) async {
     // controller에 저장된 토큰 불러오는 코드
     final authController = Get.find<AuthController>();
     final token = authController.accessToken;

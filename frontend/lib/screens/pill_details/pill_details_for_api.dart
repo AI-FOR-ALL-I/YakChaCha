@@ -26,7 +26,7 @@ class PillDetailsForApi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Future pillDetail = PillDetailApi.getPillDetail(num);
+    final Future<PillDetailModel> pillDetail = PillDetailApi.getPillDetail(num);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -44,7 +44,7 @@ class PillDetailsForApi extends StatelessWidget {
     );
   }
 
-  ListView pillDetailList(AsyncSnapshot snapshot) {
+  ListView pillDetailList(AsyncSnapshot<PillDetailModel> snapshot) {
     var pillDetail = snapshot.data!;
     var img = '';
     var imgFlag = false;
@@ -115,14 +115,7 @@ class PillDetailsForApi extends StatelessWidget {
               aspectRatio: 2 / 1,
               child: imgFlag
                   ? Image.asset(img, fit: BoxFit.fill)
-                  : Image.network(
-                      img,
-                      fit: BoxFit.fill,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Image.asset('assets/images/defaultPill1.png');
-                      },
-                    )),
+                  : Image.network(img, fit: BoxFit.fill)),
         ),
 
         // 약 이름 + 제조 회사
