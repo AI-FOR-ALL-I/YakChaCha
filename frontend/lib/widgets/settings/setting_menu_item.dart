@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controller/profile_controller.dart';
 import 'package:frontend/screens/profile/connected_profile_page.dart';
 import 'package:frontend/screens/profile/modify_profile_page.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:get/get.dart';
 
 class SettingMenuItem extends StatelessWidget {
   final IconData iconName;
@@ -30,6 +32,8 @@ class SettingMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.find<ProfileController>();
+    final int profileLinkSeq = profileController.profileLinkSeq;
     return Column(
       children: [
         Padding(
@@ -57,7 +61,8 @@ class SettingMenuItem extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ConnectedProfilePage()));
+                      builder: (context) => ConnectedProfilePage(
+                          profileLinkSeq: profileLinkSeq)));
             }
             // FIXME: 사용자 설정 눌렀을 때 .프로필 편집 화면 다시 만들어야할듯.
             // if (cases == 0) {

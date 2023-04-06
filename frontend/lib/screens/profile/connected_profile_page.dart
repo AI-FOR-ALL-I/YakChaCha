@@ -1,6 +1,7 @@
 // 연동프로필 확인하는 페이지
 import 'package:flutter/material.dart';
 import 'package:frontend/services/api_profiles.dart';
+import 'package:frontend/widgets/common/is_empty_data.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
 import 'package:dio/dio.dart' as dio;
 
@@ -47,12 +48,12 @@ class _ConnectedProfilePageState extends State<ConnectedProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('user님에게 공유할\n프로필을 선택해주세요.',
+              const Text('현재 접속되어있는 프로필과\n연결된 계정목록입니다',
                   style: TextStyle(fontSize: 20.0, color: Colors.black54)),
               const SizedBox(height: 16.0),
               Expanded(
-                child: data == null
-                    ? const Center(child: CircularProgressIndicator())
+                child: data.isEmpty
+                    ? const IsEmptyData(what: '연동된 프로필')
                     : ListView.builder(
                         itemCount: data.length,
                         itemBuilder: (context, index) {
@@ -101,7 +102,7 @@ class _ConnectedProfilePageState extends State<ConnectedProfilePage> {
                                               ),
                                               const SizedBox(width: 4.0),
                                               Text(
-                                                profile['regTime'],
+                                                profile['regDttm'],
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                 ),
@@ -120,45 +121,6 @@ class _ConnectedProfilePageState extends State<ConnectedProfilePage> {
                       ),
               ),
               const SizedBox(height: 16.0),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        // 서버통신진행
-                        //sendDataToServer(context);
-                        // 번호 확인하는 페이지로 이동
-                        //sendToServer(selectedItems);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 16,
-                          horizontal: 32,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: const Color(0xFFBBe4CB),
-                            width: 2,
-                          ),
-                          color: const Color(0xFFBBe4CB),
-                        ),
-                        child: const Text(
-                          '등록하기',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ));

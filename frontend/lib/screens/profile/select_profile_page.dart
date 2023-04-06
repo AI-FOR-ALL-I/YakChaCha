@@ -1,5 +1,6 @@
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/controller/auth_controller.dart';
 import 'package:frontend/services/api_profiles.dart';
 import 'package:frontend/widgets/profile/profile_info.dart';
 import 'package:frontend/widgets/common/simple_app_bar.dart';
@@ -18,6 +19,15 @@ class _SelectProfilePage extends State<SelectProfilePage> {
   List<Map<String, dynamic>> data = [];
 
   final dio = Dio();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final authController = getX.Get.find<AuthController>();
+    final accessToken = authController.accessToken;
+    final refreshToken = authController.refreshToken;
+    dio.options.headers["Authorization"] = "Bearer $accessToken";
+  }
 
   @override
   void initState() {
