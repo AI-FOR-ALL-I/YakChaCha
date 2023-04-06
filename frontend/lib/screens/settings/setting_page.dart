@@ -184,7 +184,9 @@ class _SettingPageState extends State<SettingPage> {
                                                   },
                                                   child: const Text('예')),
                                               TextButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
                                                   child: const Text('아니오'))
                                             ],
                                           )
