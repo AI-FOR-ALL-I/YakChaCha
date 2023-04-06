@@ -5,8 +5,6 @@ class TimeHeader extends StatelessWidget {
   final String nickname;
 
   const TimeHeader({super.key, required this.timeline, required this.nickname});
-  // 새벽이미지도 처리해주어야해.
-  // timeline 0.1.2 int값으로 받아서 설정하기..
   @override
   Widget build(BuildContext context) {
     String info = '';
@@ -15,10 +13,10 @@ class TimeHeader extends StatelessWidget {
       info = 'assets/images/morning.png';
       txt = '좋은 아침이에요, 오늘도 힘내세요!';
     } else if (timeline == 1) {
-      info = 'assets/images/morning.png';
+      info = 'assets/images/day.png';
       txt = '즐거운 오후에요';
     } else {
-      info = 'assets/images/morning.png';
+      info = 'assets/images/night.png';
       txt = '하루를 마무리하면서 건강도 챙겨주세요';
     }
     return Container(
