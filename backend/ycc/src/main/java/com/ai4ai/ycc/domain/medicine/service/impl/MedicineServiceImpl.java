@@ -113,7 +113,7 @@ public class MedicineServiceImpl implements MedicineService {
                 myMedicineForCollide.add(Integer.parseInt(edi.substring(0,9)));
             }
         }
-        List<Collision> collisionPossibleList = collisionRepository.findAllByMedicineAIdIn(myMedicineForCollide);
+        List<Collision> collisionPossibleList = collisionRepository.findAllByMedicineAIdInOrMedicineBIdIn(myMedicineForCollide,myMedicineForCollide);
 
         for(Medicine medicine: medicineList){
             boolean pregnantWarn = false;
@@ -137,9 +137,16 @@ public class MedicineServiceImpl implements MedicineService {
                     String myEdi = myMedicine.getMedicine().getEdiCode();
                     if(myEdi.length()>8){
                         for(Collision collision: collisionPossibleList){
-                            if(collision.getMedicineAId()==Integer.parseInt(myEdi.substring(0,9))&&collision.getMedicineBId()==Integer.parseInt(edi.substring(0,9))){
-                                collide=true;
-                                collideList.add(myMedicine.getMedicine().getItemName());
+                            if(myEdi.contains(Integer.toString(collision.getMedicineAId()))){
+                                if(collision.getMedicineBId()==Integer.parseInt(edi.substring(0,9))){
+                                    collide = true;
+                                    collideList.add(myMedicine.getMedicine().getItemName());
+                                }
+                            }else if(myEdi.contains(Integer.toString(collision.getMedicineBId()))){
+                                if(collision.getMedicineAId()==Integer.parseInt(edi.substring(0,9))){
+                                    collide = true;
+                                    collideList.add(myMedicine.getMedicine().getItemName());
+                                }
                             }
                         }
                     }
@@ -416,7 +423,7 @@ public class MedicineServiceImpl implements MedicineService {
         String edi = medicine.getEdiCode();
         List<Collision> collisionPossibleList=new ArrayList<>();
         if(edi.length()>8){
-            collisionPossibleList = collisionRepository.findAllByMedicineAId(Integer.parseInt(edi.substring(0,9)));
+            collisionPossibleList = collisionRepository.findAllByMedicineAIdOrMedicineBId(Integer.parseInt(edi.substring(0,9)),Integer.parseInt(edi.substring(0,9)));
         }
         for(MyMedicine myMedicine: myMedicineList){
             if(myMedicine.getMedicine().getItemSeq()== itemSeq){
@@ -436,13 +443,19 @@ public class MedicineServiceImpl implements MedicineService {
                 String myEdi = myMedicine.getMedicine().getEdiCode();
                 if(myEdi.length()>8){
                     for(Collision collision: collisionPossibleList){
-                        if(collision.getMedicineBId()==Integer.parseInt(myEdi.substring(0,9))&&collision.getMedicineAId()==Integer.parseInt(edi.substring(0,9))){
-                            collide=true;
-                            collideList.add(myMedicine.getMedicine().getItemName());
+                        if(myEdi.contains(Integer.toString(collision.getMedicineAId()))){
+                            if(collision.getMedicineBId()==Integer.parseInt(edi.substring(0,9))){
+                                collide = true;
+                                collideList.add(myMedicine.getMedicine().getItemName());
+                            }
+                        }else if(myEdi.contains(Integer.toString(collision.getMedicineBId()))){
+                            if(collision.getMedicineAId()==Integer.parseInt(edi.substring(0,9))){
+                                collide = true;
+                                collideList.add(myMedicine.getMedicine().getItemName());
+                            }
                         }
                     }
                 }
-
             }
         }
         Collections.sort(startDate, new Comparator<String>() {
