@@ -10,6 +10,8 @@ import 'package:frontend/screens/profile/receiver_profile_page.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 // 백그라운드 + 꺼져있을때 푸시알림 처리하는 함수에 들어갈 값
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -63,6 +65,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final info = Geolocator.getCurrentPosition();
   final profileController = Get.find<ProfileController>();
   // 포그라운드에서 메세지를 수신했을 때 -> modal 띄우고 이동
   void onMessageRecieved(RemoteMessage message) {
