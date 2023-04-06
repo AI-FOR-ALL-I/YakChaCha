@@ -11,7 +11,7 @@ class ApiConstants {
   static const String login = '$baseurl/accounts/sign-in';
   static const String logout = '$baseurl/accounts/sign-out';
   static const String withdraw = '$baseurl/accounts/withdraw';
-
+  static const String refresh = '$baseurl/accounts/refresh';
   // 프로필
   static const String profiles = 'profiles';
   static const String createProfile = '$baseurl/$profiles'; // 생성 POST
