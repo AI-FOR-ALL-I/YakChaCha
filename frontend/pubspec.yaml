@@ -36,6 +36,7 @@ dependencies:
   firebase_messaging: ^14.3.0
   flutter:
     sdk: flutter
+
   flutter_local_notifications: ^8.2.0
   flutter_time_picker_spinner: ^2.0.0
   get: ^4.6.5
@@ -60,6 +61,7 @@ dependencies:
   auto_size_text: ^3.0.0
   confirm_dialog: ^1.0.1
   permission_handler: ^10.2.0
+  app_settings: 4.2.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

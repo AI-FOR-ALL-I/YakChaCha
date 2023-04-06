@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/profile/connected_profile_page.dart';
 import 'package:frontend/screens/profile/modify_profile_page.dart';
+import 'package:app_settings/app_settings.dart';
 
 class SettingMenuItem extends StatelessWidget {
   final IconData iconName;
@@ -13,6 +14,19 @@ class SettingMenuItem extends StatelessWidget {
     required this.menuTitle,
     required this.cases,
   });
+
+  // getPermission() async {
+  //   var status = await Permission.notification.status;
+  //   if (status.isGranted) {
+  //     print('허락됨');
+  //   } else if (status.isDenied) {
+  //     print('거절됨');
+  //     Permission.notification.request();
+  //   }
+  //   if (status.isPermanentlyDenied) {
+  //     openAppSettings();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +48,10 @@ class SettingMenuItem extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const ModifyProfilePage()));
+            }
+            if (cases == 1) {
+              // 여기다 설정
+              AppSettings.openAppSettings();
             }
             if (cases == 2) {
               Navigator.push(
