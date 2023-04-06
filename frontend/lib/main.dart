@@ -12,7 +12,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:geolocator/geolocator.dart';
 
-
 // 백그라운드 + 꺼져있을때 푸시알림 처리하는 함수에 들어갈 값
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   RemoteNotification? notification = message.notification;
@@ -80,7 +79,7 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context) {
             return AlertDialog(
                 title: Center(child: Text('${notification?.title}')),
-                content: Container(
+                content: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +95,7 @@ class _MyAppState extends State<MyApp> {
                                         senderAccountSeq: int.parse(
                                             data["senderAccountSeq"]))));
                           },
-                          child: Text("연동하러 가기"))
+                          child: const Text("연동하러 가기"))
                     ],
                   ),
                 ));
@@ -111,7 +110,7 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context) {
             return AlertDialog(
                 title: Center(child: Text('${notification?.title}')),
-                content: Container(
+                content: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,11 +122,40 @@ class _MyAppState extends State<MyApp> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => BottomNavigation(
+                                    builder: (context) =>
+                                        const BottomNavigation(
                                           where: 0,
                                         )));
                           },
-                          child: Text("약 먹으러 가기"))
+                          child: const Text("약 먹으러 가기"))
+                    ],
+                  ),
+                ));
+          });
+    } else if (data["type"] == "auth") {
+      showDialog(
+          context: navigatorKey.currentState!.context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+                title: Center(child: Text('${notification?.title}')),
+                content: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${notification?.body}'),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BottomNavigation(
+                                          where: 0,
+                                        )));
+                          },
+                          child: const Text("홈 화면으로 돌아가기"))
                     ],
                   ),
                 ));
@@ -152,7 +180,7 @@ class _MyAppState extends State<MyApp> {
       Navigator.push(
           navigatorKey.currentState!.context,
           MaterialPageRoute(
-              builder: (context) => BottomNavigation(
+              builder: (context) => const BottomNavigation(
                     where: 0,
                   )));
     }

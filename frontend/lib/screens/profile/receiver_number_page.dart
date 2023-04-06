@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 class ReceiverNumberPage extends StatefulWidget {
   final int? senderAccountSeq;
 
-  const ReceiverNumberPage({super.key, this.senderAccountSeq});
-
+  //const ReceiverNumberPage({super.key, this.senderAccountSeq});
+  const ReceiverNumberPage({Key? key, this.senderAccountSeq}) : super(key: key);
   @override
   State<ReceiverNumberPage> createState() => _ReceiverNumberPageState();
 }
@@ -110,7 +110,7 @@ class _ReceiverNumberPageState extends State<ReceiverNumberPage> {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Text(
-                  data!['data']['authNumber'],
+                  data?['data']['authNumber'] ?? '',
                   textAlign: TextAlign.center,
                 ),
               ),
