@@ -1,10 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/controller/auth_controller.dart';
 import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/bottom_navigation.dart';
 import 'package:frontend/controller/profile_controller.dart';
 import 'package:frontend/firebase_options.dart';
-import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/screens/login/social_login.dart';
 import 'package:frontend/screens/profile/receiver_profile_page.dart';
 import 'package:get/get.dart';
@@ -30,6 +30,7 @@ Future<void> main() async {
   KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
   Get.put(FirebaseController());
   Get.put(ProfileController());
+  Get.put(AuthController());
   final firebaseController = Get.find<FirebaseController>();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,6 +67,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final info = Geolocator.getCurrentPosition();
   final profileController = Get.find<ProfileController>();
+  final authController = Get.find<AuthController>();
+  // index
+  final int _currentIndex = 0;
+
   // 포그라운드에서 메세지를 수신했을 때 -> modal 띄우고 이동
   void onMessageRecieved(RemoteMessage message) {
     RemoteNotification? notification = message.notification;
@@ -205,6 +210,8 @@ class _MyAppState extends State<MyApp> {
       onMessageOpen(message);
     });
     checkInitialMessage();
+    // 토큰 유효성 체크
+    authController.refreshTokenIfNeeded();
   }
 
   @override
@@ -229,7 +236,19 @@ class _MyAppState extends State<MyApp> {
         Get.put(FirebaseController());
       }),
       title: 'bottomNavigationBar Test',
-      home: const SocialLogin(),
+      initialRoute: authController.isLoggedIn ? '/' : '/login',
+      getPages: [
+        GetPage(name: '/', page: () => const BottomNavigation(where: 0)),
+        GetPage(name: '/login', page: () => const SocialLogin()),
+      ],
+      // home: Obx(() {
+      //   final isLoggedIn = authController.isLoggedIn;
+      //   if (!isLoggedIn) {
+      //     return const SocialLogin();
+      //   } else {
+      //     return const BottomNavigation(where: 0);
+      //   }
+      // })
     );
   }
 }

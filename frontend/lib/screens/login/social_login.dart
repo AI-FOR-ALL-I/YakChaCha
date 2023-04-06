@@ -13,7 +13,7 @@ class SocialLogin extends StatelessWidget {
 
   void getUserInfo(BuildContext context) async {
     //Get.put(FirebaseController());
-    Get.put(AuthController());
+    //Get.put(AuthController());
     final firebaseController = Get.find<FirebaseController>();
     final authController = Get.find<AuthController>();
     final firebaseToken = firebaseController.firebaseToken;
@@ -113,9 +113,7 @@ class SocialLogin extends StatelessWidget {
                       }
                     },
                     child: Image.asset(
-                        'assets/images/kakao_login_medium_narrow.png'
-                      )
-                    )
+                        'assets/images/kakao_login_medium_narrow.png'))
               ],
             )
             //TextButton(child: const Text("카카오 로그인"), onPressed: () async {})
