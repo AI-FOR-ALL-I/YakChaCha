@@ -18,23 +18,36 @@ class DrugHistoryPage extends StatefulWidget {
 }
 
 class _DrugHistoryPageState extends State<DrugHistoryPage> {
+  Future myPills = Future.value([]);
+  Future takenPills = Future.value([]);
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      myPills = MyPillApi.getMyPill();
+      takenPills = TakenPillApi.getTakenPill();
+    });
+  }
+
   bool isClicked = true;
   final myPillController = Get.put(MyPillController());
 
   void onClickLeft() {
     setState(() {
+      myPills = MyPillApi.getMyPill();
       isClicked = true;
     });
   }
 
   void onClickRight() {
     setState(() {
+      takenPills = TakenPillApi.getTakenPill();
       isClicked = false;
     });
   }
 
-  final Future myPills = MyPillApi.getMyPill();
-  final Future takenPills = TakenPillApi.getTakenPill();
+  // final Future myPills = MyPillApi.getMyPill();
+  // final Future takenPills = TakenPillApi.getTakenPill();
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +153,7 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     if (!snapshot.hasData || snapshot.data!.isEmpty) {
       return Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [IsEmptyPills(what: "알약")]);
+          children: [IsEmptyPills(what: "끝")]);
     }
 
     List data = snapshot.data!;
@@ -250,7 +263,8 @@ class _DrugHistoryPageState extends State<DrugHistoryPage> {
     if (snapshot.data!.isEmpty) {
       isZero = true;
     } else {
-      snapshot.data!.sort((MyPillModel a,MyPillModel b) => a.dday.compareTo(b.dday));
+      snapshot.data!
+          .sort((MyPillModel a, MyPillModel b) => a.dday.compareTo(b.dday));
     }
     return isZero
         ? Column(

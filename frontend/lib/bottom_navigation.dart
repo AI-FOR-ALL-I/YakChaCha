@@ -141,46 +141,51 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomMainAppBar(isMain: _selectedIndex == 0 ? true : false),
-      extendBodyBehindAppBar:
-          _selectedIndex == 0 ? true : false, // main에서는 앱바가 바디에 올라가게끔
-      body: pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        iconSize: 27,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.grey,
-        // ignore: prefer_const_literals_to_create_immutables
-        items: [
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Home',
-              activeIcon: Icon(Icons.home_filled, color: Color(0xFFBBE4CB))),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.access_time),
-              label: 'Alarm',
-              activeIcon: Icon(Icons.access_time, color: Color(0xFFBBE4CB))),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.add_box_outlined),
-              label: 'Register',
-              activeIcon:
-                  Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
-          const BottomNavigationBarItem(
-              icon: Icon(MdiIcons.pill),
-              label: 'MyDrugs',
-              activeIcon: Icon(
-                MdiIcons.pillMultiple,
-                color: Color(0xFFBBE4CB),
-              )),
-          const BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.map_fill),
-              label: 'Pharmacy',
-              activeIcon: Icon(Icons.map, color: Color(0xFFBBE4CB))),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: CustomMainAppBar(isMain: _selectedIndex == 0 ? true : false),
+        extendBodyBehindAppBar:
+            _selectedIndex == 0 ? true : false, // main에서는 앱바가 바디에 올라가게끔
+        body: pages[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          iconSize: 27,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedItemColor: Colors.grey,
+          // ignore: prefer_const_literals_to_create_immutables
+          items: [
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled),
+                label: 'Home',
+                activeIcon: Icon(Icons.home_filled, color: Color(0xFFBBE4CB))),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.access_time),
+                label: 'Alarm',
+                activeIcon: Icon(Icons.access_time, color: Color(0xFFBBE4CB))),
+            const BottomNavigationBarItem(
+                icon: Icon(Icons.add_box_outlined),
+                label: 'Register',
+                activeIcon:
+                    Icon(Icons.add_box_outlined, color: Color(0xFFBBE4CB))),
+            const BottomNavigationBarItem(
+                icon: Icon(MdiIcons.pill),
+                label: 'MyDrugs',
+                activeIcon: Icon(
+                  MdiIcons.pillMultiple,
+                  color: Color(0xFFBBE4CB),
+                )),
+            const BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.map_fill),
+                label: 'Pharmacy',
+                activeIcon: Icon(Icons.map, color: Color(0xFFBBE4CB))),
+          ],
+        ),
       ),
     );
   }

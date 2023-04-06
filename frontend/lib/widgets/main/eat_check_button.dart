@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/alarm/alarm_detail_page.dart';
+import 'package:frontend/controller/alarm_controller.dart';
+import 'package:get/get.dart';
 
 class EatCheckButton extends StatelessWidget {
-  const EatCheckButton({super.key});
+  const EatCheckButton({super.key, required this.data});
+  final Map data;
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +19,17 @@ class EatCheckButton extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                'assets/images/mainbuttonpills.png',
-                width: 50,
-                height: 50,
-                fit: BoxFit.fill,
-              ),
+              child: GestureDetector(
+                  child: Image.asset(
+                    'assets/images/mainbuttonpills.png',
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.fill,
+                  ),
+                  onTap: () {
+                    var controller = Get.put(AlarmController());
+                    controller.takePill(data["reminderSeq"]);
+                  }),
             ),
             Expanded(
               child: Padding(

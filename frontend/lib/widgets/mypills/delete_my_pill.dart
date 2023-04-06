@@ -185,7 +185,7 @@ class _DeleteMyPillState extends State<DeleteMyPill> {
 
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
                 // Navigator.of(context).popAndPushNamed(routeName);
                 Navigator.pushReplacement(
                     context,
