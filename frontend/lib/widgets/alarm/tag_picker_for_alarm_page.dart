@@ -31,35 +31,39 @@ class _TagPickerForAlarmPageState extends State<TagPickerForAlarmPage> {
           elevation: 5.0,
           borderRadius: BorderRadius.circular(20.0),
           child: ExpansionTile(
-            title: GridView.builder(
-                itemCount: controller.selectedTagList.length,
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    // mainAxisSpacing: 10,
-                    // crossAxisSpacing: 10,
-                    childAspectRatio: MediaQuery.of(context).size.width *
-                        0.15 /
-                        (MediaQuery.of(context).size.width * 0.0725)),
-                itemBuilder: (BuildContext context, int i) {
-                  String tagName =
-                      controller.selectedTagList[i]["name"] as String;
-                  int colorIndex =
-                      controller.selectedTagList[i]["color"] as int;
-                  int tagSeq = controller.selectedTagList[i]["tagSeq"] as int;
-                  return GestureDetector(
-                    onTap: () {
-                      controller.updateTagList(tagSeq, tagName, colorIndex);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: SizedBox(
-                          height: MediaQuery.of(context).size.width * 0.07,
-                          child: TagWidget(
-                              tagName: tagName, colorIndex: colorIndex)),
-                    ),
-                  );
-                }),
+            title: controller.selectedTagList != null &&
+                    controller.selectedTagList.isEmpty
+                ? Text('태그로 약을 검색해보세요!')
+                : GridView.builder(
+                    itemCount: controller.selectedTagList.length,
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        // mainAxisSpacing: 10,
+                        // crossAxisSpacing: 10,
+                        childAspectRatio: MediaQuery.of(context).size.width *
+                            0.15 /
+                            (MediaQuery.of(context).size.width * 0.0725)),
+                    itemBuilder: (BuildContext context, int i) {
+                      String tagName =
+                          controller.selectedTagList[i]["name"] as String;
+                      int colorIndex =
+                          controller.selectedTagList[i]["color"] as int;
+                      int tagSeq =
+                          controller.selectedTagList[i]["tagSeq"] as int;
+                      return GestureDetector(
+                        onTap: () {
+                          controller.updateTagList(tagSeq, tagName, colorIndex);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5.0),
+                          child: SizedBox(
+                              height: MediaQuery.of(context).size.width * 0.07,
+                              child: TagWidget(
+                                  tagName: tagName, colorIndex: colorIndex)),
+                        ),
+                      );
+                    }),
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
