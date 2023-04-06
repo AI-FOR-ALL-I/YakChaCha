@@ -150,7 +150,7 @@ class _TextSearchPageState extends State<TextSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SimpleAppBar(title: '검색 - 텍스트'),
+      appBar: SimpleAppBar(title: '검색'),
       body: Column(
         children: [
           TextSearchBar(

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ai4ai.ycc.domain.medicine.entity.Collision;
 
 public interface CollisionRepository extends JpaRepository<Collision, Long> {
-	boolean existsByMedicineAIdAndMedicineBId(int medicineAId, int medicineBId);
-	List<Collision> findAllByMedicineAIdIn(List<Integer> myMedicineList);
-	List<Collision> findAllByMedicineAId(int medicineAId);
+	List<Collision> findAllByMedicineAIdInOrMedicineBIdIn(List<Integer> myMedicineList1,List<Integer> myMedicineList2);
+	List<Collision> findAllByMedicineAIdOrMedicineBId(int medicineAId, int medicineBId);
 }

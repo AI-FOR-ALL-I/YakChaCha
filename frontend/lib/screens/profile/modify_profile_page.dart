@@ -131,28 +131,26 @@ class _ModifyProfilePage extends State<ModifyProfilePage> {
                 const SizedBox(
                   height: 30,
                 ),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Image.asset('assets/images/profile$imgCode.png',
-                            width: 100.0, height: 100.0),
-                        TextButton(
-                            onPressed: () async {
-                              int selectedIndex = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SelectProfileImagePage()));
-                              changeProfileImage(selectedIndex + 1);
-                            },
-                            child: const Text(
-                              '이미지 변경하기',
-                              style: TextStyle(color: Colors.black54),
-                            )),
-                      ],
-                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Image.asset('assets/images/profile$imgCode.png',
+                          width: 100.0, height: 100.0),
+                    ]),
+                    TextButton(
+                        onPressed: () async {
+                          int selectedIndex = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SelectProfileImagePage()));
+                          changeProfileImage(selectedIndex + 1);
+                        },
+                        child: const Text(
+                          '이미지 변경하기',
+                          style: TextStyle(color: Colors.black54),
+                        ))
                   ],
                 ),
                 const SizedBox(
