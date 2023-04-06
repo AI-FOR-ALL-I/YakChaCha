@@ -54,10 +54,10 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                 onTap: () async {
                   bool result = await confirm(
                     context,
-                    title: const Text("컨펌"),
-                    content: const Text("이 작업을 수행 하시겠습니까?"),
+                    title: const Text("알람등록"),
+                    content: const Text("알람을 등록 하시겠습니까?"),
                     textOK: const Text("확인"),
-                    textCancel: const Text("취소"),
+                    textCancel: const Text("취소", style: TextStyle(color: Color.fromARGB(255, 202, 202, 202)),),
                   );
                   if (result) {
                     bool? result;
@@ -78,13 +78,13 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                         builder: (BuildContext context) {
                           return const AlertDialog(
                             title: Text('성공적으로 등록되었습니다!'),
-                            content: Text('3초 뒤에 메인화면으로 이동합니다~'),
+                            content: Text('잠시 후 이동합니다~'),
                           );
                         },
                       );
 
 // 3초 후에 다이얼로그를 닫음
-                      Timer(const Duration(seconds: 3), () {
+                      Timer(const Duration(seconds: 1), () {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                         Navigator.pushReplacement(
@@ -96,9 +96,9 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                     }
                   }
                 },
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(
                       Icons.alarm_outlined,
                       size: 50,
@@ -139,13 +139,13 @@ class _BottomConfirmWidgetState extends State<BottomConfirmWidget> {
                                   builder: (BuildContext context) {
                                     return const AlertDialog(
                                       title: Text('성공적으로 등록되었습니다!'),
-                                      content: Text('3초 뒤에 메인화면으로 이동합니다~'),
+                                      content: Text('잠시 후 이동합니다~'),
                                     );
                                   },
                                 );
 
 // 3초 후에 다이얼로그를 닫음
-                                Timer(const Duration(seconds: 3), () {
+                                Timer(const Duration(seconds: 1), () {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                   // Navigator.of(context).push(MaterialPageRoute(

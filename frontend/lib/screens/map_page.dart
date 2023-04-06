@@ -92,7 +92,11 @@ class _MapPageState extends State<MapPage> {
                         child: Column(children: const [
                           Text("현 위치 기반 조회 중입니다."),
                           SizedBox(
-                            height: 50,
+                            height: 5,
+                          ),
+                          Text("GPS기능 및 위치 정보 제공 동의를 확인해주세요."),
+                          SizedBox(
+                            height: 40,
                           ),
                           CircularProgressIndicator()
                         ]),
