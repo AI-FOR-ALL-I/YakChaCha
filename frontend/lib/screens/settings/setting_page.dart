@@ -132,7 +132,7 @@ class _SettingPageState extends State<SettingPage> {
           SizedBox(
             height: 170,
             // 여기가 프로필 위젯들
-            child: Obx(() => ListView.builder(
+            child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: multiData.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -233,7 +233,7 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                     ),
                   );
-                })),
+                }),
           ),
           const SettingMenuItem(
             iconName: Icons.person,
