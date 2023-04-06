@@ -73,8 +73,9 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('user님에게 공유할\n프로필을 선택해주세요.',
-                  style: TextStyle(fontSize: 20.0, color: Colors.black54)),
+              Text('${data!['data']['senderAccountName']}님에게 공유할\n프로필을 선택해주세요.',
+                  style:
+                      const TextStyle(fontSize: 20.0, color: Colors.black54)),
               const SizedBox(height: 16.0),
               Expanded(
                 child: data == null
@@ -86,127 +87,147 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                           bool isSelected =
                               selectedItems.contains(profile['profileLinkSeq']);
                           bool isSelectable = profile['status'] == 1;
-                          return InkWell(
-                            onTap: isSelectable
-                                ? () {
-                                    // 프로필 선택 이벤트 처리하기
-                                    setState(() {
-                                      if (isSelected) {
-                                        selectedItems.removeWhere((item) =>
-                                            item == profile['profileLinkSeq']);
-                                        print('selected$selectedItems');
-                                      } else {
-                                        selectedItems
-                                            .add(profile['profileLinkSeq']);
-                                        print('selected$selectedItems');
-                                      }
-                                    });
-                                  }
-                                : null,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color: isSelected
-                                    ? Colors.grey.shade300
-                                    : Colors.white,
-                                border: isSelected
-                                    ? Border.all(color: Colors.green, width: 1)
-                                    : null,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(0.0),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        child: Image.asset(
-                                          'assets/images/profile${profile['imgCode']}.png',
-                                          width: 80,
-                                          height: 80,
-                                          fit: BoxFit.fill,
+                          return Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: InkWell(
+                              onTap: isSelectable
+                                  ? () {
+                                      // 프로필 선택 이벤트 처리하기
+                                      setState(() {
+                                        if (isSelected) {
+                                          selectedItems.removeWhere((item) =>
+                                              item ==
+                                              profile['profileLinkSeq']);
+                                          print('selected$selectedItems');
+                                        } else {
+                                          selectedItems
+                                              .add(profile['profileLinkSeq']);
+                                          print('selected$selectedItems');
+                                        }
+                                      });
+                                    }
+                                  : null,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  color: isSelected
+                                      ? Colors.grey.shade300
+                                      : Colors.white,
+                                  border: isSelected
+                                      ? Border.all(
+                                          color: Colors.green, width: 1)
+                                      : null,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(0.0),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          child: Image.asset(
+                                            'assets/images/profile${profile['imgCode']}.png',
+                                            width: 80,
+                                            height: 80,
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                if (profile['status'] == 1)
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  if (profile['status'] == 1)
+                                                    const Icon(
+                                                      Icons.auto_awesome,
+                                                      color: Color(0xFFBBE4CB),
+                                                    ),
+                                                  const SizedBox(
+                                                    width: 3.0,
+                                                  ),
+                                                  Text(
+                                                    profile['nickname'],
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+                                                  Text(
+                                                    profile['name'],
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: 12,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 4.0),
+                                              Row(
+                                                children: [
                                                   const Icon(
-                                                    Icons.auto_awesome,
+                                                    Icons
+                                                        .calendar_month_rounded,
                                                   ),
-                                                Text(
-                                                  profile['nickname'],
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 5.0,
-                                                ),
-                                                Text(
-                                                  profile['name'],
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 4.0),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.calendar_month_rounded,
-                                                ),
-                                                const SizedBox(width: 4.0),
-                                                Text(
-                                                  profile['birthDate'],
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                if (profile['gender'] == 'M')
-                                                  const Icon(
-                                                    Icons.male_rounded,
-                                                  ),
-                                                if (profile['gender'] == 'M')
-                                                  const Text(
-                                                    '남성',
-                                                    style: TextStyle(
+                                                  const SizedBox(width: 4.0),
+                                                  Text(
+                                                    profile['birthDate'],
+                                                    style: const TextStyle(
                                                       fontSize: 14,
                                                     ),
                                                   ),
-                                                if (profile['gender'] == 'F')
-                                                  const Icon(
-                                                      Icons.female_rounded),
-                                                if (profile['gender'] == 'F')
-                                                  const Text(
-                                                    '여성',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  if (profile['gender'] == 'M')
+                                                    const Icon(
+                                                      Icons.male_rounded,
                                                     ),
+                                                  if (profile['gender'] == 'M')
+                                                    const Text(
+                                                      '남성',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  if (profile['gender'] == 'F')
+                                                    const Icon(
+                                                        Icons.female_rounded),
+                                                  if (profile['gender'] == 'F')
+                                                    const Text(
+                                                      '여성',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                              if (profile['status'] == 0)
+                                                const Text(
+                                                  '본인이 만들지 않은 프로필은 연동 불가합니다',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.blueGrey,
                                                   ),
-                                              ],
-                                            )
-                                          ],
+                                                )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

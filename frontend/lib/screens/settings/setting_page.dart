@@ -184,7 +184,9 @@ class _SettingPageState extends State<SettingPage> {
                                                   },
                                                   child: const Text('예')),
                                               TextButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
                                                   child: const Text('아니오'))
                                             ],
                                           )
@@ -272,7 +274,43 @@ class _SettingPageState extends State<SettingPage> {
                     )),
                 TextButton(
                     onPressed: () {
-                      withDraw(context);
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text('탈퇴하시겠어요?'),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          TextButton(
+                                              onPressed: () {
+                                                withDraw(context);
+                                              },
+                                              child: const Text('예')),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('아니오'))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          });
+
+                      // withDraw(context);
                     },
                     child: const Text(
                       '탈퇴하기',

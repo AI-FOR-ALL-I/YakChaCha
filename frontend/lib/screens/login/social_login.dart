@@ -71,9 +71,9 @@ class SocialLogin extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Image.asset(
-                    'assets/images/profile1.png',
-                    width: 100.0,
-                    height: 100.0,
+                    'assets/images/character.png',
+                    width: 230.0,
+                    height: 230.0,
                   ),
                 ),
               ],
