@@ -59,9 +59,8 @@ dependencies:
   marquee: ^2.2.3
   auto_size_text: ^3.0.0
   confirm_dialog: ^1.0.1
+  permission_handler: ^10.2.0
 
-
-  
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
