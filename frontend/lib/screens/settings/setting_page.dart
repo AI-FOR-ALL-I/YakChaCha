@@ -60,7 +60,6 @@ class _SettingPageState extends State<SettingPage> {
         Navigator.pop(context);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const SocialLogin()));
-        print('로그아웃 직후 프로파일 번호${profileController.profileLinkSeq ?? 'null'}');
       }
     } catch (error) {
       print('사용자 정보 요청 실패 $error');

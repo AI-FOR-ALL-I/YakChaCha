@@ -30,7 +30,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
               borderRadius: BorderRadius.circular(10),
               child: ExpansionTile(
                 title: Before(data: widget.data),
-                subtitle: const Column(
+                subtitle: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
                 children: [
@@ -57,12 +57,12 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                             },
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.date_range_outlined,
                                 ),
                                 Text(
                                   '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['startDate']} 부터',
-                                  style: TextStyle(fontSize: 15),
+                                  style: const TextStyle(fontSize: 15),
                                 ),
                               ],
                             ),
@@ -72,7 +72,7 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                               showDatePicker(
                                 context: context,
                                 initialDate:
-                                    DateTime.now().add(Duration(days: 7)),
+                                    DateTime.now().add(const Duration(days: 7)),
                                 firstDate: DateTime(DateTime.now().year - 5),
                                 lastDate: DateTime(DateTime.now().year + 5),
                               ).then((selectedDate) {
@@ -86,12 +86,12 @@ class _TextSearchPillToRgisterState extends State<TextSearchPillToRgister> {
                             },
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.date_range_outlined,
                                 ),
                                 Text(
                                   '${controller.registerList.firstWhere((pill) => pill['itemSeq'] == widget.data['itemSeq'])['endDate']} 까지',
-                                  style: TextStyle(fontSize: 15),
+                                  style: const TextStyle(fontSize: 15),
                                 ),
                               ],
                             ),
