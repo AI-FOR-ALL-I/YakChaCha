@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from proj_pill.proj_pill.ocr_prescription import *
 from proj_pill.proj_pill.new_prediction import *
-from PIL import Image
 import os
 
 app = Flask(__name__)
@@ -25,9 +24,9 @@ def prescription_ocr():
 @app.route('/run/new_predict', methods=['POST'])
 def predict_image():
     image = request.files['image']
-    image = Image.open(image)
+    image = image.read()
 
-    predict_result = run_predict_model(image)
+    predict_result = run_efficient_model(image)
 
     print('done')
     return jsonify(predict_result)
