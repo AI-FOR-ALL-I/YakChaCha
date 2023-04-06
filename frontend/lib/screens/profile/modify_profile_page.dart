@@ -122,7 +122,7 @@ class _ModifyProfilePage extends State<ModifyProfilePage> {
   Widget build(BuildContext context) {
     // Build the UI here
     return Scaffold(
-        appBar: const SimpleAppBar(title: '프로필 생성하기'),
+        appBar: const SimpleAppBar(title: '프로필 수정하기'),
         body: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -131,22 +131,30 @@ class _ModifyProfilePage extends State<ModifyProfilePage> {
                 const SizedBox(
                   height: 30,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Image.asset('assets/images/profile$imgCode.png',
-                      width: 100.0, height: 100.0),
-                ]),
-                TextButton(
-                    onPressed: () async {
-                      int selectedIndex = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SelectProfileImagePage()));
-                      changeProfileImage(selectedIndex + 1);
-                    },
-                    child: const Text(
-                      '이미지 변경하기',
-                      style: TextStyle(color: Colors.black54),
-                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Image.asset('assets/images/profile$imgCode.png',
+                            width: 100.0, height: 100.0),
+                        TextButton(
+                            onPressed: () async {
+                              int selectedIndex = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          SelectProfileImagePage()));
+                              changeProfileImage(selectedIndex + 1);
+                            },
+                            child: const Text(
+                              '이미지 변경하기',
+                              style: TextStyle(color: Colors.black54),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 10,
                 ),
