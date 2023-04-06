@@ -47,33 +47,35 @@ class IsEmptyPills extends StatelessWidget {
               const SizedBox(
                 height: 14,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "아래 ",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF848293),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  what == "알람"
-                      ? const Icon(
-                          Icons.add_circle,
-                          color: Color(0xFFBBE4CB),
+              what != "끝"
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "아래 ",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF848293),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        what == "알람"
+                            ? const Icon(
+                                Icons.add_circle,
+                                color: Color(0xFFBBE4CB),
+                              )
+                            : const Icon(Icons.add_box_outlined),
+                        const Text(
+                          "를 눌러 약을 등록해주세요",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF848293),
+                            fontWeight: FontWeight.w600,
+                          ),
                         )
-                      : const Icon(Icons.add_box_outlined),
-                  const Text(
-                    "를 눌러 약을 등록해주세요",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF848293),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
+                      ],
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),

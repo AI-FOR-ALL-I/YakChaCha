@@ -70,7 +70,16 @@ class MyDrugItem extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.all(10),
+                        margin: EdgeInsets.fromLTRB(10, 15, 10, 10),
+                        child: Text(
+                          title,
+                          style: TextStyle(fontSize: 20),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 14),
                         alignment: Alignment.centerLeft,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -84,15 +93,6 @@ class MyDrugItem extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 14),
-                        child: Text(
-                          title,
-                          style: TextStyle(fontSize: 20),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      )
                     ],
                   )),
             ],
