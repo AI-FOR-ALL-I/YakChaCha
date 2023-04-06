@@ -48,9 +48,14 @@ class _HomePage extends State<HomePage> {
   void initState() {
     super.initState();
     getPermission();
+
+    //var profileController = Get.put(ProfileController());
+
+    //print('profile인덱스확인${profileController.profileLinkSeq}');
     getUserInfo();
     getDrugInfo();
     getAlarmList();
+    //print('profile인덱스확인 end${profileController.profileLinkSeq}');
     formattedTime = int.parse(DateFormat('HH').format(currentTime));
     refTime = DateFormat('HH:mm').format(currentTime);
     if (6 <= formattedTime && formattedTime < 12) {

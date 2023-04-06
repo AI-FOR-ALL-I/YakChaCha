@@ -9,7 +9,7 @@ class PillDetailModel {
       typeCode,
       itemName;
   final int itemSeq;
-  final bool mine;
+  final bool mine, warnPregnant, warnAge, warnOld, collide;
   final List tagList, collideList, startDate, endDate;
 
   PillDetailModel.fromJson(Map<String, dynamic> json)
@@ -23,6 +23,10 @@ class PillDetailModel {
         typeCode = json['typeCode'],
         itemName = json['itemName'],
         mine = json['mine'],
+        warnPregnant = json['warnPregnant'],
+        warnAge = json['warnAge'],
+        warnOld = json['warnOld'],
+        collide = json['collide'],
         startDate = json['startDate'] ?? [],
         endDate = json['endDate'] ?? [],
         tagList = json['tagList'] ?? [],

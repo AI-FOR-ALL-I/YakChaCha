@@ -29,7 +29,7 @@ class AuthController extends GetxController {
     _refreshToken.value = refreshToken;
   }
 
-  void clearTokens() async {
+  clearTokens() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('accessToken');
     await prefs.remove('refreshToken');

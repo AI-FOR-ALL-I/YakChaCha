@@ -72,7 +72,7 @@ class ApiConstants {
       'http://j8a803.p.ssafy.io:8090/run/new_predict';
   // 처방전 검색
   static const String ocrSearch =
-      // 'http://yccssafy.iptime.org:9714/run/prescription';
-      // 'http://70.12.246.236:8090/run/prescription';
-      'http://j8a803.p.ssafy.io:8090/run/prescription';
+      'http://yccssafy.iptime.org:8090/run/prescription';
+  // 'http://70.12.246.236:8090/run/prescription';
+  // 'http://j8a803.p.ssafy.io:8090/run/prescription';
 }

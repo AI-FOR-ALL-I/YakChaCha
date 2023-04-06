@@ -11,22 +11,27 @@ class ProfileController extends GetxController {
     super.onInit();
     // shared_preferences에서 토큰 값을로드합니다.
     _loadProfile();
+    update();
   }
 
   void _loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
     _profileLinkSeq.value = prefs.getInt('profileLinkSeq') ?? 0;
+    update();
   }
 
-  void saveProfile(int profileLinkSeq) async {
+  saveProfile(int profileLinkSeq) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('profileLinkSeq', profileLinkSeq);
     _profileLinkSeq.value = profileLinkSeq;
+    return profileLinkSeq;
+    update();
   }
 
-  void clearProfile() async {
+  clearProfile() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('profileLinkSeq');
-    _profileLinkSeq.value = 0;
+    _profileLinkSeq.value = -1;
+    update();
   }
 }
