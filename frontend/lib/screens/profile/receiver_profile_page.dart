@@ -107,8 +107,11 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
                                 color: isSelected
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
+                                    ? Colors.grey.shade300
+                                    : Colors.white,
+                                border: isSelected
+                                    ? Border.all(color: Colors.green, width: 1)
+                                    : null,
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),

@@ -21,6 +21,27 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   Map<String, dynamic> info = {};
+  // 자동로그인하면 multiprofilecontroller 내용이 다 사라짐
+  // 어쩔수없이 profilelist 다 받아오는 api 호출
+  List<Map<String, dynamic>> multiData = [];
+  // api 선언부
+  void getMultiProfiles() async {
+    try {
+      dio.Response response = await ApiProfiles.getMultiProfiles();
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> newData =
+            List<Map<String, dynamic>>.from(response.data['data']);
+        setState(() {
+          multiData = newData;
+        });
+      } else {
+        // error handling
+      }
+    } catch (e) {
+      // error handling
+    }
+  }
+
   bool isOwner = false;
   void logout(BuildContext context) async {
     final authController = Get.find<AuthController>();
@@ -39,7 +60,7 @@ class _SettingPageState extends State<SettingPage> {
         Navigator.pop(context);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const SocialLogin()));
-        print('로그아웃 직후 프로파일 번호${profileController.profileLinkSeq}');
+        print('로그아웃 직후 프로파일 번호${profileController.profileLinkSeq ?? 'null'}');
       }
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
@@ -63,7 +84,7 @@ class _SettingPageState extends State<SettingPage> {
         Get.reset();
 
         // 초기 화면으로 이동
-        Get.offAll(SocialLogin());
+        Get.offAll(const SocialLogin());
       }
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
@@ -95,6 +116,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void initState() {
     super.initState();
+    getMultiProfiles();
     profileDetails();
     // 여기서 프로필 정보 다 가져오기
   }
@@ -110,18 +132,21 @@ class _SettingPageState extends State<SettingPage> {
           SizedBox(
             height: 170,
             // 여기가 프로필 위젯들
-            child: Obx(() => ListView.builder(
+            child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: multiProfileController.multiProfileList.length,
+                itemCount: multiData.length,
                 itemBuilder: (BuildContext context, int index) {
-                  var profile = multiProfileController.multiProfileList[index];
+                  // var profile = multiProfileController.multiProfileList[index];
+                  // 변경
+                  var profile = multiData[index];
+                  // 변경
                   return Padding(
                     padding: const EdgeInsets.only(
-                        left: 10.0, top: 15.0, right: 5.0, bottom: 15.0),
+                        left: 10.0, top: 15.0, right: 5.0, bottom: 10.0),
                     child: GestureDetector(
                       onTap: () {
-                        print(multiProfileController.multiProfileList[index]);
-
+                        //print(multiProfileController.multiProfileList[index]);
+                        print(multiData[index]);
                         if (profile["profileLinkSeq"] !=
                             profileController.profileLinkSeq) {
                           showDialog(
@@ -203,12 +228,15 @@ class _SettingPageState extends State<SettingPage> {
                                   fit: BoxFit.cover),
                             ),
                           ),
-                          Text('${profile["nickname"]}')
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Text('${profile["nickname"]}'),
+                          )
                         ],
                       ),
                     ),
                   );
-                })),
+                }),
           ),
           const SettingMenuItem(
             iconName: Icons.person,

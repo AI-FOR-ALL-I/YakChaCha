@@ -1,17 +1,16 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/controller/auth_controller.dart';
 import 'package:frontend/controller/firebase_controller.dart';
 import 'package:frontend/bottom_navigation.dart';
 import 'package:frontend/controller/profile_controller.dart';
 import 'package:frontend/firebase_options.dart';
-import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/screens/login/social_login.dart';
 import 'package:frontend/screens/profile/receiver_profile_page.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:geolocator/geolocator.dart';
-
 
 // 백그라운드 + 꺼져있을때 푸시알림 처리하는 함수에 들어갈 값
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -31,6 +30,7 @@ Future<void> main() async {
   KakaoSdk.init(nativeAppKey: "c940f1badb47a0c2cb210d71a84009fb");
   Get.put(FirebaseController());
   Get.put(ProfileController());
+  Get.put(AuthController());
   final firebaseController = Get.find<FirebaseController>();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,6 +67,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final info = Geolocator.getCurrentPosition();
   final profileController = Get.find<ProfileController>();
+  final authController = Get.find<AuthController>();
+  // index
+  final int _currentIndex = 0;
+
   // 포그라운드에서 메세지를 수신했을 때 -> modal 띄우고 이동
   void onMessageRecieved(RemoteMessage message) {
     RemoteNotification? notification = message.notification;
@@ -80,7 +84,7 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context) {
             return AlertDialog(
                 title: Center(child: Text('${notification?.title}')),
-                content: Container(
+                content: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +100,7 @@ class _MyAppState extends State<MyApp> {
                                         senderAccountSeq: int.parse(
                                             data["senderAccountSeq"]))));
                           },
-                          child: Text("연동하러 가기"))
+                          child: const Text("연동하러 가기"))
                     ],
                   ),
                 ));
@@ -111,7 +115,7 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context) {
             return AlertDialog(
                 title: Center(child: Text('${notification?.title}')),
-                content: Container(
+                content: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,11 +127,40 @@ class _MyAppState extends State<MyApp> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => BottomNavigation(
+                                    builder: (context) =>
+                                        const BottomNavigation(
                                           where: 0,
                                         )));
                           },
-                          child: Text("약 먹으러 가기"))
+                          child: const Text("약 먹으러 가기"))
+                    ],
+                  ),
+                ));
+          });
+    } else if (data["type"] == "auth") {
+      showDialog(
+          context: navigatorKey.currentState!.context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+                title: Center(child: Text('${notification?.title}')),
+                content: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${notification?.body}'),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BottomNavigation(
+                                          where: 0,
+                                        )));
+                          },
+                          child: const Text("홈 화면으로 돌아가기"))
                     ],
                   ),
                 ));
@@ -152,7 +185,7 @@ class _MyAppState extends State<MyApp> {
       Navigator.push(
           navigatorKey.currentState!.context,
           MaterialPageRoute(
-              builder: (context) => BottomNavigation(
+              builder: (context) => const BottomNavigation(
                     where: 0,
                   )));
     }
@@ -177,6 +210,8 @@ class _MyAppState extends State<MyApp> {
       onMessageOpen(message);
     });
     checkInitialMessage();
+    // 토큰 유효성 체크
+    authController.refreshTokenIfNeeded();
   }
 
   @override
@@ -201,7 +236,19 @@ class _MyAppState extends State<MyApp> {
         Get.put(FirebaseController());
       }),
       title: 'bottomNavigationBar Test',
-      home: const SocialLogin(),
+      initialRoute: authController.isLoggedIn ? '/' : '/login',
+      getPages: [
+        GetPage(name: '/', page: () => const BottomNavigation(where: 0)),
+        GetPage(name: '/login', page: () => const SocialLogin()),
+      ],
+      // home: Obx(() {
+      //   final isLoggedIn = authController.isLoggedIn;
+      //   if (!isLoggedIn) {
+      //     return const SocialLogin();
+      //   } else {
+      //     return const BottomNavigation(where: 0);
+      //   }
+      // })
     );
   }
 }

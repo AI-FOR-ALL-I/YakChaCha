@@ -80,6 +80,7 @@ class ProfileInfo extends StatelessWidget {
                           if (owner)
                             const Icon(
                               Icons.auto_awesome,
+                              color: Color(0xFFBBE4CB),
                             ),
                           Text(
                             nickname,

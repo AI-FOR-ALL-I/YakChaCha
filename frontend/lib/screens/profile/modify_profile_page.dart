@@ -122,7 +122,7 @@ class _ModifyProfilePage extends State<ModifyProfilePage> {
   Widget build(BuildContext context) {
     // Build the UI here
     return Scaffold(
-        appBar: const SimpleAppBar(title: '프로필 생성하기'),
+        appBar: const SimpleAppBar(title: '프로필 수정하기'),
         body: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
