@@ -8,19 +8,15 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        leading: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text('YakChaCha',
-                style: (TextStyle(
-                  color: isMain
-                      ? Colors.white
-                      : Theme.of(context).colorScheme.background,
-                  overflow: TextOverflow.visible,
-                )),
-                softWrap: false,
-                maxLines: 1),
-          ),
+        leading: null,
+        automaticallyImplyLeading: false,
+        titleSpacing: 0,
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Image.asset(
+              isMain ? 'assets/images/logo2.png' : 'assets/images/logo3.png',
+              width: MediaQuery.of(context).size.width * 0.33,
+              fit: BoxFit.contain),
         ),
         actions: [
           IconButton(
