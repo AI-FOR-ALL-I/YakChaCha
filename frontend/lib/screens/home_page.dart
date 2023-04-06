@@ -12,6 +12,7 @@ import 'package:frontend/widgets/main/time_header.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,6 +22,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+  // 메인 페이지 진입시 푸시알림 여부 확인
+  getPermission() async {
+    var status = await Permission.notification.status;
+    if (status.isGranted) {
+      print('허락됨');
+    } else if (status.isDenied) {
+      print('거절됨');
+      Permission.notification.request();
+    }
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
   List<Map<String, dynamic>> drugs = [];
   Map<String, dynamic> profileInfo = {};
   int formattedTime = 0;
@@ -32,6 +47,7 @@ class _HomePage extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    getPermission();
     getUserInfo();
     getDrugInfo();
     getAlarmList();

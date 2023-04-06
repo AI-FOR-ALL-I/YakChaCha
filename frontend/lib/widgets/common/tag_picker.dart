@@ -118,6 +118,7 @@ class _TagPickerState extends State<TagPicker> {
                                   setState(() {
                                     newTag = '';
                                   });
+                                  tagController.clear();
                                   Navigator.pop(context);
                                 }
                               },

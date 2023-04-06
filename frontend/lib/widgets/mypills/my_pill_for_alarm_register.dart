@@ -74,11 +74,18 @@ class _MyPillState extends State<MyPillForAlarmRegister> {
                               )
                             ]),
                       ),
-                      Row(
-                        children: List<Widget>.from(widget.data["tagList"].map(
-                            (tagInfo) => TagWidget(
-                                tagName: tagInfo["name"] as String,
-                                colorIndex: tagInfo["color"]))),
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: List<Widget>.from(widget.data["tagList"]
+                                .map((tagInfo) => TagWidget(
+                                    tagName: tagInfo["name"] as String,
+                                    colorIndex: tagInfo["color"]))),
+                          ),
+                        ),
                       )
                     ],
                   )),
