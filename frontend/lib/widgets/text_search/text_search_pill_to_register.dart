@@ -179,14 +179,16 @@ class Before extends StatelessWidget {
                                               style: TextStyle(
                                                   color: data['warnPregnant']
                                                       ? Colors.red
-                                                      : Colors.grey),
+                                                      : Colors.grey
+                                                          .withOpacity(0.1)),
                                             ),
                                             const Text(' | '),
                                             Text('노약자 주의',
                                                 style: TextStyle(
                                                     color: data['warnOld']
                                                         ? Colors.red
-                                                        : Colors.grey))
+                                                        : Colors.grey
+                                                            .withOpacity(0.1)))
                                           ],
                                         ),
                                         Row(
@@ -195,13 +197,15 @@ class Before extends StatelessWidget {
                                                 style: TextStyle(
                                                     color: data['warnAge']
                                                         ? Colors.red
-                                                        : Colors.grey)),
+                                                        : Colors.grey
+                                                            .withOpacity(0.1))),
                                             const Text(' | '),
                                             Text('충돌 주의',
                                                 style: TextStyle(
                                                     color: data['collide']
                                                         ? Colors.red
-                                                        : Colors.grey))
+                                                        : Colors.grey
+                                                            .withOpacity(0.1)))
                                           ],
                                         ),
                                       ],

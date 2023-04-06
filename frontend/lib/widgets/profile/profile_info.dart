@@ -28,8 +28,8 @@ class ProfileInfo extends StatelessWidget {
     required this.profileLinkSeq,
   });
 
-  void updateProfile(int id) {
-    Get.put(ProfileController());
+  updateProfile(int id) {
+    //Get.put(ProfileController());
     final profileController = Get.find<ProfileController>();
     profileController.saveProfile(id);
   }
@@ -37,12 +37,16 @@ class ProfileInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         // profileLinkSeq 연결하긔
-        print('profile$profileLinkSeq');
-        updateProfile(profileLinkSeq);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const BottomNavigation(where: 0,)));
+        print('업데이트된프로필정보$profileLinkSeq');
+        await updateProfile(profileLinkSeq);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const BottomNavigation(
+                      where: 0,
+                    )));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -58,7 +62,7 @@ class ProfileInfo extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: Image.asset(
-                    'assets/images/sampletips.jpg',
+                    'assets/images/profile$imageCode.png',
                     width: 80,
                     height: 80,
                     fit: BoxFit.fill,

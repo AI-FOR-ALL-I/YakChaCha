@@ -33,11 +33,15 @@ class _SettingPageState extends State<SettingPage> {
       dio.Response response = await ApiClient.logout();
       if (response.statusCode == 200) {
         // 로그아웃 성공
-        authController.clearTokens();
+        await authController.clearTokens();
         //firebaseController.clearTokens();
-        profileController.clearProfile();
-        Navigator.push(context,
+        await profileController.clearProfile();
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const SocialLogin()));
+        print('로그아웃 직후 프로파일 번호${profileController.profileLinkSeq}');
       }
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
@@ -48,16 +52,20 @@ class _SettingPageState extends State<SettingPage> {
     final authController = Get.find<AuthController>();
     final firebaseController = Get.find<FirebaseController>();
     final profileController = Get.find<ProfileController>();
-
     try {
       dio.Response response = await ApiClient.withDraw();
       if (response.statusCode == 200) {
         // 로그아웃 성공
-        authController.clearTokens();
-        //firebaseController.clearTokens();
-        profileController.clearProfile();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SocialLogin()));
+        //   authController.clearTokens();
+        //   //firebaseController.clearTokens();
+        //   profileController.clearProfile();
+        //   Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => const SocialLogin()));
+        // 모든 컨트롤러 상태 재설정
+        Get.reset();
+
+        // 초기 화면으로 이동
+        Get.offAll(SocialLogin());
       }
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
@@ -93,7 +101,8 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProfileController profileController = Get.put(ProfileController());
+    ProfileController profileController = Get.find<ProfileController>();
+    //ProfileController profileController = Get.find(tag: 'profileController');
     return Scaffold(
       appBar: const SimpleAppBar(title: '사용자 전환'),
       body: Column(
@@ -134,12 +143,13 @@ class _SettingPageState extends State<SettingPage> {
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
                                               TextButton(
-                                                  onPressed: () {
-                                                    profileController
+                                                  onPressed: () async {
+                                                    await profileController
                                                         .saveProfile(profile[
                                                             "profileLinkSeq"]);
                                                     Navigator.pop(context);
                                                     Navigator.pop(context);
+
                                                     Navigator.pushReplacement(
                                                       context,
                                                       MaterialPageRoute(

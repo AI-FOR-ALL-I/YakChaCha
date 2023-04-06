@@ -81,11 +81,11 @@ class PillDetailsForApi extends StatelessWidget {
                                 'itemSeq': pillDetail.itemSeq,
                                 'img': pillDetail.img,
                                 'itemName': pillDetail.itemName,
-                                'warnPregnant':
-                                    false, // TODO: 위험여부 받아서 여기다 넣어줘야 함...
-                                'warnAge': false,
-                                'warnOld': false,
-                                'collide': false
+                                'warnPregnant': pillDetail
+                                    .warnPregnant, // TODO: 위험여부 받아서 여기다 넣어줘야 함...
+                                'warnAge': pillDetail.warnAge,
+                                'warnOld': pillDetail.warnOld,
+                                'collide': pillDetail.collide
                               };
                               controller.add(tempData);
                               print(controller.displayList[
