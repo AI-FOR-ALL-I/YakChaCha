@@ -28,10 +28,10 @@ class ProfileInfo extends StatelessWidget {
     required this.profileLinkSeq,
   });
 
-  updateProfile(int id) {
+  updateProfile(int id) async {
     //Get.put(ProfileController());
     final profileController = Get.find<ProfileController>();
-    profileController.saveProfile(id);
+    await profileController.saveProfile(id);
   }
 
   @override
