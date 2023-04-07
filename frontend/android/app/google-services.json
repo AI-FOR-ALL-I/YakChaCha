@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "33028661287",
+    "project_id": "yakchacha",
+    "storage_bucket": "yakchacha.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33028661287:android:7719c5cbeed06b96bdee02",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33028661287-tji3r6bhke23dgmlfj9d4u5k8su5s4bg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqw9b73DTADxj-DmHZT3qOjCMQVgbkifw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33028661287-tji3r6bhke23dgmlfj9d4u5k8su5s4bg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

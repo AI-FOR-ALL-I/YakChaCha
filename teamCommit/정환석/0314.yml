@@ -1,0 +1,14 @@
+version: '3'
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins/jenkins
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /jenkins:/var/jenkins_home
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - 5000:8080
+    privileged: true
+    user: root

@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+import 'package:frontend/screens/pill_details/pill_details_for_api.dart';
+import 'package:frontend/widgets/common/tag_widget.dart';
+
+class MyDrugItem extends StatelessWidget {
+  final String imagePath, title;
+  final List tag_list;
+  final int itemSeq;
+  const MyDrugItem({
+    // CHANGED: Key type is updated to Key?.
+    super.key,
+    required this.imagePath,
+    required this.title,
+    required this.itemSeq,
+    required this.tag_list,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PillDetailsForApi(
+                  turnOnPlus: false,
+                  isRegister: false,
+                  num: itemSeq.toString()),
+            ));
+      },
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 15.0),
+        child: Container(
+          width: 200,
+          decoration: BoxDecoration(
+            // color: const Color(0xFFF8F2E6),
+            color: Color.fromARGB(255, 254, 253, 248),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            children: [
+              Flexible(
+                flex: 5,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0),
+                    ),
+                    // CHANGED: The fit property of the Image.asset is set to BoxFit.fitWidth.
+                    child: imagePath == ''
+                        ? Image.asset('assets/images/defaultPill1.png',
+                            fit: BoxFit.fill)
+                        : Image.network(
+                            imagePath,
+                            fit: BoxFit.fill,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                              return Image.asset(
+                                  'assets/images/defaultPill1.png');
+                            },
+                          ),
+                  ),
+                ),
+              ),
+              Flexible(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(10, 15, 10, 10),
+                        child: Text(
+                          title,
+                          style: TextStyle(fontSize: 20),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 14),
+                        alignment: Alignment.centerLeft,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: tag_list
+                                .map((tagInfo) => TagWidget(
+                                    tagName: tagInfo["name"],
+                                    colorIndex: tagInfo["color"]))
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

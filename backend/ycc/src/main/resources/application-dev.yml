@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://j8a803.p.ssafy.io:3356/dev?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: ssafy803
+
+  redis:
+    host: j8a803.p.ssafy.io
+    port: 6379
+    password: ssafy803
+    timeout: 3000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    root: info
+    org.hibernate:
+      type.type.descriptor.sql: trace
+  file:
+    name: logs/dev.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1MB
+      max-history: 30
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
+
+jwt:
+  header: Authorization
+  secret: eWFrY2hhY2hhLXNzYWZ5ODAz
+  token-validity-in-seconds: 86400
