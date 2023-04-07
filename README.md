@@ -10,6 +10,8 @@
 
 </aside>
 
+### [안드로이드 APK 다운로드 링크](https://drive.google.com/drive/folders/1ASdcb5IMNfGEtCmVmMNd8i0HtgrvzIAd)
+
 ## 개발 기간
 
 ---
