@@ -61,7 +61,7 @@ class _SelectProfilePage extends State<SelectProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const SimpleAppBar(title: '프로필 선택'),
+        appBar: const SimpleAppBar(title: '프로필 연동 확인'),
         body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(

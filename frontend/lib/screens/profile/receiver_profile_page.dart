@@ -221,7 +221,9 @@ class _ReceiverProfilePageState extends State<ReceiverProfilePage> {
                                                     fontSize: 12,
                                                     color: Colors.blueGrey,
                                                   ),
-                                                )
+                                                ),
+                                              if (profile['status'] == 2)
+                                                const Text('이미 연동 중인 프로필입니다')
                                             ],
                                           ),
                                         ),
