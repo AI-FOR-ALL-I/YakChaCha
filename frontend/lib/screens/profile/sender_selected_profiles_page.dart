@@ -33,7 +33,7 @@ class _SenderSelectedProfilesPageState
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text("프로필 연동에 성공했습니다"),
-                content: const Text("내용"),
+                content: const Text("메인화면으로 이동합니다"),
                 actions: [
                   TextButton(
                     child: const Text("확인"),
