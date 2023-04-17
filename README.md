@@ -350,7 +350,11 @@ $docker compose up -d
 
 ### 1. 로그인
 
-![로그인](https://user-images.githubusercontent.com/59593223/230527181-357df678-c133-4345-b937-915fe198a398.png)
+<img
+  src="https://user-images.githubusercontent.com/59593223/232363436-95454809-b14f-4ba2-9c56-bb32f63aa3ba.gif"
+  width="30%"
+  height="30%"
+/>
 
 **로그인**
 
@@ -359,9 +363,8 @@ $docker compose up -d
 
 ### 2. 프로필선택
 
-![프로필선택](https://user-images.githubusercontent.com/59593223/230528264-a544ab96-dbd2-4e0f-8b5c-141aa26dbbb8.png)
-
-![메인화면](https://user-images.githubusercontent.com/59593223/230528268-2dda0158-1486-470d-a51c-ce32e5716e49.png)
+![프로필선택](https://user-images.githubusercontent.com/59593223/230528264-a544ab96-dbd2-4e0f-8b5c-141aa26dbbb8.png)|![메인화면](https://user-images.githubusercontent.com/59593223/230528268-2dda0158-1486-470d-a51c-ce32e5716e49.png)
+--- | --- |
 
 **멀티프로필 및 프로필 연동**
 
@@ -371,9 +374,8 @@ $docker compose up -d
 
 ### 3. 약
 
-![복용중인약](https://user-images.githubusercontent.com/59593223/230528226-033417a3-f89d-4f1e-87a6-f414aed8493a.png)
-
-![텍스트약검색](https://user-images.githubusercontent.com/59593223/230528186-4e59b68b-0454-4766-8ec5-d0aec552b86d.png)
+![복용중인약](https://user-images.githubusercontent.com/59593223/230528226-033417a3-f89d-4f1e-87a6-f414aed8493a.png)|![텍스트약검색](https://user-images.githubusercontent.com/59593223/232368936-f5e02aae-4baf-4030-935b-bc55adf28c17.gif)
+--- | --- |
 
 **약 관리** 
 
@@ -388,7 +390,10 @@ $docker compose up -d
 
 ### 4. 알람
 
-![알람리스트](https://user-images.githubusercontent.com/59593223/230528142-3a307b7e-13f9-404e-848f-fa4a0c510d70.png)
+![알람 등록 및 알람 달성](https://user-images.githubusercontent.com/59593223/232369047-23600e91-dd36-412b-ae40-61ef0a5fc738.gif)|![알람 상세](https://user-images.githubusercontent.com/59593223/232369051-3fb54982-0588-4565-9c80-51538b753478.gif)
+--- | --- |
+
+
 
 **알람 관리**
 
@@ -399,9 +404,8 @@ $docker compose up -d
 
 ### 5. 사진으로 약 등록 및 검색
 
-![사진으로검색](https://user-images.githubusercontent.com/59593223/230527299-0e9e19d8-d0d9-439b-8018-a970482f9cf5.png)
-
-![OCR](https://user-images.githubusercontent.com/59593223/230527304-ebc6c5ce-0633-4812-8a64-4007dc961408.png)
+![약 사진 검색](https://user-images.githubusercontent.com/59593223/232369199-c446d8cf-2917-4ef8-b54c-65a4227e22d5.gif)|![OCR](https://user-images.githubusercontent.com/59593223/230527304-ebc6c5ce-0633-4812-8a64-4007dc961408.png)
+--- | --- |
 
 **알약 사진으로 약 등록 & 검색**
 
@@ -415,15 +419,11 @@ $docker compose up -d
 
 ### 6. 연동(Sender)
 
-![sender1](https://user-images.githubusercontent.com/59593223/230527457-356d181e-1d39-4bc1-9a5d-0cb7434b79af.png)
+![sender1](https://user-images.githubusercontent.com/59593223/230527457-356d181e-1d39-4bc1-9a5d-0cb7434b79af.png)|![sender2](https://user-images.githubusercontent.com/59593223/230527467-72bdb943-3062-4dea-8b3d-eb26871904ca.png)
+--- | --- |
 
-![sender2](https://user-images.githubusercontent.com/59593223/230527467-72bdb943-3062-4dea-8b3d-eb26871904ca.png)
-
-![인증번호입력](https://user-images.githubusercontent.com/59593223/230528085-760e41a3-c47b-40d0-bd8f-5d219948b9f2.png)
-
-![sender3](https://user-images.githubusercontent.com/59593223/230527476-3f0e4884-db3c-4ab3-8ba2-729f61ae4da3.png)
-
-![sender4](https://user-images.githubusercontent.com/59593223/230527481-37ad318d-2f43-45a3-b771-b555e4687f4a.png)
+![인증번호입력](https://user-images.githubusercontent.com/59593223/230528085-760e41a3-c47b-40d0-bd8f-5d219948b9f2.png)|![sender3](https://user-images.githubusercontent.com/59593223/230527476-3f0e4884-db3c-4ab3-8ba2-729f61ae4da3.png)
+--- | --- |
 
 **프로필 연동 발신자 입장**
 
@@ -433,11 +433,11 @@ $docker compose up -d
 
 ### 7. 연동(Receiver)
 
-![receiver1](https://user-images.githubusercontent.com/59593223/230527354-320e0de7-0f69-4a20-9fb9-4a541e85d75c.png)
-
-![receiver2](https://user-images.githubusercontent.com/59593223/230527423-875631f8-1ed3-434c-833f-456087efd590.png)
-
-![receiver3](https://user-images.githubusercontent.com/59593223/230528010-c270c597-f5ff-4ed5-ae32-a468c67a5c43.png)
+<img
+  src="https://user-images.githubusercontent.com/59593223/232369554-01894b5b-57ad-4094-9f76-dad43c253709.gif"
+  width="30%"
+  height="30%"
+/>
 
 **프로필 연동 수신자 입장**
 
