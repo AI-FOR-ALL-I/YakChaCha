@@ -167,7 +167,7 @@ OCR - GPU server
 ### Git Repository
 
 ```bash
-$git clone https://lab.ssafy.com/s08-ai-image-sub2/S08P22A803.git
+$git clone {URL}
 ```
 
 ### Back - Dockerfile
@@ -233,18 +233,18 @@ server {
     }
 
     listen 443 ssl; 
-    ssl_certificate /etc/letsencrypt/live/j8a803.p.ssafy.io/fullchain.pem; 
-    ssl_certificate_key /etc/letsencrypt/live/j8a803.p.ssafy.io/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{DOMAIN}/fullchain.pem; 
+    ssl_certificate_key /etc/letsencrypt/live/{DOMAIN}/privkey.pem;
 
 }
 
 server {
-    if ($host = j8a803.p.ssafy.io) {
+    if ($host = {DOMAIN}) {
         return 301 https://$host$request_uri;
     } 
 
     listen 80;
-    server_name j8a803.p.ssafy.io;
+    server_name {DOMAIN};
 
     return 404;
 }
@@ -303,7 +303,7 @@ services:
     environment:
       - TZ=${TZ}
       - MYSQL_DATABASE=dev
-      - MYSQL_ROOT_PASSWORD=ssafy803
+      - MYSQL_ROOT_PASSWORD={PASSWORD}
     ports:
       - 3356:3306
 
@@ -314,7 +314,7 @@ services:
     environment:
       - TZ=${TZ}
       - REDIS_REPLICATION_MODE=master
-      - REDIS_PASSWORD=ssafy803
+      - REDIS_PASSWORD={PASSWORD}
     volumes:
       - /home/ubuntu/db/redis/master:/data
     ports:
@@ -328,8 +328,8 @@ services:
       - TZ=${TZ}
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis
-      - REDIS_MASTER_PASSWORD=ssafy803
-      - REDIS_PASSWORD=ssafy803
+      - REDIS_MASTER_PASSWORD={PASSWORD}
+      - REDIS_PASSWORD={PASSWORD}
     volumes:
       - /home/ubuntu/db/redis/slave:/data
     ports:
